@@ -41,7 +41,7 @@ export const RecoverPassword = () => {
 	return (
 		<div className="fondoregistro2">
 			<p id="recover-user">Recuperación de usuario</p>
-			<div className="text-center mt-5 d-flex justify-content-center align-items-center" id="fondonegro">
+			<div className="text-center mt-5 d-flex justify-content-center align-items-center" id="fondonegro1">
 				<form style={{ width: "400px" }} onSubmit={e => handleSubmit(e)}>
 					<div className="form-floating">
 						<input

@@ -21,11 +21,19 @@
 #tituloregistro{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 500%;
-    margin-left: 20%;
+    margin-left: 25%;
     margin-bottom: -5%;
 }
 #fondonegro{
     background-color: black;
+    margin-left: 11%;
+    width: 80%;
+    margin-bottom: 20%;
+}
+#fondonegro1{
+    background-color: black;
+    margin-bottom: 20%;
+    margin-left: 15%;
 }
 .Registarse{
     background: none;
@@ -62,10 +70,11 @@
     background-color: none;
     margin-top: 5%;
 }
+
 #Login-user{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 450%;
-    margin-left: 8%;
+    margin-left: 16%;
     margin-bottom: -5%;
 }
 #recover{
@@ -74,7 +83,8 @@
 #recover-user{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 250%;
-    margin-left: 6%;
+    margin-left: 20%;
+    padding-top: 5px;
 }
 #footer{
     margin-top:20px;
@@ -85,16 +95,28 @@
     
 }
 #footer-principal{
-    margin-top:5%;
+    margin-top:10%;
 }
 #redes1{
-    margin-left:30%;
+    margin-left:33%;
     margin-right: 2%;
     font-size: 120%;
     color: white;
+    padding-top: 2px;
 }
 #redes2{
    font-size: 120%; 
    margin-right: 3%;
    color: white;
+   padding-top: 2px;
 }
+#icon{
+    margin-top: 1%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+
+
+
