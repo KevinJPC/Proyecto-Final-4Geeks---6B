@@ -1,3 +1,100 @@
-/* 
-    General Styles
-*/
+@import "~bootstrap/scss/bootstrap.scss";
+#navbarDropdownMenuLink{
+    color: white;
+    margin-top: -10%;
+    margin-bottom: 10%;
+    margin-left: 70%;
+}
+.fondoregistro{
+    width: 40%;
+    margin-left: 32%;
+    
+}
+.fondoregistro2{
+    width: 40%;
+    margin-left: 28%;
+    
+}
+#floatingPassword{
+    margin-bottom: 4%;
+}
+#tituloregistro{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 500%;
+    margin-left: 20%;
+    margin-bottom: -5%;
+}
+#fondonegro{
+    background-color: black;
+}
+.Registarse{
+    background: none;
+    color: white;
+    border-radius: 20px;
+    border-color: white;
+    width: 20%;
+    margin-top: 5%;
+}
+#user-type{
+    margin-bottom: 10%;
+    margin-left: 80%;
+    margin-top: 5%;
+    width: 20%;
+}
+.background-black-login{
+    background-color: black;
+}
+
+#floatingInput{
+    margin-top: 10%;
+    color: white;
+}
+
+.button-login{
+    background: none;
+    color: white;
+    border-radius: 20px;
+    border-color: white;
+    margin-bottom: 10%;
+}
+#recover-password{
+    border: none;
+    background-color: none;
+    margin-top: 5%;
+}
+#Login-user{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 450%;
+    margin-left: 8%;
+    margin-bottom: -5%;
+}
+#recover{
+    margin-top: 20%;
+}
+#recover-user{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 250%;
+    margin-left: 6%;
+}
+#footer{
+    margin-top:20px;
+    background-color: black;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 120%;
+    
+}
+#footer-principal{
+    margin-top:5%;
+}
+#redes1{
+    margin-left:30%;
+    margin-right: 2%;
+    font-size: 120%;
+    color: white;
+}
+#redes2{
+   font-size: 120%; 
+   margin-right: 3%;
+   color: white;
+}
