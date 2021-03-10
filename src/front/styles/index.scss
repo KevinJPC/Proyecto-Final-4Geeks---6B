@@ -1,10 +1,5 @@
 @import "~bootstrap/scss/bootstrap.scss";
-#navbarDropdownMenuLink{
-    color: white;
-    margin-top: -10%;
-    margin-bottom: 10%;
-    margin-left: 70%;
-}
+
 .fondoregistro{
     width: 40%;
     margin-left: 32%;
@@ -86,37 +81,6 @@
     margin-left: 20%;
     padding-top: 5px;
 }
-#footer{
-    margin-top:20px;
-    background-color: black;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 120%;
-    
+.navbar, footer{
+    background-color: black !important;
 }
-#footer-principal{
-    margin-top:10%;
-}
-#redes1{
-    margin-left:33%;
-    margin-right: 2%;
-    font-size: 120%;
-    color: white;
-    padding-top: 2px;
-}
-#redes2{
-   font-size: 120%; 
-   margin-right: 3%;
-   color: white;
-   padding-top: 2px;
-}
-#icon{
-    margin-top: 1%;
-    display: flex;
-    justify-content: flex-end;
-}
-
-
-
-
-
