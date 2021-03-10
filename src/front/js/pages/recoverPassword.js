@@ -45,15 +45,12 @@ export const RecoverPassword = () => {
 				<form style={{ width: "400px" }} onSubmit={e => handleSubmit(e)}>
 					<div className="form-floating">
 						<input
-							type="email"
+							type="Email"
 							className="form-control"
 							id="floatingInput"
-							placeholder="Email"
+							placeholder="nombre@ejemplo.com"
 							onChange={e => setEmail(e.target.value)}
 						/>
-						<label htmlFor="floatingPassword" id="floatingPassword">
-							nombre@ejemplo.com
-						</label>
 					</div>
 					<label htmlFor="floatingPassword" id="floatingPassword" />
 					<input type="submit" className="button-login" value="Recuperar usuario" id="recover" />
