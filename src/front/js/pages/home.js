@@ -1,5 +1,6 @@
 import React from "react";
 import "../../styles/home.scss";
+import { Link } from "react-router-dom";
 import backgroundLandingPage from "../../img/background-landing-page.png";
 import imgLandingPage from "../../img/img-landing-page.png";
 import titleLandingPage from "../../img/title-landing-page.png";
@@ -21,8 +22,10 @@ export const Home = () => (
 				</p>
 			</div>
 		</div>
-		<div className="d-flex justify-content-center mt-4 mb-4 mb-md-0 mb-lg-0">
-			<button className="rounded-pill bg-transparent btn-restaurants px-5">Restaurantes</button>
-		</div>
+		<Link to="/restaurantes">
+			<div className="d-flex justify-content-center mt-4 mb-4 mb-md-0 mb-lg-0">
+				<button className="rounded-pill bg-transparent btn-restaurants px-5">Restaurantes</button>
+			</div>
+		</Link>
 	</div>
 );

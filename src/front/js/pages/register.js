@@ -52,12 +52,9 @@ export const Register = () => {
 							type="User"
 							className="form-control"
 							id="floatingPassword"
-							placeholder="User"
+							placeholder="Usuario"
 							onChange={e => setUsername(e.target.value)}
 						/>
-						<label htmlFor="floatingPassword" id="floatingPassword">
-							Usuario
-						</label>
 					</div>
 					<div className="form-floating mb-3">
 						<input
@@ -67,21 +64,15 @@ export const Register = () => {
 							placeholder="name@example.com"
 							onChange={e => setEmail(e.target.value)}
 						/>
-						<label htmlFor="floatingInput" id="floatingPassword">
-							Correo
-						</label>
 					</div>
 					<div className="form-floating">
 						<input
 							type="password"
 							className="form-control"
 							id="floatingPassword"
-							placeholder="Password"
+							placeholder="Contraseña"
 							onChange={e => setPass(e.target.value)}
 						/>
-						<label htmlFor="floatingPassword" id="floatingPassword">
-							Contraseña
-						</label>
 					</div>
 					{typeUser == "restaurant" ? (
 						<Fragment>
@@ -90,12 +81,9 @@ export const Register = () => {
 									type="password"
 									className="form-control"
 									id="floatingPassword"
-									placeholder="Password"
+									placeholder="Categoria"
 									onChange={e => setPass(e.target.value)}
 								/>
-								<label htmlFor="floatingPassword" id="floatingPassword">
-									Descripción
-								</label>
 							</div>
 
 							<div className="form-floating">
@@ -103,24 +91,18 @@ export const Register = () => {
 									type="password"
 									className="form-control"
 									id="floatingPassword"
-									placeholder="Password"
+									placeholder="Descripción"
 									onChange={e => setPass(e.target.value)}
 								/>
-								<label htmlFor="floatingPassword" id="floatingPassword">
-									Categoria
-								</label>
 							</div>
 							<div className="form-floating">
 								<input
 									type="password"
 									className="form-control"
 									id="floatingPassword"
-									placeholder="Password"
+									placeholder="Imagen"
 									onChange={e => setPass(e.target.value)}
 								/>
-								<label htmlFor="floatingPassword" id="floatingPassword">
-									Imagen del restaurante
-								</label>
 							</div>
 						</Fragment>
 					) : null}

@@ -45,28 +45,23 @@ export const Login = () => {
 				<form style={{ width: "400px" }} onSubmit={e => handleSubmit(e)}>
 					<div className="form-floating">
 						<input
-							type="email"
+							type="nombre@ejemplo.com"
 							className="form-control"
 							id="floatingInput"
 							placeholder="Email"
 							onChange={e => setEmail(e.target.value)}
 						/>
-						<label htmlFor="floatingPassword" id="floatingPassword">
-							nombre@ejemplo.com
-						</label>
 					</div>
 					<label htmlFor="floatingPassword" id="floatingPassword" />
 					<div className="form-floating">
 						<input
-							type="password"
+							type="contraseña"
 							className="form-control"
 							id="floatingInput"
 							placeholder="Password"
 							onChange={e => setPass(e.target.value)}
 						/>
-						<label htmlFor="floatingPassword" id="floatingPassword">
-							contraseña
-						</label>
+
 						<Link to="/recoverPassword">
 							<input
 								type="submit"
