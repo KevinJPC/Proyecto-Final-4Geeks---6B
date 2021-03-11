@@ -16,6 +16,7 @@ class User_client(db.Model):
             "id": self.id,
             "name": self.client_name,
             "email": self.email,
+            "type_user": "client",
             "is_active": self.is_active,
         }
 
@@ -25,8 +26,8 @@ class User_restaurant(db.Model):
     name = db.Column(db.String(120), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=False, nullable=False)
-    image = db.Column(db.String(80), unique=False, nullable=False)
-    adress = db.Column(db.String(250), unique=False, nullable=False)
+    image_url = db.Column(db.String(250), unique=False, nullable=True)
+    address = db.Column(db.String(250), unique=False, nullable=False)
     phone = db.Column(db.String(30), unique=False, nullable=False)
     category = db.Column(db.String(150), unique=False, nullable=False)
     welcome_message = db.Column(db.String(150), unique=False, nullable=False)
@@ -39,15 +40,31 @@ class User_restaurant(db.Model):
             "id": self.id,
             "name": self.name,
             "email": self.email,
-            "image": self.image,
-            "adress": self.adress,
+            "image_url": self.image_url,
+            "address": self.adress,
             "phone": self.phone,
             "category": self.category,
             "welcome_message": self.welcome_message,
             "description": self.description,
+            "type_user": "restaurant",
             "is_active": self.is_active
         }
+    
+    def serialize2(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "image_url": self.image_url,
+            "address": self.address,
+            "category": self.category,
+            "rating": "3",
+            "type_user": "restaurant",
+        }
 
+    def serialize3(self):
+        return {
+            "id": self.id
+        }
 
 # class Menu_items(db.Model):
 #     __tablename__ = 'Menu_items' 

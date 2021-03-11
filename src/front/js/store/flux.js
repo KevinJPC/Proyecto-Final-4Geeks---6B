@@ -13,10 +13,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			restaurants: null
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
+
+			getRestaurants: () => {
+				fetch(process.env.BACKEND_URL + "/api/restaurants", { method: "GET" })
+					.then(resp => resp.json())
+					.then(data => setStore({ restaurants: data.results }))
+					.catch(error => console.log("Error loading message from backend", error));
+			},
+
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},

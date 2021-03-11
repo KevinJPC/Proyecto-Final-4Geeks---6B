@@ -1,6 +1,7 @@
 import React, { useState, useContext, Fragment } from "react";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { Spinner } from "../component/spinner";
 
 export const Register = () => {
 	const [username, setUsername] = useState("");
@@ -9,19 +10,22 @@ export const Register = () => {
 	const [welcomeMessage, setWelcomeMessage] = useState("");
 	const [description, setDescription] = useState("");
 	const [category, setCategory] = useState("");
-	const [logo, setLogo] = useState("");
+	const [image, setImage] = useState("");
 	const [address, setAddress] = useState("");
 	const [phone, setPhone] = useState("");
-
+	const [registering, setRegistering] = useState(false);
 	const [redirect, setRedirect] = useState(false);
 	const [typeUser, setTypeUser] = useState("client");
 
 	const handleRegisterClient = () => {
-		if (email === "" || pass === "" || username === "") {
-			alert("Todos los campos son requeridos");
-			return;
-		}
 		const data = { email: email, password: pass, name: username };
+
+		for (const property in data) {
+			if (data[property] === "") {
+				alert("Todos los campos son requeridos");
+				return;
+			}
+		}
 
 		fetch("https://3001-azure-panther-f259lo9q.ws-us03.gitpod.io/api/register/client", {
 			method: "POST",
@@ -33,6 +37,65 @@ export const Register = () => {
 			.then(response => response.json())
 			.then(data => {
 				setRedirect(true);
+			})
+			.catch(error => {
+				console.error("Error:", error);
+			});
+	};
+
+	const handleRegisterRestaurant = () => {
+		const data = {
+			email: email,
+			password: pass,
+			name: username,
+			address: address,
+			phone: phone,
+			category: category,
+			welcome_message: welcomeMessage,
+			description: description
+		};
+
+		for (const property in data) {
+			if (data[property] === "") {
+				alert("Todos los campos son requeridos");
+				return;
+			}
+		}
+
+		if (image === "") {
+			alert("Todos los campos son requeridos");
+			return;
+		}
+
+		setRegistering(true);
+
+		fetch("https://3001-azure-panther-f259lo9q.ws-us03.gitpod.io/api/register/restaurant", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(data)
+		})
+			.then(response => response.json())
+			.then(async data => {
+				let user_restaurant_id = await data.results.id;
+				// console.log(user_restaurant_id, "id");
+				// console.log("This are the files", image);
+				let body = new FormData();
+				body.append("image", image[0]);
+				const options = {
+					body,
+					method: "POST"
+				};
+
+				fetch(process.env.BACKEND_URL + "/api/restaurants/" + user_restaurant_id + "/image", options)
+					.then(resp => resp.json())
+					.then(data => {
+						// console.log("Success!!!!", data);
+						setRegistering(false);
+						setRedirect(true);
+					})
+					.catch(error => console.error("ERRORRRRRR!!!", error));
 			})
 			.catch(error => {
 				console.error("Error:", error);
@@ -120,12 +183,14 @@ export const Register = () => {
 								/>
 							</div>
 							<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
-								<label htmlFor="floatingpassword">logo:</label>
+								<label htmlFor="floatingpassword">imagen:</label>
+
 								<input
-									type="text"
-									className="form-control w-75"
+									type="file"
+									className="form-control w-75 bg-transparent text-white"
 									placeholder="test"
-									onChange={e => setLogo(e.target.value)}
+									style={{ border: "none" }}
+									onChange={e => setImage(e.target.files)}
 								/>
 							</div>
 							<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
@@ -149,12 +214,17 @@ export const Register = () => {
 						</Fragment>
 					) : null}
 
+					<div className="mb-4">{registering ? <Spinner /> : null}</div>
+
 					<button
 						className="rounded-pill bg-transparent px-3 btn-register"
 						onClick={() => {
 							if (typeUser == "client") {
 								handleRegisterClient();
+							} else {
+								handleRegisterRestaurant();
 							}
+							// uploadImage();
 						}}>
 						Registrarme
 					</button>
