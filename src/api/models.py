@@ -14,7 +14,7 @@ class User_client(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.client_name,
+            "name": self.name,
             "email": self.email,
             "type_user": "client",
             "is_active": self.is_active,
@@ -41,7 +41,7 @@ class User_restaurant(db.Model):
             "name": self.name,
             "email": self.email,
             "image_url": self.image_url,
-            "address": self.adress,
+            "address": self.address,
             "phone": self.phone,
             "category": self.category,
             "welcome_message": self.welcome_message,

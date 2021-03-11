@@ -2,6 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from api.models import db, User_client, User_restaurant
 from api.utils import generate_sitemap, APIException
 import datetime
@@ -10,10 +11,8 @@ import cloudinary.uploader
 
 
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-api = Blueprint('api', __name__)
-# jwt = JWTManager(api)
 
+api = Blueprint('api', __name__)
 
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
@@ -160,37 +159,44 @@ def get_restaurants():
     }
     return jsonify(response_body), 200
 
-# @api.route('/login_user', methods=['POST'])
-# def login_client_user():
-#     if request.method == 'POST':
-#         email = request.json.get("email", None)
-#         password = request.json.get("password", None)
+@api.route('/login', methods=['POST'])
+def login_client_user():
+    if request.method == 'POST':
+        email = request.json.get("email", None)
+        password = request.json.get("password", None)
 
-#         if not email:
-#             return jsonify({"message": "Email required"}), 400
+        if not email:
+            return jsonify({"message": "Email required"}), 400
 
-#         if not password:
-#             return jsonify({"message": "Password required"}), 400
+        if not password:
+            return jsonify({"message": "Password required"}), 400
 
-#         name = User_client.query.filter_by(email=email).first()
+        user = None
+        user_serialize = None
+        user_client = User_client.query.filter_by(email=email).first()
 
-#         if not name:
-#             return jsonify({"message": "The name is incorrect"}), 401
+        if not user_client:
+            user_restaurant = User_restaurant.query.filter_by(email=email).first()
+            user_serialize = user_restaurant.serialize()
+            user=user_restaurant
+        else:
+            user=user_client
+            user_serialize = user_client.serialize()
 
-#         if not check_password_hash(name.password, password):
-#             return jsonify({"message": "The password is incorrect"}), 401
+        if not check_password_hash(user.password, password):
+            return jsonify({"message": "The password is incorrect"}), 401
 
-#         expiracion = datetime.timedelta(days=1)
-#         access_token = create_access_token(identity=name.id, expires_delta=expiracion)
+        expiracion = datetime.timedelta(days=1)
+        access_token = create_access_token(identity=user.id, expires_delta=expiracion)
 
-#         print("test")
-#         data = {
-#             "name": name.serialize(),
-#             "token": access_token,
-#             "expires": expiracion.total_seconds()*1000
-#         }
+        print("test")
+        data = {
+            "user": user_serialize,
+            "token": access_token,
+            "expires": expiracion.total_seconds()*1000
+        }
 
-#         return jsonify(data), 200
+        return jsonify(data), 200
 
 
 # @api.route('/login_owner', methods=['POST'])

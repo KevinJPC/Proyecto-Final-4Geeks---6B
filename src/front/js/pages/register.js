@@ -27,7 +27,7 @@ export const Register = () => {
 			}
 		}
 
-		fetch("https://3001-azure-panther-f259lo9q.ws-us03.gitpod.io/api/register/client", {
+		fetch(process.env.BACKEND_URL + "/api/register/client", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
@@ -69,7 +69,7 @@ export const Register = () => {
 
 		setRegistering(true);
 
-		fetch("https://3001-azure-panther-f259lo9q.ws-us03.gitpod.io/api/register/restaurant", {
+		fetch(process.env.BACKEND_URL + "/api/register/restaurant", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
