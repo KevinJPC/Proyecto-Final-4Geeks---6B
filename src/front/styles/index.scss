@@ -1,4 +1,8 @@
 @import "~bootstrap/scss/bootstrap.scss";
+*{
+    margin: 0%;
+    padding: 0%;
+}
 
 // .fondoregistro{
 //     width: 40%;
@@ -87,4 +91,79 @@
 // }
 .navbar, footer{
     background-color: black !important;
+}
+.tittle-res{
+    margin-left: 40%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 350%;
+    margin-top: 1%;
+}
+#img-res{
+    width:90%;
+    background-color: rgb(216, 212, 212);
+    border: solid 1px;
+    border-color: rgb(158, 154, 154);
+    margin-left: 10px;
+    margin-top: 50px;
+}
+#icon-te{
+    color: rgb(112, 111, 109);
+    margin-right: 3px;
+}
+.cars-rest{
+    background-color: rgb(207, 204, 202);
+    width:90%;
+    margin-right:10px ;
+    border: solid 1px;
+    border-color: rgb(158, 154, 154);
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+#text-card{
+    margin-left: 4px;
+}
+#btn-read{
+    background: none;
+    border-radius: 20px;
+    border: solid 2px;
+    border-color: white;
+    color: white;
+    margin-left: 30px;
+    margin-bottom: 10px;
+}
+#imgVR{
+    width: 70%;
+    margin-left:10%;
+    border:solid 1px;
+    border-color: rgb(119, 115, 115);
+    margin-top: 5%;
+}
+#tiResta{
+    color: rgb(209, 117, 42);
+}
+#textRes{
+    margin-right: 10%;
+}
+.fa-star{
+    color: rgb(214, 187, 66);
+}
+#starts{
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 8%;
+    margin-top: 2%;
+}
+#btn-reseñas{
+    border: solid 3px;
+    border-color: rgb(189, 94, 38);
+    border-radius: 20px;
+    color: rgb(189, 94, 38);
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 35%;
+    margin-top: 5%;
+}
+#Backmenu{
+    background-color: rgb(189, 94, 38);
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 4%;
 }

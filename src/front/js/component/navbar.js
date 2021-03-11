@@ -24,6 +24,9 @@ export const Navbar = () => {
 					<Link to="/register" className="nav-item nav-link text-white" href="#">
 						Registro
 					</Link>
+					<Link to="/" className="nav-item nav-link text-white" href="#">
+						Cerrar sesión
+					</Link>
 					<Link to="/login" className="nav-item nav-link text-white" href="#">
 						<span className="d-flex align-items-center">
 							Iniciar sesión
