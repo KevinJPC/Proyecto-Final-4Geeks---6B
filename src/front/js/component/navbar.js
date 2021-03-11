@@ -6,7 +6,7 @@ export const Navbar = () => {
 	return (
 		<nav className="navbar navbar-expand-lg navbar-light bg-light">
 			<Link to="/" className="navbar-brand col-3 col-md-1 col-lg-1" href="#">
-				<img src={logoWebSite} className="logo-web-site img-fluid" />
+				<img src={logoWebSite} className="logo-web-site img-fluid w-75" />
 			</Link>
 			<button
 				className="navbar-toggler"
@@ -23,6 +23,9 @@ export const Navbar = () => {
 				<div className="navbar-nav">
 					<Link to="/register" className="nav-item nav-link text-white" href="#">
 						Registro
+					</Link>
+					<Link to="/" className="nav-item nav-link text-white" href="#">
+						Cerrar sesión
 					</Link>
 					<Link to="/login" className="nav-item nav-link text-white" href="#">
 						<span className="d-flex align-items-center">
