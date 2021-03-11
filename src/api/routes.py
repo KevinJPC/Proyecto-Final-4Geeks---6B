@@ -5,6 +5,9 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User_client, User_restaurant
 from api.utils import generate_sitemap, APIException
 import datetime
+import cloudinary
+import cloudinary.uploader
+
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -22,7 +25,7 @@ def handle_hello():
 
 
 @api.route('/register/client', methods=["POST"])
-def register():
+def register_client():
     if request.method == 'POST':
         name = request.json.get("name", None)
         email = request.json.get("email", None)
@@ -37,79 +40,125 @@ def register():
         if not password:
             return jsonify({"message": "Password required"}), 400
 
-        user = User_client.query.filter_by(email=email).first()
-        print(user)
-        if user:
+        user_client = User_client.query.filter_by(email=email).first()
+        print(user_client)
+        if user_client:
             return jsonify({"message": "User already exist"}), 400
 
-        user = User_client()
-        user.name = name
-        user.email = email
+        user_client = User_client()
+        user_client.name = name
+        user_client.email = email
         hashed_password = generate_password_hash(password)
 
-        user.password = hashed_password
-        user.is_active = True
+        user_client.password = hashed_password
+        user_client.is_active = True
 
-        db.session.add(user)
+        db.session.add(user_client)
         db.session.commit()
 
         return jsonify({"ok": "Register succesful!", "status": "true"}), 200
 
-# @api.route('/register_owner', methods=["POST"])
-# def register_owner():
-#     if request.method == 'POST':
-#         name = request.json.get("name", None)
-#         email = request.json.get("email", None)
-#         password = request.json.get("password", None)
-#         restaurant_name = request.json.get("restaurant_name", None)
-#         adress = request.json.get("adress", None)
-#         phone = request.json.get("phone", None)
-#         category = request.json.get("category", None)
+@api.route('/register/restaurant', methods=["POST"])
+def register_restaurant():
+    if request.method == 'POST':
+        name = request.json.get("name", None)
+        email = request.json.get("email", None)
+        password = request.json.get("password", None)
+        # image = request.json.get("image", None)
+        address = request.json.get("address", None)
+        phone = request.json.get("phone", None)
+        category = request.json.get("category", None)
+        welcome_message = request.json.get("welcome_message", None)
+        description = request.json.get("description", None)
+        
 
-#         if not name:
-#             return jsonify({"message": "Name required"}), 400
+        if not name:
+            return jsonify({"message": "Name required"}), 400
 
-#         if not email:
-#             return jsonify({"message": "Email required"}), 400
+        if not email:
+            return jsonify({"message": "Email required"}), 400
 
-#         if not password:
-#             return jsonify({"message": "Password required"}), 400
+        if not password:
+            return jsonify({"message": "Password required"}), 400
 
-#         if not restaurant_name:
-#             return jsonify({"message": "Restaurant name required"}), 400
+        # if not image:
+        #     return jsonify({"message": "Image required"}), 400
 
-#         if not adress:
-#             return jsonify({"message": "Adress required"}), 400
+        if not address:
+            return jsonify({"message": "Address required"}), 400
 
-#         if not phone:
-#             return jsonify({"message": "Phone required"}), 400
+        if not phone:
+            return jsonify({"message": "Phone required"}), 400
 
-#         if not category:
-#             return jsonify({"message": "Category required"}), 400
+        if not category:
+            return jsonify({"message": "Category required"}), 400
 
-#         name = User_client.query.filter_by(email=email).first()
-#         print(name)
-#         if name:
-#             return jsonify({"message": "The user already exist"}), 400
+        if not welcome_message:
+            return jsonify({"message": "welcome_message required"}), 400
 
-#         user_client = Name()
-#         user_client.email = email
-#         user_client.name = name
-#         user_client.restaurant_name = restaurant_name
-#         user_client.adress = adress
-#         user_client.phone = phone
-#         user_client.category = category
-#         hashed_password = generate_password_hash(password)
+        if not description:
+            return jsonify({"message": "description required"}), 400
 
-#         user_client.password = hashed_password
+        user_restaurant = User_restaurant.query.filter_by(email=email).first()
+        print(user_restaurant)
+        if user_restaurant:
+            return jsonify({"message": "The user already exist"}), 400
 
-#         db.session.add(name)
-#         db.session.commit()
+        user_restaurant = User_restaurant()
+        user_restaurant.email = email
+        user_restaurant.name = name
+        # user_restaurant.image = image
+        user_restaurant.address = address
+        user_restaurant.phone = phone
+        user_restaurant.category = category
+        user_restaurant.welcome_message = welcome_message
+        user_restaurant.description = description
+        user_restaurant.is_active = True
 
-#         return jsonify({"ok": "Register succesful!", "status": "true"}), 200
+        hashed_password = generate_password_hash(password)
 
-#     return jsonify(response_body), 200
+        user_restaurant.password = hashed_password
 
+        db.session.add(user_restaurant)
+        db.session.commit()
+
+        query = User_restaurant.query.filter_by(email=email).first()
+        user_restaurant = query.serialize3();
+
+        return jsonify({"ok": "Register succesful!", "results": user_restaurant, "status": "true"}), 200
+
+    return jsonify(response_body), 200
+
+@api.route('/restaurants/<int:user_id>/image', methods=['POST'])
+def handle_upload(user_id):
+
+    # validate that the front-end request was built correctly
+    print(request.files['image'], "image")
+    if 'image' in request.files:
+        # upload file to uploadcare
+        result = cloudinary.uploader.upload(request.files['image'], folder='img-restaurants/')
+        # fetch for the user
+        user_restaurant = User_restaurant.query.get(user_id)
+        # update the user with the given cloudinary image URL
+        user_restaurant.image_url = result['secure_url']
+
+        db.session.add(user_restaurant)
+        db.session.commit()
+
+    return jsonify("ok"), 200
+
+@api.route('/restaurants', methods=['GET'])
+
+def get_restaurants():
+
+    query = User_restaurant.query.all();
+    users_restaurant = list(map(lambda restaurant: restaurant.serialize2(), query)) 
+
+    response_body = {
+        "results": users_restaurant,
+        "status": True
+    }
+    return jsonify(response_body), 200
 
 # @api.route('/login_user', methods=['POST'])
 # def login_client_user():
