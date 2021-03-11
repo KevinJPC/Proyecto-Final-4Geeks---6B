@@ -134,6 +134,12 @@
     border-color: rgb(119, 115, 115);
     margin-top: 5%;
 }
+#imgVR2{
+    width: 70%;
+    margin-left:10%;
+    margin-top: 5%;
+    clip-path: circle();
+}
 #tiResta{
     color: rgb(209, 117, 42);
 }
@@ -146,7 +152,38 @@
 #starts{
     font-family: Arial, Helvetica, sans-serif;
     margin-left: 8%;
+    margin-top: -5%;
+}
+#starts1{
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 8%;
     margin-top: 2%;
+}
+#starts2{
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 12%;
+    margin-top: 2%;
+    margin-bottom: 4%;
+}
+#starts3{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    margin-left: 12%;
+    margin-top: 2%;
+    margin-bottom: 4%;
+    margin: 2px;
+}
+#user-reseña{
+    font-size: 30px;
+    color: rgb(209, 117, 42);
+}
+#reseñauser{
+    margin-top: 3%;
+    margin-left: 3%;
+}
+#name-reseña{
+    margin-left: 13%;
+    margin-top: -10%;
 }
 #btn-reseñas{
     border: solid 3px;
@@ -157,9 +194,70 @@
     margin-left: 35%;
     margin-top: 5%;
 }
+#btn-reseñasusuarios{
+    border: solid 3px;
+    border-color: rgb(189, 94, 38);
+    border-radius: 20px;
+    color: rgb(189, 94, 38);
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 28%;
+    margin-top: -10%;
+}
+#btnreseñasu{
+    border: solid 3px;
+    border-color: rgb(189, 94, 38);
+    border-radius: 20px;
+    color: rgb(189, 94, 38);
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 60%;
+    margin-top: 5%;
+}
 #Backmenu{
     background-color: rgb(189, 94, 38);
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     margin-top: 4%;
+}
+#img-menu{
+   width: 400px;
+   clip-path: circle();
+   margin-top: 15%;
+}
+#name-menu{
+    margin-left: 38%;
+    margin-top: 15%;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: rgb(60, 102, 25);
+}
+#nameFo{
+    margin-top: 5%;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: rgb(60, 102, 25);
+}
+#nameFo2{
+    margin-top: 5%;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: rgb(3, 3, 3);
+}
+#nameFo3{
+    margin-top: 5%;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: rgb(156, 167, 95);
+}
+#nameFo4{
+    margin-top: 5%;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    color: rgb(145, 62, 36);
+}
+#btn-back{
+    border: solid 2px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 20px;
+    margin-left: 50%;
+    margin-bottom: 2%;
+}
+#tiReviews{
+    margin-left: 5%;
+    margin-top: 2%;
+    margin-bottom: 5%;
 }

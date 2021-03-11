@@ -4,6 +4,8 @@ import ScrollToTop from "./component/scrollToTop";
 
 import { RecoverPassword } from "./pages/recoverPassword";
 import { Login } from "./pages/login";
+import { Reviews } from "./pages/reviews";
+import { MyRestaurant } from "./pages/myRestaurant";
 import { VistaRestaurant } from "./pages/vistaRestaurant";
 import { Restaurantes } from "./pages/restaurantes";
 import { Register } from "./pages/register";
@@ -32,6 +34,12 @@ const Layout = () => {
 						</Route>
 						<Route exact path="/register">
 							<Register />
+						</Route>
+						<Route exact path="/reviews">
+							<Reviews />
+						</Route>
+						<Route exact path="/myRestaurant">
+							<MyRestaurant />
 						</Route>
 						<Route exact path="/vistaRestaurant">
 							<VistaRestaurant />
