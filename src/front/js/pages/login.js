@@ -9,76 +9,66 @@ export const Login = () => {
 	const [redirect, setRedirect] = useState(false);
 	const { store, actions } = useContext(Context);
 
-	const handleSubmit = e => {
-		e.preventDefault();
+	const handleLogin = () => {
 		if (email === "" || pass === "") {
 			alert("correo y contraseña son requeridos");
+			return;
 		}
-		console.log(email, pass);
 
-		const data = { email: email, password: pass };
+		// const data = { email: email, password: pass };
 
-		fetch("https://3000-yellow-armadillo-foo75dkb.ws-us03.gitpod.io/login", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify(data)
-		})
-			.then(response => response.json())
-			.then(data => {
-				console.log("Success:", data);
-				sessionStorage.setItem("u_token", data.token);
-				actions.loadFav();
-				actions.addUser(data.user);
-				setRedirect(true);
-			})
-			.catch(error => {
-				console.error("Error:", error);
-			});
+		// fetch("https://3000-yellow-armadillo-foo75dkb.ws-us03.gitpod.io/login", {
+		// 	method: "POST",
+		// 	headers: {
+		// 		"Content-Type": "application/json"
+		// 	},
+		// 	body: JSON.stringify(data)
+		// })
+		// 	.then(response => response.json())
+		// 	.then(data => {
+		// 		console.log("Success:", data);
+		// 		sessionStorage.setItem("u_token", data.token);
+		// 		actions.loadFav();
+		// 		actions.addUser(data.user);
+		// 		setRedirect(true);
+		// 	})
+		// 	.catch(error => {
+		// 		console.error("Error:", error);
+		// 	});
 	};
 
 	return (
-		<div className="fondoregistro">
-			<p id="Login-user">Iniciar sesión</p>
-			<div className="text-center mt-5 d-flex justify-content-center align-items-center" id="fondonegro">
-				<form style={{ width: "400px" }} onSubmit={e => handleSubmit(e)}>
-					<div className="form-floating">
+		<div className="d-flex justify-content-center flex-column p-2">
+			<div className="col-lg-5 col-md-6 col-12 mx-auto text-center">
+				<p className="title-login">Inicio de sesión</p>
+			</div>
+			<div className="form-login-container text-center mt-1 d-flex justify-content-center align-items-center p-3 mb-2 text-white col-lg-5 col-md-6 col-12 mx-auto">
+				<div style={{ width: "400px" }}>
+					<div className="form-floating mb-4 mt-5 d-flex align-items-center justify-content-between">
+						<label htmlFor="floatingPassword">Email:</label>
 						<input
 							type="email"
-							className="form-control"
-							id="floatingInput"
-							placeholder="Email"
+							className="form-control w-75"
+							placeholder="nombre@ejemplo.com"
 							onChange={e => setEmail(e.target.value)}
 						/>
-						<label htmlFor="floatingPassword" id="floatingPassword">
-							nombre@ejemplo.com
-						</label>
 					</div>
-					<label htmlFor="floatingPassword" id="floatingPassword" />
-					<div className="form-floating">
+					<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
+						<label htmlFor="floatingPassword">contraseña:</label>
 						<input
 							type="password"
-							className="form-control"
-							id="floatingInput"
+							className="form-control w-75"
 							placeholder="Password"
 							onChange={e => setPass(e.target.value)}
 						/>
-						<label htmlFor="floatingPassword" id="floatingPassword">
-							contraseña
-						</label>
-						<Link to="/recoverPassword">
-							<input
-								type="submit"
-								className="button-login"
-								value="¿Olvidaste tu contraseña?"
-								id="recover-password"
-							/>
-						</Link>
 					</div>
-
-					<input type="submit" className="button-login" value="Inicio de sesión" id="login" />
-				</form>
+					<div className="d-flex flex-column col-12">
+						<Link to="/recoverPassword">¿Olvidaste tu contraseña?</Link>
+					</div>
+					<button className="rounded-pill bg-transparent px-3 mt-4 btn-login" onClick={() => handleLogin()}>
+						Iniciar sesión
+					</button>
+				</div>
 				{redirect ? <Redirect to="/" /> : ""}
 			</div>
 		</div>

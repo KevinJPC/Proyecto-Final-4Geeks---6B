@@ -39,25 +39,23 @@ export const RecoverPassword = () => {
 	};
 
 	return (
-		<div className="fondoregistro2">
-			<p id="recover-user">Recuperación de usuario</p>
-			<div className="text-center mt-5 d-flex justify-content-center align-items-center" id="fondonegro1">
-				<form style={{ width: "400px" }} onSubmit={e => handleSubmit(e)}>
-					<div className="form-floating">
+		<div className="d-flex justify-content-center flex-column p-2">
+			<div className="col-lg-5 col-md-6 col-12 mx-auto text-center">
+				<p className="title-login">Recuperar contraseña</p>
+			</div>
+			<div className="form-login-container text-center mt-1 py-5 d-flex justify-content-center align-items-center p-3 mb-2 text-white col-lg-5 col-md-6 col-12 mx-auto">
+				<div style={{ width: "400px" }}>
+					<div className="form-floating pb-5 pt-5 mb-5 d-flex align-items-center justify-content-between">
+						<label htmlFor="floatingPassword">Email:</label>
 						<input
 							type="email"
-							className="form-control"
-							id="floatingInput"
-							placeholder="Email"
+							className="form-control w-75"
+							placeholder="nombre@ejemplo.com"
 							onChange={e => setEmail(e.target.value)}
 						/>
-						<label htmlFor="floatingPassword" id="floatingPassword">
-							nombre@ejemplo.com
-						</label>
 					</div>
-					<label htmlFor="floatingPassword" id="floatingPassword" />
-					<input type="submit" className="button-login" value="Recuperar usuario" id="recover" />
-				</form>
+					<button className="rounded-pill bg-transparent px-3 btn-login">Recuperar contraseña</button>
+				</div>
 			</div>
 		</div>
 	);

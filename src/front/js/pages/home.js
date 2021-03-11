@@ -21,7 +21,7 @@ export const Home = () => (
 				</p>
 			</div>
 		</div>
-		<div className="d-flex justify-content-center mt-4 mb-4 mb-md-0 mb-lg-0">
+		<div className="d-flex justify-content-center mt-3 mb-3">
 			<button className="rounded-pill bg-transparent btn-restaurants px-5">Restaurantes</button>
 		</div>
 	</div>
