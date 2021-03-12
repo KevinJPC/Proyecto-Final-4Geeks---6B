@@ -147,7 +147,6 @@ def handle_upload(user_id):
     return jsonify("ok"), 200
 
 @api.route('/restaurants', methods=['GET'])
-
 def get_restaurants():
 
     query = User_restaurant.query.all();
@@ -157,6 +156,19 @@ def get_restaurants():
         "results": users_restaurant,
         "status": True
     }
+    return jsonify(response_body), 200
+
+@api.route('/restaurant/<int:id>', methods=['GET'])
+def get_restaurant(id):
+
+    query = User_restaurant.query.get(id);
+    user_restaurant = query.serialize();
+
+    response_body = {
+        "results": user_restaurant,
+        "status": True
+    }
+    
     return jsonify(response_body), 200
 
 @api.route('/login', methods=['POST'])
@@ -205,47 +217,3 @@ def login_client_user():
         }
 
         return jsonify(data), 200
-
-
-# @api.route('/login_owner', methods=['POST'])
-# def login_client_user():
-#     if request.method == 'POST':
-#         email = request.json.get("email", None)
-#         password = request.json.get("password", None)
-
-#         if not email:
-#             return jsonify({"message": "Email required"}), 400
-
-#         if not password:
-#             return jsonify({"message": "Password required"}), 400
-
-#         name = User_client.query.filter_by(email=email).first()
-
-#         if not name:
-#             return jsonify({"message": "The name is incorrect"}), 401
-
-#         if not check_password_hash(name.password, password):
-#             return jsonify({"message": "The password is incorrect"}), 401
-
-#         expiracion = datetime.timedelta(days=1)
-#         access_token = create_access_token(identity=name.id, expires_delta=expiracion)
-
-#         print("test")
-#         data = {
-#             "name": name.serialize(),
-#             "token": access_token,
-#             "expires": expiracion.total_seconds()*1000
-#         }
-
-#         return jsonify(data), 200
-
-
-# @api.route('/menu_items', methods=['GET'])
-# def get_all_items():
-
-#     query = Menu_items.query.all()
-#     results = list(map(lambda menu_items: menu_items.serialize(), query))
-#     response_body = {
-#         "message": results
-#     }
-#     return jsonify(response_body), 200

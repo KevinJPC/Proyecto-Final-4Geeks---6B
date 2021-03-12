@@ -24,7 +24,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				fetch(process.env.BACKEND_URL + "/api/restaurants", { method: "GET" })
 					.then(resp => resp.json())
 					.then(data => setStore({ restaurants: data.results }))
-					.catch(error => console.log("Error loading message from backend", error));
+					.catch(error => console.log("Error", error));
 			},
 
 			getUser: user => {

@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { CardReview } from "../component/cardReview";
+
 export const Reviews = () => {
 	return (
 		<div className="container-fluid">
@@ -33,9 +34,7 @@ export const Reviews = () => {
 						</h3>
 					</div>
 					<h3>Comentario</h3>
-					<textarea name="comentarios" rows="5" cols="60">
-						Escribe aquí su comentario
-					</textarea>
+					<textarea name="comentarios" rows="5" cols="60" defaultValue="Escribe aquí su comentario" />
 					<div className="">
 						<span href="#" className="btn btn-sm" id="btn-reseñas">
 							Enviar
@@ -53,11 +52,11 @@ export const Reviews = () => {
 				<CardReview />
 			</div>
 			<div className="">
-				<Link to="/restaurantes">
+				{/* <Link to="/restaurant">
 					<span href="#" className="btn btn-sm" id="btn-back">
 						Atrás
 					</span>
-				</Link>
+				</Link> */}
 			</div>
 		</div>
 	);
