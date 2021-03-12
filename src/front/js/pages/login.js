@@ -2,11 +2,14 @@ import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { Spinner } from "../component/spinner";
 
 export const Login = () => {
 	const [email, setEmail] = useState("");
 	const [pass, setPass] = useState("");
+	const [incorrectCredentials, setIncorrectCredentials] = useState(false);
 	const [redirect, setRedirect] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const { store, actions } = useContext(Context);
 
 	const handleLogin = () => {
@@ -15,26 +18,31 @@ export const Login = () => {
 			return;
 		}
 
-		// const data = { email: email, password: pass };
-
-		// fetch("https://3000-yellow-armadillo-foo75dkb.ws-us03.gitpod.io/login", {
-		// 	method: "POST",
-		// 	headers: {
-		// 		"Content-Type": "application/json"
-		// 	},
-		// 	body: JSON.stringify(data)
-		// })
-		// 	.then(response => response.json())
-		// 	.then(data => {
-		// 		console.log("Success:", data);
-		// 		sessionStorage.setItem("u_token", data.token);
-		// 		actions.loadFav();
-		// 		actions.addUser(data.user);
-		// 		setRedirect(true);
-		// 	})
-		// 	.catch(error => {
-		// 		console.error("Error:", error);
-		// 	});
+		const data = { email: email, password: pass };
+		setIncorrectCredentials(false);
+		setLoading(true);
+		fetch(process.env.BACKEND_URL + "/api/login", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(data)
+		})
+			.then(response => response.json())
+			.then(data => {
+				// console.log("Success:", data);
+				if (data.status) {
+					sessionStorage.setItem("u_token", data.token);
+					actions.getUser(data.user);
+					setRedirect(true);
+				} else {
+					setIncorrectCredentials(true);
+				}
+				setLoading(false);
+			})
+			.catch(error => {
+				// console.error("Error:", error);
+			});
 	};
 
 	return (
@@ -62,6 +70,14 @@ export const Login = () => {
 							onChange={e => setPass(e.target.value)}
 						/>
 					</div>
+
+					{incorrectCredentials ? (
+						<div>
+							<p>Email o contraseña incorrectos</p>
+						</div>
+					) : null}
+					{loading ? <Spinner /> : null}
+
 					<div className="d-flex flex-column col-12">
 						<Link to="/recoverPassword">¿Olvidaste tu contraseña?</Link>
 					</div>
@@ -69,7 +85,15 @@ export const Login = () => {
 						Iniciar sesión
 					</button>
 				</div>
-				{redirect ? <Redirect to="/" /> : ""}
+				{redirect ? (
+					store.user.type_user == "client" ? (
+						<Redirect to="/restaurantes" />
+					) : (
+						<Redirect to="/restaurant/admin" />
+					)
+				) : (
+					""
+				)}
 			</div>
 		</div>
 	);

@@ -79,8 +79,6 @@ export const Register = () => {
 			.then(response => response.json())
 			.then(async data => {
 				let user_restaurant_id = await data.results.id;
-				// console.log(user_restaurant_id, "id");
-				// console.log("This are the files", image);
 				let body = new FormData();
 				body.append("image", image[0]);
 				const options = {
@@ -95,7 +93,7 @@ export const Register = () => {
 						setRegistering(false);
 						setRedirect(true);
 					})
-					.catch(error => console.error("ERRORRRRRR!!!", error));
+					.catch(error => console.error("error", error));
 			})
 			.catch(error => {
 				console.error("Error:", error);

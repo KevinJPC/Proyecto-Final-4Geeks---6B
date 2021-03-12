@@ -14,7 +14,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			restaurants: null
+			restaurants: null,
+			user: null
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -24,6 +25,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(resp => resp.json())
 					.then(data => setStore({ restaurants: data.results }))
 					.catch(error => console.log("Error loading message from backend", error));
+			},
+
+			getUser: user => {
+				setStore({ user: user });
+			},
+
+			logOut: () => {
+				setStore({ user: null });
+				sessionStorage.removeItem("u_token");
 			},
 
 			exampleFunction: () => {

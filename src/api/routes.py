@@ -173,18 +173,25 @@ def login_client_user():
 
         user = None
         user_serialize = None
-        user_client = User_client.query.filter_by(email=email).first()
 
-        if not user_client:
-            user_restaurant = User_restaurant.query.filter_by(email=email).first()
-            user_serialize = user_restaurant.serialize()
-            user=user_restaurant
-        else:
+        user_client = User_client.query.filter_by(email=email).first()
+        
+        if user_client:
             user=user_client
             user_serialize = user_client.serialize()
 
+        user_restaurant = User_restaurant.query.filter_by(email=email).first()
+
+        if  user_restaurant:
+            user=user_restaurant
+            user_serialize = user_restaurant.serialize()
+        
+
+        if not user_client and not user_restaurant:
+            return jsonify({"message": "The email/password is incorrect", "status": False}), 401
+
         if not check_password_hash(user.password, password):
-            return jsonify({"message": "The password is incorrect"}), 401
+            return jsonify({"message": "The password is incorrect", "status": False}), 401
 
         expiracion = datetime.timedelta(days=1)
         access_token = create_access_token(identity=user.id, expires_delta=expiracion)
@@ -193,7 +200,8 @@ def login_client_user():
         data = {
             "user": user_serialize,
             "token": access_token,
-            "expires": expiracion.total_seconds()*1000
+            "expires": expiracion.total_seconds()*1000, 
+            "status": True
         }
 
         return jsonify(data), 200
