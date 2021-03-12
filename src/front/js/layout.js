@@ -2,12 +2,12 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
-import { RecoverPassword } from "./pages/recoverPassword";
+import { ChangePassword } from "./pages/changePassword";
 import { Login } from "./pages/login";
 import { Reviews } from "./pages/reviews";
-import { MyRestaurant } from "./pages/myRestaurant";
-import { VistaRestaurant } from "./pages/vistaRestaurant";
-import { Restaurantes } from "./pages/restaurantes";
+import { RestaurantAdmin } from "./pages/restaurantAdmin";
+import { Restaurant } from "./pages/restaurant";
+import { Restaurants } from "./pages/restaurants";
 import { Register } from "./pages/register";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
@@ -35,23 +35,23 @@ const Layout = () => {
 						<Route exact path="/register">
 							<Register />
 						</Route>
-						<Route exact path="/reviews">
+						<Route exact path="/restaurant/:name/:id/reviews">
 							<Reviews />
 						</Route>
-						<Route exact path="/myRestaurant">
-							<MyRestaurant />
+						<Route exact path="/restaurant/admin">
+							<RestaurantAdmin />
 						</Route>
-						<Route exact path="/vistaRestaurant/:name/:id">
-							<VistaRestaurant />
+						<Route exact path="/restaurant/:name/:id">
+							<Restaurant />
 						</Route>
 						<Route exact path="/login">
 							<Login />
 						</Route>
-						<Route exact path="/restaurantes">
-							<Restaurantes />
+						<Route exact path="/restaurants">
+							<Restaurants />
 						</Route>
-						<Route exact path="/recoverPassword">
-							<RecoverPassword />
+						<Route exact path="/change-password">
+							<ChangePassword />
 						</Route>
 						<Route>
 							<h1>Not found!</h1>

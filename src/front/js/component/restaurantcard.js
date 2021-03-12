@@ -24,7 +24,7 @@ export const RestaurantCard = props => (
 				<i className="fas fa-utensils" id="icon-te" />
 				Calificación: {props.rating}
 			</p>
-			<Link to={"/vistaRestaurant/" + props.name + "/" + props.id}>
+			<Link to={"/restaurant/" + props.name + "/" + props.id}>
 				<span href="#" className="btn btn-warning boton btn-sm" id="btn-read">
 					Leer más!
 				</span>

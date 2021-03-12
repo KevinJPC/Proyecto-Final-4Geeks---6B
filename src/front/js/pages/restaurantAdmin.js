@@ -3,43 +3,37 @@ import "../../styles/home.scss";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-export const VistaRestaurant = () => {
+export const RestaurantAdmin = () => {
 	return (
 		<div className="container-fluid">
 			<div>
-				<h1 className="text-center">Leño y carbón</h1>
+				<h1 className="text-center">Nombre del Restaurante</h1>
 			</div>
 			<div className="row">
 				<div className="col-6">
 					<img
 						id="imgVR"
-						src="https://conozcasucanton.com/wp-content/uploads/sites/11/2017/01/Le%C3%B1o-y-Carb%C3%B3n-4.jpg"
+						src="https://image.freepik.com/foto-gratis/fondo-abstracto-gris-degradado_9635-2358.jpg"
 					/>
 				</div>
 
 				<div className="col-6">
-					<p id="textRes">
+					<div id="textRes">
 						<h4 className="text-center" id="tiResta">
-							Bienvenido a Leño y carbón
+							Bienvenido a Nombre del restaurante
 						</h4>
-						Destacamos la alta calidad de nuestros cortes de carne seleccionadas, maduradas y con la
-						jugosidad perfecta, somos un restaurante con una gran variedad de platillos que logran
-						satisfacer hasta el más exigente paladar. Ofrecemos una exquisita fusión de carnes, pescados y
-						mariscos en un mismo platillo, permitiendo en una sola experiencia gastronómica degustar
-						diferentes carnes, todo lo anterior con el acompañamiento de alguno de los vinos o cervezas
-						artesanales que ofrecemos, en un ambiente relajado, acogedor y natural que puede disfrutar en
-						nuestras instalaciones.
+						<textarea name="comentarios" rows="11" cols="70" defaultValue="Escribe aquí tu descripción" />
 						<br />
 						<br />
 						<br />
 						<h6>
-							Ubicación: San Pedro, San josé.
+							Ubicación: xxxxxxxxxxx
 							<br />
-							<br /> Categoria: Comida mexicana
+							<br /> Categoria: xxxxxxxxxxx
 						</h6>
-					</p>
+					</div>
 				</div>
-				<div className="col-6" id="starts1">
+				<div className="col-12" id="starts">
 					<h3>
 						Calificación:
 						<i className="far fa-star" />
@@ -48,16 +42,21 @@ export const VistaRestaurant = () => {
 						<i className="far fa-star" />
 						<i className="far fa-star" />
 					</h3>
+					<div className="">
+						<span href="#" className="btn btn-sm" id="btnreseñasu">
+							Editar información
+						</span>
+					</div>
 				</div>
-				<div className="col-6" />
 			</div>
 			<div className="col-6">
-				<Link to="/reviews">
-					<span href="#" className="btn btn-sm" id="btn-reseñas">
-						Reseñas
+				<Link to="/restaurant/:name/:id/reviews">
+					<span href="#" className="btn btn-sm" id="btn-reseñasusuarios">
+						Reseñas de usuarios
 					</span>
 				</Link>
 			</div>
+
 			<div className="col-12 text-center">
 				<h3 id="Backmenu">Menú</h3>
 			</div>
@@ -66,7 +65,10 @@ export const VistaRestaurant = () => {
 			</div>
 			<div className="row">
 				<div className="col-3 text-center">
-					<img src="https://cdn.forbescentroamerica.com/2019/11/Olive-640x360.jpg" id="img-menu" />
+					<img
+						src="https://image.freepik.com/foto-gratis/fondo-abstracto-gris-degradado_9635-2358.jpg"
+						id="img-menu"
+					/>
 					<h3 id="name-menu">Tacos</h3>
 				</div>
 			</div>
@@ -75,7 +77,10 @@ export const VistaRestaurant = () => {
 			</div>
 			<div className="row">
 				<div className="col-3 text-center">
-					<img src="https://cdn.forbescentroamerica.com/2019/11/Olive-640x360.jpg" id="img-menu" />
+					<img
+						src="https://image.freepik.com/foto-gratis/fondo-abstracto-gris-degradado_9635-2358.jpg"
+						id="img-menu"
+					/>
 					<h3 id="name-menu">Tacos</h3>
 				</div>
 			</div>
@@ -84,7 +89,10 @@ export const VistaRestaurant = () => {
 			</div>
 			<div className="row">
 				<div className="col-3 text-center">
-					<img src="https://cdn.forbescentroamerica.com/2019/11/Olive-640x360.jpg" id="img-menu" />
+					<img
+						src="https://image.freepik.com/foto-gratis/fondo-abstracto-gris-degradado_9635-2358.jpg"
+						id="img-menu"
+					/>
 					<h3 id="name-menu">Tacos</h3>
 				</div>
 			</div>
@@ -93,21 +101,17 @@ export const VistaRestaurant = () => {
 			</div>
 			<div className="row">
 				<div className="col-3 text-center">
-					<img src="https://cdn.forbescentroamerica.com/2019/11/Olive-640x360.jpg" id="img-menu" />
+					<img
+						src="https://image.freepik.com/foto-gratis/fondo-abstracto-gris-degradado_9635-2358.jpg"
+						id="img-menu"
+					/>
 					<h3 id="name-menu">Tacos</h3>
 				</div>
 			</div>
 			<div className="">
-				<Link to="/restaurantes">
+				<Link to="/restaurants">
 					<span href="#" className="btn btn-sm" id="btn-back">
 						Atrás
-					</span>
-				</Link>
-			</div>
-			<div className="">
-				<Link to="/myrestaurant">
-					<span href="#" className="btn btn-sm" id="btn-back">
-						Dueño del restaurante
 					</span>
 				</Link>
 			</div>

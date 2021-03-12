@@ -79,7 +79,7 @@ export const Login = () => {
 					{loading ? <Spinner /> : null}
 
 					<div className="d-flex flex-column col-12">
-						<Link to="/recoverPassword">¿Olvidaste tu contraseña?</Link>
+						<Link to="/change-password">¿Olvidaste tu contraseña?</Link>
 					</div>
 					<button className="rounded-pill bg-transparent px-3 mt-4 btn-login" onClick={() => handleLogin()}>
 						Iniciar sesión
@@ -87,7 +87,7 @@ export const Login = () => {
 				</div>
 				{redirect ? (
 					store.user.type_user == "client" ? (
-						<Redirect to="/restaurantes" />
+						<Redirect to="/restaurants" />
 					) : (
 						<Redirect to="/restaurant/admin" />
 					)

@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
-export const RecoverPassword = () => {
+export const ChangePassword = () => {
 	const [email, setEmail] = useState("");
 	const [pass, setPass] = useState("");
 	const [redirect, setRedirect] = useState(false);

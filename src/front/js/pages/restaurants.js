@@ -3,7 +3,7 @@ import "../../styles/home.scss";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { RestaurantCard } from "../component/restaurantcard";
-export const Restaurantes = () => {
+export const Restaurants = () => {
 	const { store, actions } = useContext(Context);
 
 	useEffect(function() {

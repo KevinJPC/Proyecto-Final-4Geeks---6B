@@ -25,13 +25,20 @@ export const Navbar = () => {
 					<Link to="/" className="nav-item nav-link text-white" href="#">
 						Inicio
 					</Link>
-					<Link to="/restaurantes" className="nav-item nav-link text-white" href="#">
+					<Link to="/restaurants" className="nav-item nav-link text-white" href="#">
 						Restaurantes
 					</Link>
 					{store.user == null ? (
 						<Link to="/register" className="nav-item nav-link text-white" href="#">
 							Registro
 						</Link>
+					) : null}
+					{store.user != null ? (
+						store.user.type_user == "restaurant" ? (
+							<Link to="/restaurant/admin" className="nav-item nav-link text-white" href="#">
+								Mi restaurante
+							</Link>
+						) : null
 					) : null}
 					{store.user != null ? (
 						<Link to="/login" className="nav-item nav-link text-white" href="#">

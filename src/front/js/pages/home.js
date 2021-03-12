@@ -22,7 +22,7 @@ export const Home = () => (
 				</p>
 			</div>
 		</div>
-		<Link to="/restaurantes">
+		<Link to="/restaurants">
 			<div className="d-flex justify-content-center mt-4 mb-4 mb-md-0 mb-lg-0">
 				<button className="rounded-pill bg-transparent btn-restaurants px-5">Restaurantes</button>
 			</div>
