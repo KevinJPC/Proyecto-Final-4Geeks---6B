@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
+import datetime
 db = SQLAlchemy()
 
 class User_client(db.Model):
@@ -19,6 +19,16 @@ class User_client(db.Model):
             "type_user": "client",
             "is_active": self.is_active,
         }
+        
+    def serialize2(self):
+        return {
+            "name": self.name
+        }
+
+    def serialize3(self):
+        return {
+            "rating": self.rating
+        }
 
 class User_restaurant(db.Model):
     __tablename__ = 'User_restaurant' 
@@ -31,7 +41,7 @@ class User_restaurant(db.Model):
     phone = db.Column(db.String(30), unique=False, nullable=False)
     category = db.Column(db.String(150), unique=False, nullable=False)
     welcome_message = db.Column(db.String(150), unique=False, nullable=False)
-    description = db.Column(db.String(150), unique=False, nullable=False)
+    description = db.Column(db.String(250), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
    
@@ -57,8 +67,8 @@ class User_restaurant(db.Model):
             "image_url": self.image_url,
             "address": self.address,
             "category": self.category,
-            "rating": "3",
-            "type_user": "restaurant",
+            # "rating": "3",
+            "type_user": "restaurant"
         }
 
     def serialize3(self):
@@ -66,6 +76,63 @@ class User_restaurant(db.Model):
             "id": self.id
         }
 
+class Review(db.Model):
+    __tablename__ = 'review' 
+    id = db.Column(db.Integer, primary_key=True)
+    user_client_id = db.Column(db.Integer, db.ForeignKey('User_client.id'), nullable=False)
+    user_client = db.relationship(User_client)
+    user_restaurant_id = db.Column(db.Integer, db.ForeignKey('User_restaurant.id'), nullable=False)
+    user_restaurant = db.relationship(User_restaurant)
+    comment = db.Column(db.String(255), unique=False, nullable=True)
+    rating = db.Column(db.Integer, unique=False, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
+
+    def __init__(self, user_client_id, user_restaurant_id, comment, rating):
+        self.user_client_id = user_client_id
+        self.user_restaurant_id = user_restaurant_id
+        self.comment = comment
+        self.rating = rating
+        
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_client_id": self.user_client_id,
+            "user_client_name": self.user_client.name,
+            "user_restaurant_id": self.user_restaurant_id,
+            "comment": self.comment,
+            "rating": self.rating,
+            "date": self.date
+        }
+
+    def serialize2(self):
+        return {
+            "rating": self.average
+        }
+
+class Favorite_restaurants(db.Model):
+    __tablename__ = 'Favorite_restaurants' 
+    user_client_id = db.Column(db.Integer, db.ForeignKey('User_client.id'), primary_key=True)
+    user_client = db.relationship(User_client)
+    user_restaurant_id = db.Column(db.Integer, db.ForeignKey('User_restaurant.id'), primary_key=True)
+    user_restaurant = db.relationship(User_restaurant)
+
+    def __init__(self, user_client_id, user_restaurant_id):
+        self.user_client_id = user_client_id
+        self.user_restaurant_id = user_restaurant_id
+
+    def serialize(self):
+        return {
+            "user_client_id": self.user_client_id,
+            "user_restaurant_name": self.user_restaurant.name,
+            "user_restaurant_id": self.user_restaurant_id
+        }
+
+    def serialize2(self):
+        return {
+            "user_client_id": self.user_client_id,
+            "user_restaurant_id": self.user_restaurant_id
+        }
 # class Menu_items(db.Model):
 #     __tablename__ = 'Menu_items' 
 #     id = db.Column(db.Integer, primary_key=True)
@@ -93,21 +160,3 @@ class User_restaurant(db.Model):
 #             "class_id": self.class_id,
                   
 #         }
-# class Client-review(db.Model):
-#     __tablename__ = 'Client-review' 
-#     id = db.Column(db.Integer, primary_key=True)
-#     client_id= db.Column(db.Integer(120), unique=False, nullable=False, ForeignKey('User_client.client_id'))
-#     owner_id = db.Column(db.Integer, unique=False, nullable=False, ForeignKey('User_owner.owner_id'))
-#     rating = db.Column(db.integer(100), unique=False, nullable=False)
-#     review = db.Column(db.String(200), unique=False, nullable=False)
-#     user_owner=relationship(User_owner)
-#     user_client=relationship(User_client)
-    
-#     def serialize(self):
-#         return {
-#             "id": self.id,
-#             "client_id": self.client_id,
-#             "owner_id": self.owner_id,
-#             "rating": self.rating,
-#             "review": self.review,
-#          }

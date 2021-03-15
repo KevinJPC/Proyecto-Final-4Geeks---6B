@@ -172,7 +172,7 @@ export const Register = () => {
 							</div>
 
 							<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
-								<label htmlFor="floatingpassword">Categoria:</label>
+								<label htmlFor="floatingpassword">Categoría:</label>
 								<input
 									type="text"
 									className="form-control w-75"
@@ -192,7 +192,7 @@ export const Register = () => {
 								/>
 							</div>
 							<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
-								<label htmlFor="floatingpassword">Direccion:</label>
+								<label htmlFor="floatingpassword">Dirección:</label>
 								<input
 									type="text"
 									className="form-control w-75"
@@ -201,7 +201,7 @@ export const Register = () => {
 								/>
 							</div>
 							<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
-								<label htmlFor="floatingpassword">Telefono:</label>
+								<label htmlFor="floatingpassword">Teléfono:</label>
 								<input
 									type="tel"
 									className="form-control w-75"

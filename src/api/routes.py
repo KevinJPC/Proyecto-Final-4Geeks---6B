@@ -2,8 +2,9 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
+from sqlalchemy.sql import func
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from api.models import db, User_client, User_restaurant
+from api.models import db, User_client, User_restaurant, Review, Favorite_restaurants
 from api.utils import generate_sitemap, APIException
 import datetime
 import cloudinary
@@ -13,6 +14,15 @@ import cloudinary.uploader
 from werkzeug.security import generate_password_hash, check_password_hash
 
 api = Blueprint('api', __name__)
+
+# Global funtions #
+
+def get_rating(id):
+    query_reviews = Review.query.with_entities(func.avg(Review.rating).label('average')).filter(Review.user_restaurant_id == id).first()
+    if query_reviews.average is None:
+        return str(0.00)
+    else: 
+        return str(round(query_reviews.average, 2))
 
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
@@ -150,7 +160,12 @@ def handle_upload(user_id):
 def get_restaurants():
 
     query = User_restaurant.query.all();
-    users_restaurant = list(map(lambda restaurant: restaurant.serialize2(), query)) 
+    # users_restaurant = list(map(lambda restaurant: restaurant.serialize2(), query)) 
+    users_restaurant = []
+    for element in query:
+        user_restaurant = element.serialize2()
+        user_restaurant["rating"] = get_rating(user_restaurant["id"])
+        users_restaurant.append(user_restaurant)
 
     response_body = {
         "results": users_restaurant,
@@ -163,6 +178,7 @@ def get_restaurant(id):
 
     query = User_restaurant.query.get(id);
     user_restaurant = query.serialize();
+    user_restaurant["rating"] = get_rating(id)
 
     response_body = {
         "results": user_restaurant,
@@ -217,3 +233,107 @@ def login_client_user():
         }
 
         return jsonify(data), 200
+
+@api.route('/restaurant/review', methods=['POST'])
+@jwt_required()
+def add_review():
+    user_client_id = get_jwt_identity()
+
+    request_body = request.get_json();
+
+    review = Review(user_client_id, request_body["user_restaurant_id"], request_body["comment"], request_body["rating"])
+    db.session.add(review)
+    db.session.commit()
+
+    return jsonify({"message": "Review succesful!", "status": True}), 200
+
+@api.route('/restaurant/<int:id>/review', methods=['GET'])
+# @jwt_required()
+def get_review(id):
+    # user_client_id = get_jwt_identity()
+
+    query_reviews = db.session.query(Review).join(User_client).filter(Review.user_restaurant_id==id).all()
+    print(query_reviews)
+    reviews = list(map(lambda review: review.serialize(), query_reviews)) 
+
+    return jsonify({"message": "Get reviews succesful!", "results": reviews, "status": True}), 200
+
+@api.route('/client/favorite/<int:user_restaurant_id>', methods=['POST'])
+@jwt_required()
+def add_favorite_restaurant(user_restaurant_id):
+    user_client_id = get_jwt_identity()
+
+    query_favorite = Favorite_restaurants.query.get((user_client_id, user_restaurant_id))
+    if query_favorite:
+        return jsonify({"message": "Favorite already exists!", "status": False}), 409
+
+
+    favorite_restaurant = Favorite_restaurants(user_client_id, user_restaurant_id)
+
+    db.session.add(favorite_restaurant)
+    db.session.commit()
+
+    return jsonify({"message": "Favorite added succesful!", "status": True}), 200
+
+@api.route('/client/favorite', methods=['GET'])
+@jwt_required()
+def get_favorites_restaurants():
+    user_client_id = get_jwt_identity()
+    query_favorites = db.session.query(Favorite_restaurants).join(User_restaurant).filter(Favorite_restaurants.user_client_id==user_client_id).all()
+    print(query_favorites)
+    favorites = list(map(lambda favorite: favorite.serialize(), query_favorites)) 
+    return jsonify({"message": "Get favorites succesful!", "results": favorites, "status": True}), 200
+
+@api.route('/client/favorite/<int:user_restaurant_id>', methods=['DELETE'])
+@jwt_required()
+def delete_favorite_restaurant(user_restaurant_id):
+    user_client_id = get_jwt_identity()
+    query_favorite = Favorite_restaurants.query.get((user_client_id, user_restaurant_id))
+    if not query_favorite is None:
+        db.session.delete(query_favorite)
+        db.session.commit()
+    return jsonify({"message": "Favorite deleted succesful!", "status": True}), 200
+
+
+
+@api.route('/restarant/search/name', methods=['GET'])
+def get_restaurants_by_name():
+
+    name = request.get_json()["name"]
+    search = "%{}%".format(name)
+    query = User_restaurant.query.filter(User_restaurant.name.like(search)).all()
+    users_restaurant = []
+    for element in query:
+        user_restaurant = element.serialize2()
+        user_restaurant["rating"] = get_rating(user_restaurant["id"])
+        users_restaurant.append(user_restaurant)
+
+    return jsonify({"message": "Get favorites succesful!", "results": users_restaurant, "status": True}), 200
+
+@api.route('/restarant/search/address', methods=['GET'])
+def get_restaurants_by_address():
+
+    address = request.get_json()["address"]
+    search = "%{}%".format(address)
+    query = User_restaurant.query.filter(User_restaurant.address.ilike(search)).all()
+    users_restaurant = []
+    for element in query:
+        user_restaurant = element.serialize2()
+        user_restaurant["rating"] = get_rating(user_restaurant["id"])
+        users_restaurant.append(user_restaurant)
+
+    return jsonify({"message": "Get favorites succesful!", "results": users_restaurant, "status": True}), 200
+
+@api.route('/restarant/search/category', methods=['GET'])
+def get_restaurants_by_category():
+
+    category = request.get_json()["category"]
+    search = "%{}%".format(category)
+    query = User_restaurant.query.filter(User_restaurant.category.ilike(search)).all()
+    users_restaurant = []
+    for element in query:
+        user_restaurant = element.serialize2()
+        user_restaurant["rating"] = get_rating(user_restaurant["id"])
+        users_restaurant.append(user_restaurant)
+
+    return jsonify({"message": "Get favorites succesful!", "results": users_restaurant, "status": True}), 200
