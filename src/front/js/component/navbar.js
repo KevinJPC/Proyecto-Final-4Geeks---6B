@@ -25,6 +25,9 @@ export const Navbar = () => {
 					<Link to="/" className="nav-item nav-link text-white" href="#">
 						Inicio
 					</Link>
+					<Link to="/favorites" className="nav-item nav-link text-white" href="#">
+						Favoritos
+					</Link>
 					<Link to="/restaurants" className="nav-item nav-link text-white" href="#">
 						Restaurantes
 					</Link>

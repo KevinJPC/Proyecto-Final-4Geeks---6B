@@ -15,7 +15,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			restaurants: null,
-			user: null
+			user: null,
+			restaurantesFavoritos: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -25,6 +26,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(resp => resp.json())
 					.then(data => setStore({ restaurants: data.results }))
 					.catch(error => console.log("Error", error));
+			},
+
+			AddRestaurants: () => {
+				fetch(process.env.BACKEND_URL + "/api/restaurants/${getStore().user_client.id}/favorites", {
+					method: "POST",
+					body: `{restaurants:${getStore().restaurantesFavoritos}}`
+				}).then(res => console.log(res.json()));
 			},
 
 			getUser: user => {
