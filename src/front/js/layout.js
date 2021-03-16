@@ -2,13 +2,13 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
-import { ChangePassword } from "./pages/changePassword";
+import { ForgetPassword } from "./pages/forgetPassword";
 import { Login } from "./pages/login";
 import { Favorites } from "./pages/favorites";
-import { Forgetpassword } from "./pages/forgetpassword";
 import { Reviews } from "./pages/reviews";
 import { RestaurantAdmin } from "./pages/restaurantAdmin";
 import { Restaurant } from "./pages/restaurant";
+import { ChangePassword } from "./pages/changePassword";
 import { Restaurants } from "./pages/restaurants";
 import { Register } from "./pages/register";
 import { Home } from "./pages/home";
@@ -21,55 +21,58 @@ import { Footer } from "./component/footer";
 
 //create your first component
 const Layout = () => {
-	//the basename is used when your project is published in a subdirectory and not in the root of the domain
-	// you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
-	const basename = process.env.BASENAME || "";
+    //the basename is used when your project is published in a subdirectory and not in the root of the domain
+    // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
+    const basename = process.env.BASENAME || "";
 
-	return (
-		<div className="d-flex flex-column h-100">
-			<BrowserRouter basename={basename}>
-				<ScrollToTop>
-					<Navbar />
-					<Switch>
-						<Route exact path="/">
-							<Home />
-						</Route>
-						<Route exact path="/register">
-							<Register />
-						</Route>
-						<Route exact path="/forgetpassword">
-							<Forgetpassword />
-						</Route>
-						<Route exact path="/restaurant/:name/:id/reviews">
-							<Reviews />
-						</Route>
-						<Route exact path="/restaurant/admin">
-							<RestaurantAdmin />
-						</Route>
-						<Route exact path="/restaurant/:name/:id">
-							<Restaurant />
-						</Route>
-						<Route exact path="/login">
-							<Login />
-						</Route>
-						<Route exact path="/restaurants">
-							<Restaurants />
-						</Route>
-						<Route exact path="/favorites">
-							<Favorites />
-						</Route>
-						<Route exact path="/change-password">
-							<ChangePassword />
-						</Route>
-						<Route>
-							<h1>Not found!</h1>
-						</Route>
-					</Switch>
-					<Footer />
-				</ScrollToTop>
-			</BrowserRouter>
-		</div>
-	);
+    return (
+        <div className="d-flex flex-column h-100">
+            <BrowserRouter basename={basename}>
+                <ScrollToTop>
+                    <Navbar />
+                    <Switch>
+                        <Route exact path="/">
+                            <Home />
+                        </Route>
+                        <Route exact path="/register">
+                            <Register />
+                        </Route>
+                        <Route exact path="/forgetpassword">
+                            <Forgetpassword />
+                        </Route>
+                        <Route exact path="/restaurant/:name/:id/reviews">
+                            <Reviews />
+                        </Route>
+                        <Route exact path="/restaurant/admin">
+                            <RestaurantAdmin />
+                        </Route>
+                        <Route exact path="/restaurant/:name/:id">
+                            <Restaurant />
+                        </Route>
+                        <Route exact path="/login">
+                            <Login />
+                        </Route>
+                        <Route exact path="/restaurants">
+                            <Restaurants />
+                        </Route>
+                        <Route exact path="/favorites">
+                            <Favorites />
+                        </Route>
+                        <Route exact path="/change-password/:token">
+                            <ChangePassword />
+                        </Route>
+                        <Route exact path="/forget-password">
+                            <ForgetPassword />
+                        </Route>
+                        <Route>
+                            <h1>Not found!</h1>
+                        </Route>
+                    </Switch>
+                    <Footer />
+                </ScrollToTop>
+            </BrowserRouter>
+        </div>
+    );
 };
 
 export default injectContext(Layout);

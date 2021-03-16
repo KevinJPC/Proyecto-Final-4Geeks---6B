@@ -3,111 +3,138 @@ import "../../styles/home.scss";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { MealCard } from "../component/mealCard";
 export const Restaurant = () => {
 	const params = useParams();
 	const [restaurant, setRestaurant] = useState(null);
+	let [menu, setMenu] = useState([]);
 	useEffect(function() {
 		console.log(params.name, params.id);
 		fetch(process.env.BACKEND_URL + "/api/restaurant/" + params.id, { method: "GET" })
 			.then(resp => resp.json())
-			.then(data => setRestaurant(data.results))
+			.then(data => {
+				data.results.rating = parseFloat(data.results.rating);
+				setRestaurant(data.results);
+			})
 			.catch(error => console.log("Error", error));
+
+		// ---------------------------------------------------
+		let menuArray = [];
+		let categories = ["Seafood", "Chicken", "Dessert"];
+		for (let i = 0; i < categories.length; i++) {
+			fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=" + categories[i], { method: "GET" })
+				.then(resp => resp.json())
+				.then(async data => {
+					let meals = await data.meals.slice(0, 5);
+					menuArray.push({ category: categories[i], meals: meals });
+					if (i == 2) {
+						setMenu(menuArray);
+					}
+				})
+				.catch(error => console.log("Error", error));
+			// console.log(Promise.all(menuArray));
+			// setMenu(menuArray);
+		}
 	}, []);
+	if (restaurant != null) {
+		let initial_rating = restaurant.rating;
+		let ratingStart = [];
+		// for (let i = 0; i < 5; i++){
+		//     if ()
+		// }
+	}
 	return (
 		<div className="container-fluid">
-			{restaurant != null ? (
-				<Fragment>
-					<div>
-						<h1 className="text-center">Leño y carbón</h1>
-					</div>
-					<div className="row">
-						<div className="col-6">
-							<img id="imgVR" src={restaurant.image_url} />
+			<div className="row">
+				{restaurant != null && menu.length != 0 ? (
+					<Fragment>
+						<div className="py-4 col-12">
+							<h1 className="text-center">Leño y carbón</h1>
 						</div>
+						<div className="container-fluid">
+							<div className="row d-flex flex-column flex-lg-row flex-md-row">
+								<div className="col-12 col-md-6 col-lg-6">
+									<img id="imgVR" src={restaurant.image_url} className="img-fluid" />
+								</div>
 
-						<div className="col-6">
-							<div id="textRes">
-								<h4 className="text-center" id="tiResta">
-									{restaurant.welcome_message}
-								</h4>
-								<p>{restaurant.description}</p>
-								<br />
-								<br />
-								<br />
-								<h6>
-									Ubicación: {restaurant.address}
-									<br />
-									<br /> Categoria: {restaurant.category}
-								</h6>
+								<div className="col-12 col-md-6 col-lg-6">
+									<div id="textRes">
+										<h4 className="text-center py-2" id="tiResta">
+											{restaurant.welcome_message}
+										</h4>
+										<p>{restaurant.description}</p>
+										<hr />
+										<h6>Ubicación: {restaurant.address}</h6>
+										<hr />
+										<h6>Categoria: {restaurant.category}</h6>
+										<hr />
+										<h6>Horario: ...</h6>
+										<hr className="d-block d-sm-none" />
+									</div>
+								</div>
+								<div className="col-12 col-md-6 col-lg-6" id="starts1">
+									<div className="col-12 col-lg-8 d-flex flex-lg-row flex-column p-0 mt-lg-3 mt-md-3">
+										<div className="d-flex p-0 align-items-center">
+											<h6 className="pt-1 mr-1">Calificación: </h6>
+											{restaurant.rating}
+											{/* <i className="far fa-star" />
+											<i className="far fa-star" />
+											<i className="far fa-star" />
+											<i className="far fa-star" />
+											<i className="far fa-star" /> */}
+										</div>
+										<hr className="d-block d-sm-none" />
+
+										<Link to="/restaurant/:name/:id/reviews">
+											<span
+												href="#"
+												className="btn btn-sm ml-lg-3 ml-md-3 mt-lg-0 mt-md-0"
+												id="btn-reseñas">
+												Reseñas
+											</span>
+										</Link>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div className="col-6" id="starts1">
-							<h3>
-								Calificación:
-								<i className="far fa-star" />
-								<i className="far fa-star" />
-								<i className="far fa-star" />
-								<i className="far fa-star" />
-								<i className="far fa-star" />
-							</h3>
+						<div className="col-12 text-center mt-4">
+							<h3 id="Backmenu">Menú</h3>
 						</div>
-						<div className="col-6" />
-					</div>
-					<div className="col-6">
-						<Link to="/restaurant/:name/:id/reviews">
-							<span href="#" className="btn btn-sm" id="btn-reseñas">
-								Reseñas
-							</span>
-						</Link>
-					</div>
-					<div className="col-12 text-center">
-						<h3 id="Backmenu">Menú</h3>
-					</div>
-					<div className="col-12 text-center">
-						<h4 id="nameFo">Entradas</h4>
-					</div>
-					<div className="row">
-						<div className="col-3 text-center">
-							<img src="https://cdn.forbescentroamerica.com/2019/11/Olive-640x360.jpg" id="img-menu" />
-							<h3 id="name-menu">Tacos</h3>
+						<div className="d-flex justify-content-center flex-column">
+							{menu.map(function(element, index) {
+								return (
+									<Fragment key={index}>
+										<div className="col-12 text-center my-4">
+											<h4 id="nameFo">{element.category}</h4>
+										</div>
+										<div className="container-fluid">
+											<div className="row">
+												{element.meals.map(function(el, i) {
+													return (
+														<MealCard
+															name={el.strMeal}
+															image_url={el.strMealThumb}
+															key={i}
+														/>
+													);
+												})}
+											</div>
+										</div>
+									</Fragment>
+								);
+							})}
 						</div>
-					</div>
-					<div className="col-12 text-center">
-						<h4 id="nameFo2">Antojitos</h4>
-					</div>
-					<div className="row">
-						<div className="col-3 text-center">
-							<img src="https://cdn.forbescentroamerica.com/2019/11/Olive-640x360.jpg" id="img-menu" />
-							<h3 id="name-menu">Tacos</h3>
+
+						<div className="col-12 d-flex justify-content-center my-3">
+							<Link to="/restaurants">
+								<span href="#" className="btn btn-sm" id="btn-back">
+									Atrás
+								</span>
+							</Link>
 						</div>
-					</div>
-					<div className="col-12 text-center">
-						<h4 id="nameFo3">Bebidas</h4>
-					</div>
-					<div className="row">
-						<div className="col-3 text-center">
-							<img src="https://cdn.forbescentroamerica.com/2019/11/Olive-640x360.jpg" id="img-menu" />
-							<h3 id="name-menu">Tacos</h3>
-						</div>
-					</div>
-					<div className="col-12 text-center">
-						<h4 id="nameFo4">Postres</h4>
-					</div>
-					<div className="row">
-						<div className="col-3 text-center">
-							<img src="https://cdn.forbescentroamerica.com/2019/11/Olive-640x360.jpg" id="img-menu" />
-							<h3 id="name-menu">Tacos</h3>
-						</div>
-					</div>
-					<div className="">
-						<Link to="/restaurants">
-							<span href="#" className="btn btn-sm" id="btn-back">
-								Atrás
-							</span>
-						</Link>
-					</div>
-				</Fragment>
-			) : null}
+					</Fragment>
+				) : null}
+			</div>
 		</div>
 	);
 };
