@@ -137,7 +137,10 @@ class Favorite_restaurants(db.Model):
         return {
             "user_client_id": self.user_client_id,
             "user_restaurant_name": self.user_restaurant.name,
-            "user_restaurant_id": self.user_restaurant_id
+            "user_restaurant_id": self.user_restaurant_id,
+            "user_restaurant_image_url": self.user_restaurant.image_url,
+            "user_restaurant_address": self.user_restaurant.address,
+            "user_restaurant_category": self.user_restaurant.category
         }
 
     def serialize2(self):

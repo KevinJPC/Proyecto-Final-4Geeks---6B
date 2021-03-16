@@ -421,7 +421,7 @@ def change_information():
 
     user = get_jwt_identity()
 
-    request.method == 'PUT':
+    if request.method == 'PUT':
         name = request.json.get("name", None)
         address = request.json.get("address", None)
         phone = request.json.get("phone", None)

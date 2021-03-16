@@ -16,7 +16,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 			restaurants: null,
 			user: null,
-			restaurantesFavoritos: []
+			favoritesRestaurant: null
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -29,13 +29,34 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			AddFavoriteRestaurant: userRestaurantId => {
-				fetch(process.env.BACKEND_URL + "client/favorite/" + userRestaurantId, {
+				fetch(process.env.BACKEND_URL + "/api/client/favorite/" + userRestaurantId, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 						Authorization: "Bearer " + sessionStorage.getItem("u_token")
 					}
-				}).then(res => console.log(res.json()));
+				})
+					.then(res => res.json())
+					.then(data => {
+						getActions().getFavorites();
+						console.log(data);
+					})
+					.catch(error => console.log("Error", error));
+			},
+			getFavorites: () => {
+				fetch(process.env.BACKEND_URL + "/api/client/favorite", {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: "Bearer " + sessionStorage.getItem("u_token")
+					}
+				})
+					.then(res => res.json())
+					.then(data => {
+						setStore({ favoritesRestaurant: data.results });
+						console.log(data);
+					})
+					.catch(error => console.log("Error", error));
 			},
 
 			getUser: user => {
