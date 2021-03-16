@@ -4,6 +4,8 @@ import ScrollToTop from "./component/scrollToTop";
 
 import { ChangePassword } from "./pages/changePassword";
 import { Login } from "./pages/login";
+import { Favorites } from "./pages/favorites";
+import { Forgetpassword } from "./pages/forgetpassword";
 import { Reviews } from "./pages/reviews";
 import { RestaurantAdmin } from "./pages/restaurantAdmin";
 import { Restaurant } from "./pages/restaurant";
@@ -35,6 +37,9 @@ const Layout = () => {
 						<Route exact path="/register">
 							<Register />
 						</Route>
+						<Route exact path="/forgetpassword">
+							<Forgetpassword />
+						</Route>
 						<Route exact path="/restaurant/:name/:id/reviews">
 							<Reviews />
 						</Route>
@@ -49,6 +54,9 @@ const Layout = () => {
 						</Route>
 						<Route exact path="/restaurants">
 							<Restaurants />
+						</Route>
+						<Route exact path="/favorites">
+							<Favorites />
 						</Route>
 						<Route exact path="/change-password">
 							<ChangePassword />
