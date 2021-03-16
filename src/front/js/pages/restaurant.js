@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MealCard } from "../component/mealCard";
+import { Spinner } from "../component/spinner";
 export const Restaurant = () => {
 	const params = useParams();
 	const [restaurant, setRestaurant] = useState(null);
@@ -36,19 +37,20 @@ export const Restaurant = () => {
 			// setMenu(menuArray);
 		}
 	}, []);
+
+	let ratingStar = [];
 	if (restaurant != null) {
 		let initial_rating = restaurant.rating;
-		let ratingStart = [];
 		for (let i = 0; i < 5; i++) {
-			if (initial_rating > 1) {
-				ratingStart.push["rellena"];
-				initial_rating--;
+			if (initial_rating >= 1) {
+				ratingStar.push(<i className="fas fa-star" />);
+				initial_rating = initial_rating - 1;
 			} else {
 				if (initial_rating < 1 && initial_rating > 0) {
-					ratingStart.push("semi");
-					initial_rating--;
+					ratingStar.push(<i className="fas fa-star-half-alt" />);
+					initial_rating = initial_rating - 1;
 				} else {
-					ratingStart.push("vacia");
+					ratingStar.push(<i className="far fa-star" />);
 				}
 			}
 		}
@@ -86,12 +88,12 @@ export const Restaurant = () => {
 									<div className="col-12 col-lg-8 d-flex flex-lg-row flex-column p-0 mt-lg-3 mt-md-3">
 										<div className="d-flex p-0 align-items-center">
 											<h6 className="pt-1 mr-1">Calificación: </h6>
+											<span className="mr-2">
+												{ratingStar.map(function(element, index) {
+													return <span key={index}>{element}</span>;
+												})}
+											</span>
 											{restaurant.rating}
-											{/* <i className="far fa-star" />
-											<i className="far fa-star" />
-											<i className="far fa-star" />
-											<i className="far fa-star" />
-											<i className="far fa-star" /> */}
 										</div>
 										<hr className="d-block d-sm-none" />
 
@@ -143,7 +145,14 @@ export const Restaurant = () => {
 							</Link>
 						</div>
 					</Fragment>
-				) : null}
+				) : (
+					<div
+						className="spinner-border mx-auto"
+						role="status"
+						style={{ width: "100px", height: "100px", marginTop: "250px" }}>
+						<span className="sr-only">Loading...</span>
+					</div>
+				)}
 			</div>
 		</div>
 	);

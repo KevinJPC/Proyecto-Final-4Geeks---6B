@@ -4,6 +4,22 @@ import "../../styles/home.scss";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 export const RestaurantCard = props => {
+	let ratingStar = [];
+
+	let initial_rating = props.rating;
+	for (let i = 0; i < 5; i++) {
+		if (initial_rating >= 1) {
+			ratingStar.push(<i className="fas fa-star" />);
+			initial_rating = initial_rating - 1;
+		} else {
+			if (initial_rating < 1 && initial_rating > 0) {
+				ratingStar.push(<i className="fas fa-star-half-alt" />);
+				initial_rating = initial_rating - 1;
+			} else {
+				ratingStar.push(<i className="far fa-star" />);
+			}
+		}
+	}
 	const { store, actions } = useContext(Context);
 
 	return (
@@ -26,7 +42,13 @@ export const RestaurantCard = props => {
 
 				<p id="text-card">
 					<i className="fas fa-utensils" id="icon-te" />
-					Calificación: {props.rating}
+					Calificación:{" "}
+					<span className="mr-2">
+						{ratingStar.map(function(element, index) {
+							return <span key={index}>{element}</span>;
+						})}
+					</span>
+					{props.rating}
 				</p>
 				<div className="d-flex align-items-center justify-content-center">
 					<Link to={"/restaurant/" + props.name + "/" + props.id}>
