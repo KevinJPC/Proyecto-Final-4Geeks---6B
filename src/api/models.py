@@ -30,6 +30,12 @@ class User_client(db.Model):
             "rating": self.rating
         }
 
+    def serialize4(self):
+        return {
+            "id": self.id,
+            "type_user": "client"
+        }
+
 class User_restaurant(db.Model):
     __tablename__ = 'User_restaurant' 
     id = db.Column(db.Integer, primary_key=True)
@@ -74,6 +80,12 @@ class User_restaurant(db.Model):
     def serialize3(self):
         return {
             "id": self.id
+        }
+
+    def serialize4(self):
+        return {
+            "id": self.id,
+            "type_user": "restaurant"
         }
 
 class Review(db.Model):

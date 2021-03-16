@@ -1,62 +1,87 @@
 import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { Spinner } from "../component/spinner";
 
 export const ChangePassword = () => {
-	const [email, setEmail] = useState("");
-	const [pass, setPass] = useState("");
+	const [password, setPassword] = useState("");
+	const [password2, setPassword2] = useState("");
 	const [redirect, setRedirect] = useState(false);
-	const { store, actions } = useContext(Context);
+	const params = useParams();
+	let token = params.token.replaceAll("$", ".");
+	console.log(token);
 
-	const handleSubmit = e => {
-		e.preventDefault();
-		if (email === "" || pass === "") {
-			alert("correo y contraseña son requeridos");
+	function handleSendNewPassword() {
+		if (password == "") {
+			alert("Debe completar todos los campos");
+			return;
 		}
-		console.log(email, pass);
+		if (password != password2) {
+			alert("Ambas contraseñas deben ser iguales");
+			return;
+		}
+		if (password.length < 4) {
+			alert("La contraseña debe contener más de 4 caracteres");
+			return;
+		}
 
-		const data = { email: email, password: pass };
-
-		fetch("https://3000-yellow-armadillo-foo75dkb.ws-us03.gitpod.io/login", {
-			method: "POST",
+		const data = { password: password };
+		fetch(process.env.BACKEND_URL + "/api/user/change/password", {
+			method: "PUT",
 			headers: {
-				"Content-Type": "application/json"
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + token
 			},
 			body: JSON.stringify(data)
 		})
-			.then(response => response.json())
+			.then(res => res.json())
 			.then(data => {
 				console.log("Success:", data);
-				sessionStorage.setItem("u_token", data.token);
-				actions.loadFav();
-				actions.addUser(data.user);
-				setRedirect(true);
-			})
-			.catch(error => {
-				console.error("Error:", error);
+				if (data.status == true) {
+					setRedirect(true);
+				}
 			});
-	};
+	}
 
 	return (
-		<div className="d-flex justify-content-center flex-column p-2">
-			<div className="col-lg-5 col-md-6 col-12 mx-auto text-center">
-				<p className="title-login">Recuperar contraseña</p>
-			</div>
-			<div className="form-login-container text-center mt-1 py-5 d-flex justify-content-center align-items-center p-3 mb-2 text-white col-lg-5 col-md-6 col-12 mx-auto">
-				<div style={{ width: "400px" }}>
-					<div className="form-floating pb-5 pt-5 mb-5 d-flex align-items-center justify-content-between">
-						<label htmlFor="floatingPassword">Email:</label>
+		<div className="">
+			<h1 className="large text-dark text-center" id="tittleforget">
+				Nueva contraseña
+			</h1>
+			<section className="container" id="backforget">
+				<p className="lead text-center">
+					<i className="fas fa-user" /> Crea tu nueva contraseña
+				</p>
+				<div className="form text-center">
+					<div className="form-group">
 						<input
-							type="email"
-							className="form-control w-75"
-							placeholder="nombre@ejemplo.com"
-							onChange={e => setEmail(e.target.value)}
+							type="password"
+							placeholder="Contraseña"
+							name="password"
+							value={password}
+							onChange={e => setPassword(e.target.value)}
 						/>
 					</div>
-					<button className="rounded-pill bg-transparent px-3 btn-login">Recuperar contraseña</button>
+					<div className="form-group">
+						<input
+							type="password"
+							placeholder="Confirmación de contraseña"
+							name="password2"
+							value={password2}
+							onChange={e => setPassword2(e.target.value)}
+						/>
+					</div>
+
+					<button className="btn" id="btn-forget" onClick={handleSendNewPassword}>
+						Cambiar contraseña
+					</button>
 				</div>
-			</div>
+				<p className="my-1 text-center">
+					Ya tienes una cuenta? <Link to="/register">Registrarse</Link>
+				</p>
+			</section>
+			{redirect ? <Redirect to="/login" /> : null}
 		</div>
 	);
 };

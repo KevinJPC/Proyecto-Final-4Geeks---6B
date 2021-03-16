@@ -23,7 +23,7 @@ export const Restaurants = () => {
 							name={restaurant.name}
 							category={restaurant.category}
 							address={restaurant.address}
-							rating={restaurant.rating}
+							rating={parseFloat(restaurant.rating)}
 							key={index}
 						/>
 					);

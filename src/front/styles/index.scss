@@ -4,6 +4,15 @@
     padding: 0%;
 }
 
+div{
+    // border: 2px solid red;
+}
+
+.name-dish{
+    // font-size: 2.5vw;
+    font-size:calc(12px + 1vw);
+}
+
 // .fondoregistro{
 //     width: 40%;
 //     margin-left: 32%;
@@ -131,13 +140,13 @@
     margin-left: 30px;
     margin-bottom: 10px;
 }
-#imgVR{
-    width: 70%;
-    margin-left:10%;
-    border:solid 1px;
-    border-color: rgb(119, 115, 115);
-    margin-top: 5%;
-}
+// #imgVR{
+//     width: 70%;
+//     margin-left:10%;
+//     border:solid 1px;
+//     border-color: rgb(119, 115, 115);
+//     margin-top: 5%;
+// }
 #imgVR2{
     width: 70%;
     margin-left:10%;
@@ -147,9 +156,9 @@
 #tiResta{
     color: rgb(209, 117, 42);
 }
-#textRes{
-    margin-right: 10%;
-}
+// #textRes{
+//     margin-right: 10%;
+// }
 .fa-star{
     color: rgb(214, 187, 66);
 }
@@ -158,11 +167,11 @@
     margin-left: 8%;
     margin-top: -5%;
 }
-#starts1{
-    font-family: Arial, Helvetica, sans-serif;
-    margin-left: 8%;
-    margin-top: 2%;
-}
+// #starts1{
+//     font-family: Arial, Helvetica, sans-serif;
+//     margin-left: 8%;
+//     margin-top: 2%;
+// }
 #starts2{
     font-family: Arial, Helvetica, sans-serif;
     margin-left: 12%;
@@ -195,8 +204,8 @@
     border-radius: 20px;
     color: rgb(189, 94, 38);
     font-family: Arial, Helvetica, sans-serif;
-    margin-left: 35%;
-    margin-top: 5%;
+    // margin-left: 35%;
+    // margin-top: 5%;
 }
 #btn-reseñasusuarios{
     border: solid 3px;
@@ -220,21 +229,20 @@
     background-color: rgb(189, 94, 38);
     color: white;
     font-family: Arial, Helvetica, sans-serif;
-    margin-top: 4%;
+    // margin-top: 4%;
 }
 #img-menu{
-   width: 400px;
    clip-path: circle();
-   margin-top: 15%;
+//    margin-top: 15%;
 }
-#name-menu{
-    margin-left: 38%;
-    margin-top: 15%;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    color: rgb(60, 102, 25);
-}
+// #name-menu{
+//     margin-left: 38%;
+//     margin-top: 15%;
+//     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+//     color: rgb(60, 102, 25);
+// }
 #nameFo{
-    margin-top: 5%;
+    // margin-top: 5%;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     color: rgb(60, 102, 25);
 }
@@ -257,11 +265,29 @@
     border: solid 2px;
     font-family: Arial, Helvetica, sans-serif;
     border-radius: 20px;
-    margin-left: 50%;
-    margin-bottom: 2%;
+    // margin-left: 50%;
+    // margin-bottom: 2%;
 }
 #tiReviews{
     margin-left: 5%;
     margin-top: 2%;
     margin-bottom: 5%;
+}
+
+#backforget{
+    background-color: black;
+    color: white;
+    margin-top: 3%;
+    width: 40%;
+    height: 80%;
+    padding-top: 2%;
+}
+#tittleforget{
+    margin-top: 3%;
+}
+#btn-forget{
+    background-color: none;
+    border: solid 2px;
+    border-color: white;
+    color: white;
 }

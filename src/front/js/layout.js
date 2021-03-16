@@ -2,11 +2,12 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
-import { ChangePassword } from "./pages/changePassword";
+import { ForgetPassword } from "./pages/forgetPassword";
 import { Login } from "./pages/login";
 import { Reviews } from "./pages/reviews";
 import { RestaurantAdmin } from "./pages/restaurantAdmin";
 import { Restaurant } from "./pages/restaurant";
+import { ChangePassword } from "./pages/changePassword";
 import { Restaurants } from "./pages/restaurants";
 import { Register } from "./pages/register";
 import { Home } from "./pages/home";
@@ -50,8 +51,11 @@ const Layout = () => {
 						<Route exact path="/restaurants">
 							<Restaurants />
 						</Route>
-						<Route exact path="/change-password">
+						<Route exact path="/change-password/:token">
 							<ChangePassword />
+						</Route>
+						<Route exact path="/forget-password">
+							<ForgetPassword />
 						</Route>
 						<Route>
 							<h1>Not found!</h1>

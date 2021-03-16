@@ -9,7 +9,9 @@ from api.utils import generate_sitemap, APIException
 import datetime
 import cloudinary
 import cloudinary.uploader
-
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -138,8 +140,8 @@ def register_restaurant():
 
     return jsonify(response_body), 200
 
-@api.route('/restaurants/<int:user_id>/image', methods=['POST'])
-def handle_upload(user_id):
+@api.route('/restaurants/<int:user>/image', methods=['POST'])
+def handle_upload(user):
 
     # validate that the front-end request was built correctly
     print(request.files['image'], "image")
@@ -147,7 +149,7 @@ def handle_upload(user_id):
         # upload file to uploadcare
         result = cloudinary.uploader.upload(request.files['image'], folder='img-restaurants/')
         # fetch for the user
-        user_restaurant = User_restaurant.query.get(user_id)
+        user_restaurant = User_restaurant.query.get(user)
         # update the user with the given cloudinary image URL
         user_restaurant.image_url = result['secure_url']
 
@@ -337,3 +339,78 @@ def get_restaurants_by_category():
         users_restaurant.append(user_restaurant)
 
     return jsonify({"message": "Get favorites succesful!", "results": users_restaurant, "status": True}), 200
+
+@api.route('/user/send/url', methods=['POST'])
+def send_url():
+    request_body = request.get_json()
+
+    server = smtplib.SMTP(host='smtp.gmail.com',port=587)
+
+    user_serialize = None
+
+    user_client = User_client.query.filter_by(email=request_body["email"]).first()
+        
+    if user_client:
+        user=user_client
+        user_serialize = user_client.serialize4()
+
+    user_restaurant = User_restaurant.query.filter_by(email=request_body["email"]).first()
+
+    if  user_restaurant:
+        user=user_restaurant
+        user_serialize = user_restaurant.serialize4()
+
+    if user_serialize is None:
+        return jsonify({"message": "Email does not exist", "status": False}), 200
+
+
+    msg = MIMEMultipart()
+    expiracion = datetime.timedelta(hours=1)
+    access_token = create_access_token(identity=user_serialize, expires_delta=expiracion)
+    access_token = access_token.replace(".", "$")
+    print(access_token)
+    message = "Ha solicitado cambiar su contraseña para el acceso al Sistema de My restaurant. Para proceder con el cambio, vaya a la siguiente dirección. \n Link: https://3000-azure-panther-f259lo9q.ws-us03.gitpod.io/change-password/"+access_token
+    
+    password = "GeeksB62021.."
+    msg['From'] = "4geeksb6@gmail.com"
+    msg['To'] = request_body["email"]
+    msg['Subject'] = "Cambio de contraseña"
+    
+    msg.attach(MIMEText(message, 'plain'))
+    
+    server = smtplib.SMTP('smtp.gmail.com: 587')
+    
+    server.starttls()
+    
+    server.login(msg['From'], password)
+    
+    server.sendmail(msg['From'], msg['To'], msg.as_string())
+    
+    server.quit()
+
+    return jsonify({"message": "Email sent", "status": True}), 200
+    
+
+@api.route('/user/change/password', methods=['PUT'])
+@jwt_required()
+def change_password():
+
+    user = get_jwt_identity()
+    password = request.json.get("password", None )
+
+    if not password:
+        return jsonify({"message":"Debe completar la información", "status": False}), 400
+
+    if len(password) < 4:
+        return jsonify({"message":"La contraseña debe contener más de 4 caracteres", "status": False}), 400
+
+    if user["type_user"] == "client":
+        user = User_client.query.get(user["id"])
+        user.password = generate_password_hash(password)
+        db.session.commit()
+    else:
+        user = User_restaurant.query.get(user["id"])
+        user.password = generate_password_hash(password)
+        db.session.commit()
+
+    return jsonify({"message": "Password changed", "status": True}), 200
