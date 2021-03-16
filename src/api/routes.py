@@ -298,7 +298,7 @@ def delete_favorite_restaurant(user_restaurant_id):
 
 
 
-@api.route('/restaurant/search/name', methods=['GET'])
+@api.route('/restaurant/search/name', methods=['POST'])
 def get_restaurants_by_name():
 
     name = request.get_json()["name"]
@@ -312,7 +312,7 @@ def get_restaurants_by_name():
 
     return jsonify({"message": "Get favorites succesful!", "results": users_restaurant, "status": True}), 200
 
-@api.route('/restaurant/search/address', methods=['GET'])
+@api.route('/restaurant/search/address', methods=['POST'])
 def get_restaurants_by_address():
 
     address = request.get_json()["address"]
@@ -326,7 +326,7 @@ def get_restaurants_by_address():
 
     return jsonify({"message": "Get favorites succesful!", "results": users_restaurant, "status": True}), 200
 
-@api.route('/restaurant/search/category', methods=['GET'])
+@api.route('/restaurant/search/category', methods=['POST'])
 def get_restaurants_by_category():
 
     category = request.get_json()["category"]
