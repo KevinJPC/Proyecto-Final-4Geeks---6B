@@ -282,8 +282,14 @@ def add_favorite_restaurant(user_restaurant_id):
 def get_favorites_restaurants():
     user_client_id = get_jwt_identity()
     query_favorites = db.session.query(Favorite_restaurants).join(User_restaurant).filter(Favorite_restaurants.user_client_id==user_client_id).all()
-    print(query_favorites)
-    favorites = list(map(lambda favorite: favorite.serialize(), query_favorites)) 
+    # print(query_favorites)
+    # favorites = list(map(lambda favorite: favorite.serialize(), query_favorites))
+    favorites = []
+    for element in query_favorites:
+        user_restaurant = element.serialize()
+        user_restaurant["rating"] = get_rating(user_restaurant["user_restaurant_id"])
+        favorites.append(user_restaurant)
+
     return jsonify({"message": "Get favorites succesful!", "results": favorites, "status": True}), 200
 
 @api.route('/client/favorite/<int:user_restaurant_id>', methods=['DELETE'])
