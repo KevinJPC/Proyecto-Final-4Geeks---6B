@@ -9,6 +9,7 @@ export const Restaurants = () => {
 	useEffect(function() {
 		actions.getRestaurants();
 	}, []);
+
 	return store.restaurants == null ? null : (
 		<div className="container-fluid">
 			<div className="tittle-res">
