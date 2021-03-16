@@ -39,9 +39,19 @@ export const Restaurant = () => {
 	if (restaurant != null) {
 		let initial_rating = restaurant.rating;
 		let ratingStart = [];
-		// for (let i = 0; i < 5; i++){
-		//     if ()
-		// }
+		for (let i = 0; i < 5; i++) {
+			if (initial_rating > 1) {
+				ratingStart.push["rellena"];
+				initial_rating--;
+			} else {
+				if (initial_rating < 1 && initial_rating > 0) {
+					ratingStart.push("semi");
+					initial_rating--;
+				} else {
+					ratingStart.push("vacia");
+				}
+			}
+		}
 	}
 	return (
 		<div className="container-fluid">
