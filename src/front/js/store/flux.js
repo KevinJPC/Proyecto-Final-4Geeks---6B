@@ -28,10 +28,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.log("Error", error));
 			},
 
-			AddRestaurants: () => {
-				fetch(process.env.BACKEND_URL + "/api/restaurants/${getStore().user_client.id}/favorites", {
+			AddFavoriteRestaurant: userRestaurantId => {
+				fetch(process.env.BACKEND_URL + "client/favorite/" + userRestaurantId, {
 					method: "POST",
-					body: `{restaurants:${getStore().restaurantesFavoritos}}`
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: "Bearer " + sessionStorage.getItem("u_token")
+					}
 				}).then(res => console.log(res.json()));
 			},
 
