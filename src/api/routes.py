@@ -414,3 +414,29 @@ def change_password():
         db.session.commit()
 
     return jsonify({"message": "Password changed", "status": True}), 200
+
+@api.route('/restaurant/change/information', methods=['PUT'])
+@jwt_required()
+def change_information():
+
+    user = get_jwt_identity()
+
+    if request.method == 'PUT':
+        name = request.json.get("name", None)
+        address = request.json.get("address", None)
+        phone = request.json.get("phone", None)
+        category = request.json.get("category", None)
+        welcome_message = request.json.get("welcome_message", None)
+        description = request.json.get("description", None)
+
+        user_restaurant = User_restaurant.query.get(user["id"])
+        user_restaurant.name = name
+        user_restaurant.address = address
+        user_restaurant.phone = phone
+        user_restaurant.category = category
+        user_restaurant.welcome_message = welcome_message
+        user_restaurant.description = description
+        db.session.commit()
+
+    return jsonify({"message": "Information changed succese", "status": True}), 200
+
