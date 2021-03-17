@@ -37,7 +37,7 @@ export const Restaurants = () => {
 			<div className="tittle-res">
 				<h1>Restaurantes</h1>
 			</div>
-			<div className="search_var" id="searchWrapper">
+			<div className="search_bar" id="searchWrapper">
 				<input
 					onChange={e => setSearch(e.target.value)}
 					type="text"

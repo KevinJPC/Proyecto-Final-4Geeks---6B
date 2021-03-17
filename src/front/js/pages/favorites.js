@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import "../../styles/home.scss";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
-import { RestaurantCard } from "../component/restaurantcard";
+import { RestaurantCardFavorite } from "../component/restaurantcardfavorite";
 export const Favorites = () => {
 	const { store, actions } = useContext(Context);
 
@@ -14,7 +14,7 @@ export const Favorites = () => {
 			<div className="row">
 				{store.favoritesRestaurant.map(function(restaurant, index) {
 					return (
-						<RestaurantCard
+						<RestaurantCardFavorite
 							id={restaurant.user_restaurant_id}
 							image_url={restaurant.user_restaurant_image_url}
 							name={restaurant.user_restaurant_name}
@@ -25,6 +25,7 @@ export const Favorites = () => {
 						/>
 					);
 				})}
+				<div />
 			</div>
 		</div>
 	);
