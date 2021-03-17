@@ -425,7 +425,7 @@ def change_password():
 @jwt_required()
 def change_information():
 
-    user = get_jwt_identity()
+    user_id = get_jwt_identity()
 
     if request.method == 'PUT':
         name = request.json.get("name", None)
@@ -435,7 +435,7 @@ def change_information():
         welcome_message = request.json.get("welcome_message", None)
         description = request.json.get("description", None)
 
-        user_restaurant = User_restaurant.query.get(user["id"])
+        user_restaurant = User_restaurant.query.get(user_id)
         user_restaurant.name = name
         user_restaurant.address = address
         user_restaurant.phone = phone
@@ -443,5 +443,5 @@ def change_information():
         user_restaurant.welcome_message = welcome_message
         user_restaurant.description = description
         db.session.commit()
+    return jsonify({"message": "Information changed succese","results": user_restaurant.serialize(), "status": True}), 200
 
-    return jsonify({"message": "Information changed succese", "status": True}), 200

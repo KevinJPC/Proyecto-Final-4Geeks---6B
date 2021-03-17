@@ -128,7 +128,7 @@ export const Register = () => {
 						<input
 							type="User"
 							className="form-control w-75"
-							placeholder=""
+							placeholder="Nombre"
 							onChange={e => setUsername(e.target.value)}
 						/>
 					</div>
@@ -146,14 +146,14 @@ export const Register = () => {
 						<input
 							type="password"
 							className="form-control w-75"
-							placeholder=""
+							placeholder="......."
 							onChange={e => setPass(e.target.value)}
 						/>
 					</div>
 					{typeUser == "restaurant" ? (
 						<Fragment>
 							<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
-								<label htmlFor="floatingpassword">bienvenida:</label>
+								<label htmlFor="floatingpassword">Bienvenida:</label>
 								<input
 									type="text"
 									className="form-control w-75"
@@ -181,7 +181,7 @@ export const Register = () => {
 								/>
 							</div>
 							<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
-								<label htmlFor="floatingpassword">imagen:</label>
+								<label htmlFor="floatingpassword">Imagen:</label>
 
 								<input
 									type="file"
@@ -196,7 +196,7 @@ export const Register = () => {
 								<input
 									type="text"
 									className="form-control w-75"
-									placeholder=""
+									placeholder="Dirección"
 									onChange={e => setAddress(e.target.value)}
 								/>
 							</div>
@@ -205,7 +205,7 @@ export const Register = () => {
 								<input
 									type="tel"
 									className="form-control w-75"
-									placeholder=""
+									placeholder="Teléfono"
 									onChange={e => setPhone(e.target.value)}
 								/>
 							</div>
