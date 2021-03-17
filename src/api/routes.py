@@ -445,4 +445,3 @@ def change_information():
         db.session.commit()
 
     return jsonify({"message": "Information changed succese", "status": True}), 200
-
