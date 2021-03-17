@@ -61,12 +61,17 @@ export const Restaurant = () => {
 				{restaurant != null && menu.length != 0 ? (
 					<Fragment>
 						<div className="py-4 col-12">
-							<h1 className="text-center">Leño y carbón</h1>
+							<h1 className="text-center">{restaurant.name}</h1>
 						</div>
 						<div className="container-fluid">
 							<div className="row d-flex flex-column flex-lg-row flex-md-row">
 								<div className="col-12 col-md-6 col-lg-6">
-									<img id="imgVR" src={restaurant.image_url} className="img-fluid" />
+									<img
+										id="imgVR"
+										src={restaurant.image_url}
+										className="img-fluid"
+										style={{ maxHeight: "400px" }}
+									/>
 								</div>
 
 								<div className="col-12 col-md-6 col-lg-6">
@@ -80,7 +85,7 @@ export const Restaurant = () => {
 										<hr />
 										<h6>Categoria: {restaurant.category}</h6>
 										<hr />
-										<h6>Horario: ...</h6>
+										<h6>Teléfono: {restaurant.phone}</h6>
 										<hr className="d-block d-sm-none" />
 									</div>
 								</div>
