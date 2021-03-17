@@ -16,7 +16,7 @@
     font-size: 20px;
     font-weight: 600;
 }
-#btn-corazon{
+#btn-corazon, .btn-search, .btn-delete-search, .searchBar{
     outline:none !important;
     outline-width: 0 !important;
     box-shadow: none;
@@ -25,10 +25,10 @@
 }
 
 .search_var {
-    text-align: center;
-    padding-top: 5px;
-    border: 10px;
-    padding-right: 40px;
+    // text-align: center;
+    // padding-top: 5px;
+    // border: 10px;
+    // padding-right: 40px;
 }
 
 .boton {

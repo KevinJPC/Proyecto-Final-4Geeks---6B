@@ -3,10 +3,14 @@ import "../../styles/home.scss";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { RestaurantCard } from "../component/restaurantcard";
+import { GranSpinner } from "../component/granSpinner";
+
 export const Favorites = () => {
 	const { store, actions } = useContext(Context);
 
-	return store.restaurants == null ? null : (
+	return store.favoritesRestaurant == null ? (
+		<GranSpinner marginTop="250px" />
+	) : (
 		<div className="container-fluid">
 			<div className="tittle-res">
 				<h1>Favoritos</h1>
