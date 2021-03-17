@@ -16,7 +16,7 @@
     font-size: 20px;
     font-weight: 600;
 }
-#btn-corazon{
+#btn-corazon, .btn-search, .btn-delete-search, .searchBar{
     outline:none !important;
     outline-width: 0 !important;
     box-shadow: none;
@@ -24,14 +24,11 @@
     -webkit-box-shadow: none;
 }
 
-.search_bar {
-    text-align: center;
-    padding-top: 5px;
-    border: 10px;
-    padding-right: 130px;
-    transition-duration: 0.4s;
-    background-color: white;
-    color: white;
+.search_var {
+    // text-align: center;
+    // padding-top: 5px;
+    // border: 10px;
+    // padding-right: 40px;
 }
 
 .boton {

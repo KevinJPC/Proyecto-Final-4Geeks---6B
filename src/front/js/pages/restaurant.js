@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MealCard } from "../component/mealCard";
 import { Spinner } from "../component/spinner";
+import { GranSpinner } from "../component/granSpinner";
 export const Restaurant = () => {
 	const params = useParams();
 	const [restaurant, setRestaurant] = useState(null);
@@ -102,7 +103,7 @@ export const Restaurant = () => {
 										</div>
 										<hr className="d-block d-sm-none" />
 
-										<Link to="/restaurant/:name/:id/reviews">
+										<Link to={"/restaurant/" + restaurant.name + "/" + restaurant.id + "/reviews"}>
 											<span
 												href="#"
 												className="btn btn-sm ml-lg-3 ml-md-3 mt-lg-0 mt-md-0"
@@ -151,12 +152,7 @@ export const Restaurant = () => {
 						</div>
 					</Fragment>
 				) : (
-					<div
-						className="spinner-border mx-auto"
-						role="status"
-						style={{ width: "100px", height: "100px", marginTop: "250px" }}>
-						<span className="sr-only">Loading...</span>
-					</div>
+					<GranSpinner marginTop="250px" />
 				)}
 			</div>
 		</div>

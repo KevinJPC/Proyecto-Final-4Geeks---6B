@@ -247,7 +247,11 @@ def add_review():
     db.session.add(review)
     db.session.commit()
 
-    return jsonify({"message": "Review succesful!", "status": True}), 200
+    query_reviews = db.session.query(Review).join(User_client).filter(Review.user_restaurant_id==request_body["user_restaurant_id"]).all()
+    print(query_reviews)
+    reviews = list(map(lambda review: review.serialize(), query_reviews)) 
+
+    return jsonify({"message": "Review added succesful!","results": reviews, "status": True}), 200
 
 @api.route('/restaurant/<int:id>/review', methods=['GET'])
 # @jwt_required()
@@ -275,7 +279,18 @@ def add_favorite_restaurant(user_restaurant_id):
     db.session.add(favorite_restaurant)
     db.session.commit()
 
-    return jsonify({"message": "Favorite added succesful!", "status": True}), 200
+    query_favorites = db.session.query(Favorite_restaurants).join(User_restaurant).filter(Favorite_restaurants.user_client_id==user_client_id).all()
+    # print(query_favorites)
+    # favorites = list(map(lambda favorite: favorite.serialize(), query_favorites))
+    favorites = []
+    for element in query_favorites:
+        user_restaurant = element.serialize()
+        user_restaurant["rating"] = get_rating(user_restaurant["user_restaurant_id"])
+        favorites.append(user_restaurant)
+
+    return jsonify({"message": "Add favorites succesful!", "results": favorites, "status": True}), 200
+
+    # return jsonify({"message": "Favorite added succesful!", "status": True}), 200
 
 @api.route('/client/favorite', methods=['GET'])
 @jwt_required()

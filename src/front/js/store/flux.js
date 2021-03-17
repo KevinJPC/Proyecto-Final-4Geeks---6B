@@ -14,19 +14,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			restaurants: null,
+			// restaurants: null,
 			user: null,
 			favoritesRestaurant: null
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
 
-			getRestaurants: () => {
-				fetch(process.env.BACKEND_URL + "/api/restaurants", { method: "GET" })
-					.then(resp => resp.json())
-					.then(data => setStore({ restaurants: data.results }))
-					.catch(error => console.log("Error", error));
-			},
+			// getRestaurants: () => {
+			// 	fetch(process.env.BACKEND_URL + "/api/restaurants", { method: "GET" })
+			// 		.then(resp => resp.json())
+			// 		.then(data => setStore({ restaurants: data.results }))
+			// 		.catch(error => console.log("Error", error));
+			// },
 
 			AddFavoriteRestaurant: userRestaurantId => {
 				fetch(process.env.BACKEND_URL + "/api/client/favorite/" + userRestaurantId, {
@@ -38,7 +38,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 					.then(res => res.json())
 					.then(data => {
-						getActions().getFavorites();
+						// getActions().getFavorites();
+						setStore({ favoritesRestaurant: data.results });
 						console.log(data);
 					})
 					.catch(error => console.log("Error", error));
@@ -64,7 +65,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			logOut: () => {
-				setStore({ user: null });
+				setStore({ user: null, favoritesRestaurant: null });
 				sessionStorage.removeItem("u_token");
 			},
 
