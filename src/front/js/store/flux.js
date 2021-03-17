@@ -93,6 +93,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+
+			deleteFavorite: userRestaurantId => {
+				fetch(process.env.BACKEND_URL + "/api/client/favorite/" + userRestaurantId, {
+					method: "DELETE",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: "Bearer " + sessionStorage.getItem("u_token")
+					}
+				})
+					.then(res => res.json())
+					.then(data => {
+						console.log(data);
+						getActions().getFavorites();
+					});
 			}
 		}
 	};
