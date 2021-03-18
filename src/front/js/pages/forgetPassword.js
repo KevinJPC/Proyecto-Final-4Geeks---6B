@@ -54,6 +54,7 @@ export const ForgetPassword = () => {
 					<button className="rounded-pill bg-transparent px-3 btn-login" onClick={handleSubmit}>
 						Recuperar contraseña
 					</button>
+					{redirect ? <Redirect to="/forget-password/redirect" /> : ""}
 				</div>
 			</div>
 		</div>

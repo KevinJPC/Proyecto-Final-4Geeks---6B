@@ -187,7 +187,7 @@ export const RestaurantAdmin = () => {
 										</div>
 										<hr className="d-block d-sm-none" />
 
-										<Link to="/restaurant/:name/:id/reviews">
+										<Link to={"/restaurant/" + store.user.name + "/" + store.user.id + "/reviews"}>
 											<span
 												href="#"
 												className="btn btn-sm ml-lg-3 ml-md-3 mt-lg-0 mt-md-0"
