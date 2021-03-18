@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
+import { NotFound } from "./pages/notFound";
+import { PasswordMessage } from "./pages/passwordMessage";
 import { ForgetPassword } from "./pages/forgetPassword";
 import { Login } from "./pages/login";
 import { Favorites } from "./pages/favorites";
@@ -49,6 +51,9 @@ const Layout = () => {
 						<Route exact path="/login">
 							<Login />
 						</Route>
+						<Route exact path="/forget-password/redirect">
+							<PasswordMessage />
+						</Route>
 						<Route exact path="/restaurants">
 							<Restaurants />
 						</Route>
@@ -62,7 +67,7 @@ const Layout = () => {
 							<ForgetPassword />
 						</Route>
 						<Route>
-							<h1>Not found!</h1>
+							<NotFound />
 						</Route>
 					</Switch>
 					<Footer />

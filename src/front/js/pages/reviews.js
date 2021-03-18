@@ -10,6 +10,7 @@ import { GranSpinner } from "../component/granSpinner";
 export const Reviews = () => {
 	const params = useParams();
 	const commentRef = useRef();
+	const { store, actions } = useContext(Context);
 	const [restaurant, setRestaurant] = useState(null);
 	const [reviews, setReviews] = useState(null);
 	const [comment, setComment] = useState("");
@@ -75,49 +76,56 @@ export const Reviews = () => {
 				<GranSpinner marginTop="250px" />
 			) : (
 				<Fragment>
-					<div>
-						<h1 className="text-center">{restaurant.name}</h1>
-					</div>
-					<div className="row">
-						<div className="col-6">
-							<img id="imgVR2" src={restaurant.image_url} />
-						</div>
-
-						<div className="col-6">
-							<h4 className="" id="tiReviews">
-								Valora y comparte tu experiencia
-							</h4>
-							<div className="" id="starts2">
-								<h3>
-									Calificación:
-									{ratingStars.map(function(element, index) {
-										return (
-											<button key={index} onClick={() => setRating(index + 1)}>
-												{element}
+					{store.user != null ? (
+						store.user.type_user == "client" ? (
+							<Fragment>
+								<div className="col-6">
+									<div>
+										<h1 className="text-center">{restaurant.name}</h1>
+									</div>
+									<div className="row">
+										<div className="col-6">
+											<img id="imgVR2" src={restaurant.image_url} />
+										</div>
+										<h4 className="" id="tiReviews">
+											Valora y comparte tu experiencia
+										</h4>
+										<div className="" id="starts2">
+											<h3>
+												Calificación:
+												{ratingStars.map(function(element, index) {
+													return (
+														<button key={index} onClick={() => setRating(index + 1)}>
+															{element}
+														</button>
+													);
+												})}
+											</h3>
+										</div>
+										<h3>Comentario</h3>
+										<textarea
+											ref={commentRef}
+											name="comentarios"
+											rows="5"
+											cols="60"
+											placeholder="Escribe aquí su comentario"
+											onChange={e => setComment(e.target.value)}
+										/>
+										<div className="">
+											<button
+												href="#"
+												className="btn btn-sm my-3"
+												id="btn-reseñas"
+												onClick={handleAddReview}>
+												Enviar
 											</button>
-										);
-									})}
-								</h3>
-							</div>
-							<h3>Comentario</h3>
-							<textarea
-								ref={commentRef}
-								name="comentarios"
-								rows="5"
-								cols="60"
-								placeholder="Escribe aquí su comentario"
-								onChange={e => setComment(e.target.value)}
-							/>
-							<div className="">
-								<button href="#" className="btn btn-sm my-3" id="btn-reseñas" onClick={handleAddReview}>
-									Enviar
-								</button>
-							</div>
-							{loading ? <Spinner /> : null}
-						</div>
-
-						<div className="col-6 mt-3" />
-					</div>
+										</div>
+									</div>
+								</div>
+								<div className="col-6 mt-3" />
+							</Fragment>
+						) : null
+					) : null}
 
 					<div className="col-12 text-center">
 						<h3 id="Backmenu">Reseñas anteriores</h3>
