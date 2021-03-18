@@ -1,5 +1,5 @@
 *{
-    // border: 2px solid red;
+    // border: 1px solid red;
 }
 .background-image {
     background-image: url("../img/background-landing-page3.png");
@@ -16,7 +16,7 @@
     font-size: 20px;
     font-weight: 600;
 }
-#btn-corazon, .btn-search, .btn-delete-search, .searchBar{
+#btn-corazon, .btn-search, .btn-delete-search, .searchBar, .delete{
     outline:none !important;
     outline-width: 0 !important;
     box-shadow: none;
@@ -53,26 +53,24 @@
 }
 
 .favdelete{
-    background-color: red;
+    // background-color: red;
     border: none;
     color: white;
     padding: 5px 13px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 20px;
     margin: 4px 2px;
     transition-duration: 0.4s;
     cursor: pointer;
 }
 
 .delete{
-    background-color: white; 
+    background-color: transparent; 
     color: black; 
-    border: 2px solid red;
 }
 
-.delete:hover{
-    background-color: red;
-    color: white;
+.delete:hover, #btn-corazon:hover{
+    color: red;
 }

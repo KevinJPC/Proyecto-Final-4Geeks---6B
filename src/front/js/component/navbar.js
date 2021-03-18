@@ -25,6 +25,10 @@ export const Navbar = () => {
 					<Link to="/" className="nav-item nav-link text-white" href="#">
 						Inicio
 					</Link>
+
+					<Link to="/restaurants" className="nav-item nav-link text-white" href="#">
+						Restaurantes
+					</Link>
 					{store.user != null ? (
 						store.user.type_user == "client" ? (
 							<Link to="/favorites" className="nav-item nav-link text-white" href="#">
@@ -32,9 +36,6 @@ export const Navbar = () => {
 							</Link>
 						) : null
 					) : null}
-					<Link to="/restaurants" className="nav-item nav-link text-white" href="#">
-						Restaurantes
-					</Link>
 					{store.user == null ? (
 						<Link to="/register" className="nav-item nav-link text-white" href="#">
 							Registro
