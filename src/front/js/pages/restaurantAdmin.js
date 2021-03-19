@@ -111,7 +111,7 @@ export const RestaurantAdmin = () => {
 				{store.user != null && menu.length != 0 ? (
 					<Fragment>
 						<div className="py-4 col-12">
-							<h2 className="text-center mb-4">Aquí puedes editar la información de tu restaraunte</h2>
+							<h2 className="text-center mb-4">Aquí puedes editar la información de tu restaurante</h2>
 							<div className="d-flex justify-content-center mb-2 align-items-center">
 								<h6>Nombre:</h6>
 								<div className="col-sm-3">
