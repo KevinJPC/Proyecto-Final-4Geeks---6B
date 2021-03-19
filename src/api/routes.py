@@ -52,8 +52,10 @@ def register_client():
             return jsonify({"message": "Password required"}), 400
 
         user_client = User_client.query.filter_by(email=email).first()
+        user_restaurant = User_restaurant.query.filter_by(email=email).first()
+
         print(user_client)
-        if user_client:
+        if user_client or user_restaurant:
             return jsonify({"message": "User already exist"}), 400
 
         user_client = User_client()
@@ -111,8 +113,10 @@ def register_restaurant():
             return jsonify({"message": "description required"}), 400
 
         user_restaurant = User_restaurant.query.filter_by(email=email).first()
+        user_client = User_client.query.filter_by(email=email).first()
+
         print(user_restaurant)
-        if user_restaurant:
+        if user_restaurant or user_client:
             return jsonify({"message": "The user already exist"}), 400
 
         user_restaurant = User_restaurant()
@@ -297,6 +301,9 @@ def add_favorite_restaurant(user_restaurant_id):
 @jwt_required()
 def get_favorites_restaurants():
     user_client = get_jwt_identity()
+    if user_client["type_user"] == "restaurant":
+        return jsonify({"message": "No autorized!", "results": [], "status": False}), 422
+
     query_favorites = db.session.query(Favorite_restaurants).join(User_restaurant).filter(Favorite_restaurants.user_client_id==user_client["id"]).all()
     # print(query_favorites)
     # favorites = list(map(lambda favorite: favorite.serialize(), query_favorites))

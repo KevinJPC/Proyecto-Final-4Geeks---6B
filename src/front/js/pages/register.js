@@ -16,6 +16,7 @@ export const Register = () => {
 	const [registering, setRegistering] = useState(false);
 	const [redirect, setRedirect] = useState(false);
 	const [typeUser, setTypeUser] = useState("client");
+	const [incorrect, setIncorrect] = useState(false);
 
 	const handleRegisterClient = () => {
 		const data = { email: email, password: pass, name: username };
@@ -27,7 +28,6 @@ export const Register = () => {
 			}
 		}
 		setRegistering(true);
-
 		fetch(process.env.BACKEND_URL + "/api/register/client", {
 			method: "POST",
 			headers: {
@@ -35,11 +35,18 @@ export const Register = () => {
 			},
 			body: JSON.stringify(data)
 		})
-			.then(response => response.json())
+			.then(response => {
+				if (response.ok == false) {
+					setIncorrect(true);
+				}
+				return response.json();
+			})
 			.then(data => {
 				setRegistering(false);
-
-				setRedirect(true);
+				if (data.status) {
+					setIncorrect(false);
+					setRedirect(true);
+				}
 			})
 			.catch(error => {
 				console.error("Error:", error);
@@ -79,25 +86,37 @@ export const Register = () => {
 			},
 			body: JSON.stringify(data)
 		})
-			.then(response => response.json())
-			.then(async data => {
-				let user_restaurant_id = await data.results.id;
-				let body = new FormData();
-				body.append("image", image[0]);
-				const options = {
-					body,
-					method: "POST"
-				};
-
-				fetch(process.env.BACKEND_URL + "/api/restaurants/" + user_restaurant_id + "/image", options)
-					.then(resp => resp.json())
-					.then(data => {
-						// console.log("Success!!!!", data);
-						setRegistering(false);
-						setRedirect(true);
-					})
-					.catch(error => console.error("error", error));
+			.then(response => {
+				if (response.ok == false) {
+					setIncorrect(true);
+				}
+				return response.json();
 			})
+			.then(async data => {
+				setRegistering(false);
+				if (data.status) {
+					setIncorrect(false);
+					setRedirect(true);
+
+					let user_restaurant_id = await data.results.id;
+					let body = new FormData();
+					body.append("image", image[0]);
+					const options = {
+						body,
+						method: "POST"
+					};
+
+					fetch(process.env.BACKEND_URL + "/api/restaurants/" + user_restaurant_id + "/image", options)
+						.then(resp => resp.json())
+						.then(data => {
+							// console.log("Success!!!!", data);
+							setRegistering(false);
+							setRedirect(true);
+						})
+						.catch(error => console.error("error", error));
+				}
+			})
+
 			.catch(error => {
 				console.error("Error:", error);
 			});
@@ -220,7 +239,9 @@ export const Register = () => {
 					<p className="my-1 text-center mb-4">
 						Ya tienes una cuenta? <Link to="/login">Iniciar sesión</Link>
 					</p>
-
+					{incorrect ? (
+						<p className="text-danger mt-n3">Ya existe una cuenta asociada a este correo</p>
+					) : null}
 					<button
 						className="rounded-pill bg-transparent px-3 btn-register"
 						onClick={() => {
