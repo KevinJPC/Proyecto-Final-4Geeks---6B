@@ -38,7 +38,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 				})
 					.then(res => {
-						res.json();
 						if (res.ok == false) {
 							setStore({ pageNotFound: true });
 						}

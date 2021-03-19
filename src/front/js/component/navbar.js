@@ -58,7 +58,7 @@ export const Navbar = () => {
 					{store.user != null ? (
 						<button
 							style={{ border: "none", outline: "none" }}
-							className="bg-transparent text-white"
+							className="bg-transparent text-white d-flex"
 							onClick={() => actions.logOut()}>
 							<Link to="/login" className="nav-item nav-link text-white" href="#">
 								Cerrar sesión
