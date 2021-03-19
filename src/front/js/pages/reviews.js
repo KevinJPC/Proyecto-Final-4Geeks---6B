@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { CardReview } from "../component/cardReview";
 import { Spinner } from "../component/spinner";
 import { GranSpinner } from "../component/granSpinner";
+import { ModalRating } from "../component/modalRating";
 
 export const Reviews = () => {
 	const params = useParams();
@@ -76,9 +77,11 @@ export const Reviews = () => {
 
 	// setRatingStars(arrayRatingStars)
 	return (
-		<div className="">
+		<div className="container-fluid">
 			{restaurant == null ? (
-				<GranSpinner marginTop="250px" />
+				<div className="row">
+					<GranSpinner marginTop="250px" />
+				</div>
 			) : (
 				<Fragment>
 					{typeUser == "client" ? (
@@ -128,17 +131,30 @@ export const Reviews = () => {
 											<div className="mb-4 mt-3 text-center">
 												{isSending ? <Spinner /> : null}
 											</div>
-											<div className="d-flex justify-content-center">
-												<button
-													href="#"
-													className="btn btn-sm my-3"
-													id="btn-reseñas"
-													onClick={() => {
-														store.user != null ? handleAddReview() : null;
-													}}>
-													Enviar
-												</button>
-											</div>
+											{store.user != null ? (
+												<div className="d-flex justify-content-center">
+													<button
+														href="#"
+														className="btn btn-sm my-3"
+														id="btn-reseñas"
+														onClick={() => {
+															handleAddReview();
+														}}>
+														Enviar
+													</button>
+												</div>
+											) : (
+												<div className="d-flex justify-content-center">
+													<button
+														href="#"
+														className="btn btn-sm my-3"
+														id="btn-reseñas"
+														data-toggle="modal"
+														data-target="#modalRating">
+														Enviar
+													</button>
+												</div>
+											)}
 										</div>
 									</div>
 								</div>
@@ -152,8 +168,13 @@ export const Reviews = () => {
 						</div>
 						<div className="container-fluid">
 							<div className="row mx-1">
-								{reviews != null
-									? reviews.map(function(element, index) {
+								{reviews != null ? (
+									reviews.length == 0 ? (
+										<h6 className="text-center col-12 mt-3">
+											Este restaurante aún no posee reseñas
+										</h6>
+									) : (
+										reviews.map(function(element, index) {
 											return (
 												<CardReview
 													key={index}
@@ -164,8 +185,9 @@ export const Reviews = () => {
 													rating={element.rating}
 												/>
 											);
-									  })
-									: null}
+										})
+									)
+								) : null}
 							</div>
 						</div>
 					</div>
@@ -176,6 +198,7 @@ export const Reviews = () => {
 				</Link> */}
 				</Fragment>
 			)}
+			<ModalRating />
 		</div>
 	);
 };

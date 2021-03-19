@@ -3,14 +3,16 @@ import "../../styles/home.scss";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import { GranSpinner } from "../component/granSpinner";
-
+import { NotFound } from "../pages/notFound";
 import { RestaurantCardFavorite } from "../component/restaurantcardfavorite";
 export const Favorites = () => {
 	const { store, actions } = useContext(Context);
 	useEffect(function() {
 		actions.getFavorites();
 	}, []);
-	return store.favoritesRestaurant == null ? (
+	return store.pageNotFound == true ? (
+		<NotFound />
+	) : store.favoritesRestaurant == null ? (
 		<GranSpinner marginTop="250px" />
 	) : (
 		<div className="container-fluid">

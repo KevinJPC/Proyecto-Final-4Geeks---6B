@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "../../styles/home.scss";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { ModalFavorite } from "../component/modalFavorite";
 export const RestaurantCard = props => {
 	let ratingStar = [];
 
@@ -24,6 +25,7 @@ export const RestaurantCard = props => {
 
 	return (
 		<div className="col-12 col-lg-3 col-md-3 mb-4 mx-auto mx-lg-0 mx-md-0">
+			<ModalFavorite />
 			<div className="img-container d-flex align-items-center">
 				<img id="img-res" src={props.image_url} className="img-fluid mx-auto d-block" />
 			</div>
@@ -77,7 +79,13 @@ export const RestaurantCard = props => {
 							)}
 						</button>
 					) : (
-						<button style={{ fontSize: "20px" }} type="button" id="btn-corazon" className=" btn">
+						<button
+							style={{ fontSize: "20px" }}
+							type="button"
+							id="btn-corazon"
+							className=" btn"
+							data-toggle="modal"
+							data-target="#modalFavorite">
 							<i className="far fa-heart" />
 						</button>
 					)}

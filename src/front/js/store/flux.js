@@ -16,7 +16,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 			// restaurants: null,
 			user: null,
-			favoritesRestaurant: null
+			favoritesRestaurant: null,
+			pageNotFound: false
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -28,6 +29,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// 		.catch(error => console.log("Error", error));
 			// },
 			loadSession: () => {
+				setStore({ pageNotFound: false });
 				fetch(process.env.BACKEND_URL + "/api/session/", {
 					method: "GET",
 					headers: {
@@ -35,7 +37,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						Authorization: "Bearer " + sessionStorage.getItem("u_token")
 					}
 				})
-					.then(res => res.json())
+					.then(res => {
+						res.json();
+						if (res.ok == false) {
+							setStore({ pageNotFound: true });
+						}
+						return res.json();
+					})
 					.then(data => {
 						// getActions().getFavorites();
 						if (data.status) {
@@ -62,6 +70,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.log("Error", error));
 			},
 			getFavorites: () => {
+				setStore({ pageNotFound: false });
 				fetch(process.env.BACKEND_URL + "/api/client/favorite", {
 					method: "GET",
 					headers: {
@@ -69,7 +78,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 						Authorization: "Bearer " + sessionStorage.getItem("u_token")
 					}
 				})
-					.then(res => res.json())
+					.then(res => {
+						if (res.ok == false) {
+							setStore({ pageNotFound: true });
+						}
+						return res.json();
+					})
 					.then(data => {
 						setStore({ favoritesRestaurant: data.results });
 						console.log(data);

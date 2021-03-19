@@ -42,13 +42,7 @@ export const Navbar = () => {
 								Favoritos
 							</Link>
 						) : null
-					) : (
-						<button
-							className="nav-item nav-link text-white bg-transparent"
-							style={{ border: "none", outline: "none" }}>
-							Favoritos
-						</button>
-					)}
+					) : null}
 					{store.user == null ? (
 						<Link to="/register" className="nav-item nav-link text-white" href="#">
 							Registro

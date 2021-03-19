@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MealCard } from "../component/mealCard";
 import { Spinner } from "../component/spinner";
+import { NotFound } from "../pages/notFound";
 export const RestaurantAdmin = () => {
 	const [username, setUsername] = useState("");
 	const [welcomeMessage, setWelcomeMessage] = useState("");
@@ -102,7 +103,9 @@ export const RestaurantAdmin = () => {
 		}
 	}
 
-	return (
+	return store.pageNotFound ? (
+		<NotFound />
+	) : (
 		<div className="container-fluid">
 			<div className="row">
 				{store.user != null && menu.length != 0 ? (
