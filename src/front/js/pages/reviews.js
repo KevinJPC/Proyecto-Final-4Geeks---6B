@@ -10,12 +10,16 @@ import { GranSpinner } from "../component/granSpinner";
 export const Reviews = () => {
 	const params = useParams();
 	const commentRef = useRef();
+	const { store, actions } = useContext(Context);
 	const [restaurant, setRestaurant] = useState(null);
 	const [reviews, setReviews] = useState(null);
 	const [comment, setComment] = useState("");
 	const [rating, setRating] = useState(0);
 	const [loading, setLoading] = useState(false);
 	let ratingStars = handleGetUserRatingStars(restaurant, rating);
+	const [isSending, setIsSending] = useState(false);
+
+	let typeUser = store.user != null ? store.user.type_user : "client";
 	useEffect(function() {
 		console.log(params.name, params.id);
 		fetch(process.env.BACKEND_URL + "/api/restaurant/" + params.id, { method: "GET" })
@@ -45,6 +49,7 @@ export const Reviews = () => {
 			rating: rating
 		};
 		setLoading(true);
+		setIsSending(true);
 		fetch(process.env.BACKEND_URL + "/api/restaurant/review", {
 			method: "POST",
 			headers: {
@@ -62,6 +67,7 @@ export const Reviews = () => {
 					let reviewsReserve = data.results.reverse();
 					setReviews(reviewsReserve);
 				}
+				setIsSending(false);
 				setLoading(false);
 				console.log(data);
 			})
@@ -70,81 +76,104 @@ export const Reviews = () => {
 
 	// setRatingStars(arrayRatingStars)
 	return (
-		<div className="container-fluid">
+		<div className="">
 			{restaurant == null ? (
 				<GranSpinner marginTop="250px" />
 			) : (
 				<Fragment>
-					<div>
-						<h1 className="text-center">{restaurant.name}</h1>
-					</div>
-					<div className="row">
-						<div className="col-6">
-							<img id="imgVR2" src={restaurant.image_url} />
-						</div>
-
-						<div className="col-6">
-							<h4 className="" id="tiReviews">
-								Valora y comparte tu experiencia
-							</h4>
-							<div className="" id="starts2">
-								<h3>
-									Calificación:
-									{ratingStars.map(function(element, index) {
-										return (
-											<button key={index} onClick={() => setRating(index + 1)}>
-												{element}
-											</button>
-										);
-									})}
-								</h3>
+					{typeUser == "client" ? (
+						<Fragment>
+							<div className="container-fluid">
+								<div className="mt-3 mb-5">
+									<h1 className="text-center">{restaurant.name}</h1>
+								</div>
+								<div className="container-fluid">
+									<div className="row d-flex justify-content-center flex-lg-row flex-md-row flex-column ">
+										<div className="col-lg-6 col-md-6 col-12 mb-lg-0 mb-md-0 mb-3">
+											<img id="imgVR2" className="img-fluid" src={restaurant.image_url} />
+										</div>
+										<div className="col-lg-6 col-md-6 col-12 px-0 px-lg-3 px-md-3">
+											<div
+												className="text-center mb-4 py-1"
+												style={{ border: "2px solid black" }}>
+												<h4>Valora y comparte tu experiencia</h4>
+											</div>
+											<div className="d-flex align-items-center mb-3">
+												<h5 className="pt-1">Calificación:</h5>
+												<div className="ml-3" id="starts2">
+													{ratingStars.map(function(element, index) {
+														return (
+															<button
+																className="bg-transparent"
+																style={{ border: "none", fontSize: "25px" }}
+																key={index}
+																onClick={() => setRating(index + 1)}>
+																{element}
+															</button>
+														);
+													})}
+												</div>
+											</div>
+											<div className="">
+												<h5>Comentario:</h5>
+												<textarea
+													ref={commentRef}
+													className="form-control"
+													id="exampleFormControlTextarea1"
+													rows="3"
+													placeholder="Escribe aquí su comentario"
+													onChange={e => setComment(e.target.value)}
+												/>
+											</div>
+											<div className="mb-4 mt-3 text-center">
+												{isSending ? <Spinner /> : null}
+											</div>
+											<div className="d-flex justify-content-center">
+												<button
+													href="#"
+													className="btn btn-sm my-3"
+													id="btn-reseñas"
+													onClick={() => {
+														store.user != null ? handleAddReview() : null;
+													}}>
+													Enviar
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<h3>Comentario</h3>
-							<textarea
-								ref={commentRef}
-								name="comentarios"
-								rows="5"
-								cols="60"
-								placeholder="Escribe aquí su comentario"
-								onChange={e => setComment(e.target.value)}
-							/>
-							<div className="">
-								<button href="#" className="btn btn-sm my-3" id="btn-reseñas" onClick={handleAddReview}>
-									Enviar
-								</button>
-							</div>
-							{loading ? <Spinner /> : null}
+							{/* <div className="col-6 mt-3" /> */}
+						</Fragment>
+					) : null}
+					<div className="mt-4">
+						<div className="col-12 text-center px-2 mb-3">
+							<h3 id="Backmenu">Reseñas anteriores</h3>
 						</div>
-
-						<div className="col-6 mt-3" />
+						<div className="container-fluid">
+							<div className="row mx-1">
+								{reviews != null
+									? reviews.map(function(element, index) {
+											return (
+												<CardReview
+													key={index}
+													id={element.user_client_id}
+													name={element.user_client_name}
+													date={element.date}
+													comment={element.comment}
+													rating={element.rating}
+												/>
+											);
+									  })
+									: null}
+							</div>
+						</div>
 					</div>
-
-					<div className="col-12 text-center">
-						<h3 id="Backmenu">Reseñas anteriores</h3>
-					</div>
-					<div className="row">
-						{reviews != null
-							? reviews.map(function(element, index) {
-									return (
-										<CardReview
-											key={index}
-											id={element.user_client_id}
-											name={element.user_client_name}
-											date={element.date}
-											comment={element.comment}
-											rating={element.rating}
-										/>
-									);
-							  })
-							: null}
-					</div>
-					<div className="">
-						{/* <Link to="/restaurant">
+					{/* <Link to="/restaurant">
 					<span href="#" className="btn btn-sm" id="btn-back">
-						Atrás
+                    Atrás
 					</span>
 				</Link> */}
-					</div>
 				</Fragment>
 			)}
 		</div>

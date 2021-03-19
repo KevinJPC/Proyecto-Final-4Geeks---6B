@@ -26,6 +26,7 @@ export const Register = () => {
 				return;
 			}
 		}
+		setRegistering(true);
 
 		fetch(process.env.BACKEND_URL + "/api/register/client", {
 			method: "POST",
@@ -36,6 +37,8 @@ export const Register = () => {
 		})
 			.then(response => response.json())
 			.then(data => {
+				setRegistering(false);
+
 				setRedirect(true);
 			})
 			.catch(error => {
@@ -213,6 +216,10 @@ export const Register = () => {
 					) : null}
 
 					<div className="mb-4">{registering ? <Spinner /> : null}</div>
+
+					<p className="my-1 text-center mb-4">
+						Ya tienes una cuenta? <Link to="/login">Iniciar sesión</Link>
+					</p>
 
 					<button
 						className="rounded-pill bg-transparent px-3 btn-register"

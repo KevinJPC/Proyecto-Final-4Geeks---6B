@@ -27,7 +27,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// 		.then(data => setStore({ restaurants: data.results }))
 			// 		.catch(error => console.log("Error", error));
 			// },
-
+			loadSession: () => {
+				fetch(process.env.BACKEND_URL + "/api/session/", {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: "Bearer " + sessionStorage.getItem("u_token")
+					}
+				})
+					.then(res => res.json())
+					.then(data => {
+						// getActions().getFavorites();
+						if (data.status) {
+							setStore({ user: data.user });
+							sessionStorage.setItem("u_token", data.token);
+						}
+					})
+					.catch(error => console.log("Error", error));
+			},
 			AddFavoriteRestaurant: userRestaurantId => {
 				fetch(process.env.BACKEND_URL + "/api/client/favorite/" + userRestaurantId, {
 					method: "POST",

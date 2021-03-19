@@ -25,17 +25,30 @@ export const Navbar = () => {
 					<Link to="/" className="nav-item nav-link text-white" href="#">
 						Inicio
 					</Link>
-
-					<Link to="/restaurants" className="nav-item nav-link text-white" href="#">
-						Restaurantes
-					</Link>
+					{store.user != null ? (
+						store.user.type_user == "client" ? (
+							<Link to="/restaurants" className="nav-item nav-link text-white" href="#">
+								Restaurantes
+							</Link>
+						) : null
+					) : (
+						<Link to="/restaurants" className="nav-item nav-link text-white" href="#">
+							Restaurantes
+						</Link>
+					)}
 					{store.user != null ? (
 						store.user.type_user == "client" ? (
 							<Link to="/favorites" className="nav-item nav-link text-white" href="#">
 								Favoritos
 							</Link>
 						) : null
-					) : null}
+					) : (
+						<button
+							className="nav-item nav-link text-white bg-transparent"
+							style={{ border: "none", outline: "none" }}>
+							Favoritos
+						</button>
+					)}
 					{store.user == null ? (
 						<Link to="/register" className="nav-item nav-link text-white" href="#">
 							Registro
@@ -49,14 +62,14 @@ export const Navbar = () => {
 						) : null
 					) : null}
 					{store.user != null ? (
-						<Link to="/login" className="nav-item nav-link text-white" href="#">
-							<button
-								style={{ border: "none", outline: "none" }}
-								className="bg-transparent text-white"
-								onClick={() => actions.logOut()}>
+						<button
+							style={{ border: "none", outline: "none" }}
+							className="bg-transparent text-white"
+							onClick={() => actions.logOut()}>
+							<Link to="/login" className="nav-item nav-link text-white" href="#">
 								Cerrar sesión
-							</button>
-						</Link>
+							</Link>
+						</button>
 					) : null}
 					{store.user == null ? (
 						<Link to="/login" className="nav-item nav-link text-white" href="#">

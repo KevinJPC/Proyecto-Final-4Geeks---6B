@@ -76,7 +76,11 @@ export const RestaurantCard = props => {
 								<i className="far fa-heart" />
 							)}
 						</button>
-					) : null}
+					) : (
+						<button style={{ fontSize: "20px" }} type="button" id="btn-corazon" className=" btn">
+							<i className="far fa-heart" />
+						</button>
+					)}
 				</div>
 			</div>
 		</div>
