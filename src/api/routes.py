@@ -215,6 +215,7 @@ def login_client_user():
         if  user_restaurant:
             user=user_restaurant
             user_serialize = user_restaurant.serialize()
+            user_serialize["rating"] = get_rating(user_serialize["id"])
         
 
         if not user_client and not user_restaurant:
@@ -224,7 +225,7 @@ def login_client_user():
             return jsonify({"message": "The password is incorrect", "status": False}), 401
 
         expiracion = datetime.timedelta(days=1)
-        access_token = create_access_token(identity=user.id, expires_delta=expiracion)
+        access_token = create_access_token(identity={"id":user_serialize["id"], "type_user":user_serialize["type_user"]}, expires_delta=expiracion)
 
         print("test")
         data = {
@@ -239,11 +240,11 @@ def login_client_user():
 @api.route('/restaurant/review', methods=['POST'])
 @jwt_required()
 def add_review():
-    user_client_id = get_jwt_identity()
+    user_client = get_jwt_identity()
 
     request_body = request.get_json();
 
-    review = Review(user_client_id, request_body["user_restaurant_id"], request_body["comment"], request_body["rating"])
+    review = Review(user_client["id"], request_body["user_restaurant_id"], request_body["comment"], request_body["rating"])
     db.session.add(review)
     db.session.commit()
 
@@ -267,19 +268,19 @@ def get_review(id):
 @api.route('/client/favorite/<int:user_restaurant_id>', methods=['POST'])
 @jwt_required()
 def add_favorite_restaurant(user_restaurant_id):
-    user_client_id = get_jwt_identity()
+    user_client = get_jwt_identity()
 
-    query_favorite = Favorite_restaurants.query.get((user_client_id, user_restaurant_id))
+    query_favorite = Favorite_restaurants.query.get((user_client["id"], user_restaurant_id))
     if query_favorite:
         return jsonify({"message": "Favorite already exists!", "status": False}), 409
 
 
-    favorite_restaurant = Favorite_restaurants(user_client_id, user_restaurant_id)
+    favorite_restaurant = Favorite_restaurants(user_client["id"], user_restaurant_id)
 
     db.session.add(favorite_restaurant)
     db.session.commit()
 
-    query_favorites = db.session.query(Favorite_restaurants).join(User_restaurant).filter(Favorite_restaurants.user_client_id==user_client_id).all()
+    query_favorites = db.session.query(Favorite_restaurants).join(User_restaurant).filter(Favorite_restaurants.user_client_id==user_client["id"]).all()
     # print(query_favorites)
     # favorites = list(map(lambda favorite: favorite.serialize(), query_favorites))
     favorites = []
@@ -295,8 +296,8 @@ def add_favorite_restaurant(user_restaurant_id):
 @api.route('/client/favorite', methods=['GET'])
 @jwt_required()
 def get_favorites_restaurants():
-    user_client_id = get_jwt_identity()
-    query_favorites = db.session.query(Favorite_restaurants).join(User_restaurant).filter(Favorite_restaurants.user_client_id==user_client_id).all()
+    user_client = get_jwt_identity()
+    query_favorites = db.session.query(Favorite_restaurants).join(User_restaurant).filter(Favorite_restaurants.user_client_id==user_client["id"]).all()
     # print(query_favorites)
     # favorites = list(map(lambda favorite: favorite.serialize(), query_favorites))
     favorites = []
@@ -310,8 +311,8 @@ def get_favorites_restaurants():
 @api.route('/client/favorite/<int:user_restaurant_id>', methods=['DELETE'])
 @jwt_required()
 def delete_favorite_restaurant(user_restaurant_id):
-    user_client_id = get_jwt_identity()
-    query_favorite = Favorite_restaurants.query.get((user_client_id, user_restaurant_id))
+    user_client = get_jwt_identity()
+    query_favorite = Favorite_restaurants.query.get((user_client["id"], user_restaurant_id))
     if not query_favorite is None:
         db.session.delete(query_favorite)
         db.session.commit()
@@ -440,7 +441,7 @@ def change_password():
 @jwt_required()
 def change_information():
 
-    user_id = get_jwt_identity()
+    user = get_jwt_identity()
 
     if request.method == 'PUT':
         name = request.json.get("name", None)
@@ -450,7 +451,7 @@ def change_information():
         welcome_message = request.json.get("welcome_message", None)
         description = request.json.get("description", None)
 
-        user_restaurant = User_restaurant.query.get(user_id)
+        user_restaurant = User_restaurant.query.get(user["id"])
         user_restaurant.name = name
         user_restaurant.address = address
         user_restaurant.phone = phone
@@ -458,5 +459,36 @@ def change_information():
         user_restaurant.welcome_message = welcome_message
         user_restaurant.description = description
         db.session.commit()
+
     return jsonify({"message": "Information changed succese","results": user_restaurant.serialize(), "status": True}), 200
 
+@api.route('/session', methods=['GET'])
+@jwt_required()
+def loadSession():
+    user_identity = get_jwt_identity()
+    if request.method == 'GET':
+        
+        user = None
+        user_serialize = None
+
+        
+        if user_identity["type_user"] == "client":
+            user=User_client.query.get(user_identity["id"])
+            user_serialize = user.serialize()
+        else:
+            user=User_restaurant.query.get(user_identity["id"])
+            user_serialize = user.serialize()
+            user_serialize["rating"] = get_rating(user_serialize["id"])
+
+        expiracion = datetime.timedelta(days=1)
+        access_token = create_access_token(identity={"id":user_serialize["id"], "type_user":user_serialize["type_user"]}, expires_delta=expiracion)
+
+        print("test")
+        data = {
+            "user": user_serialize,
+            "token": access_token,
+            "expires": expiracion.total_seconds()*1000, 
+            "status": True
+        }
+
+        return jsonify(data), 200

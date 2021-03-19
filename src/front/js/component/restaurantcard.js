@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "../../styles/home.scss";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { ModalFavorite } from "../component/modalFavorite";
 export const RestaurantCard = props => {
 	let ratingStar = [];
 
@@ -23,52 +24,71 @@ export const RestaurantCard = props => {
 	const { store, actions } = useContext(Context);
 
 	return (
-		<div className="col-2">
-			<img src={props.image_url} alt={"imagen"} id="img-res" className="img-fluid" />
-			<div className="cars-rest">
+		<div className="col-12 col-lg-3 col-md-3 mb-4 mx-auto mx-lg-0 mx-md-0">
+			<ModalFavorite />
+			<div className="img-container d-flex align-items-center">
+				<img id="img-res" src={props.image_url} className="img-fluid mx-auto d-block" />
+			</div>
+			{/* <img src={props.image_url} alt={"imagen"} id="img-res" className="img-fluid" /> */}
+			<div className="cars-rest pt-2 px-2">
 				<p id="text-card">
 					<i className="fas fa-utensils" id="icon-te" />
-					Nombre: {props.name}
+					<span className="px-1 restaurant-tag">Nombre:</span> {props.name}
 				</p>
 				<p id="text-card">
 					<i className="fas fa-utensils" id="icon-te" />
-					Categoria: {props.category}
+					<span className="px-1 restaurant-tag">Categoria:</span> {props.category}
 				</p>
 
 				<p id="text-card">
 					<i className="fas fa-utensils" id="icon-te" />
-					Ubicación: {props.address}
+					<span className="px-1 restaurant-tag">Ubicación:</span>
+					{props.address}
 				</p>
 
 				<p id="text-card">
 					<i className="fas fa-utensils" id="icon-te" />
-					Calificación:{" "}
+					<span className="px-1 restaurant-tag">Calificación:</span>
 					<span className="mr-2">
 						{ratingStar.map(function(element, index) {
 							return <span key={index}>{element}</span>;
 						})}
 					</span>
-					{props.rating}
 				</p>
-				<div className="d-flex align-items-center justify-content-center">
+				<div className="d-flex align-items-center justify-content-between pb-2">
 					<Link to={"/restaurant/" + props.name + "/" + props.id}>
-						<span href="#" className="btn btn-warning boton btn-sm" id="btn-read">
+						<span href="#" className="px-2 py-1" id="btn-read">
 							Leer más!
 						</span>
 					</Link>
 					{store.favoritesRestaurant != null ? (
 						<button
-							onClick={() => actions.AddFavoriteRestaurant(props.id)}
+							onClick={() => {
+								store.favoritesRestaurant.find(restaurant => restaurant.user_restaurant_id == props.id)
+									? actions.deleteFavorite(props.id)
+									: actions.AddFavoriteRestaurant(props.id);
+							}}
+							style={{ fontSize: "20px" }}
 							type="button"
 							id="btn-corazon"
-							className=" btn text-danger float-right">
+							className=" btn">
 							{store.favoritesRestaurant.find(restaurant => restaurant.user_restaurant_id == props.id) ? (
-								<i className="fas fa-heart fa-2x" />
+								<i className="fas fa-heart" />
 							) : (
-								<i className="far fa-heart fa-2x" />
+								<i className="far fa-heart" />
 							)}
 						</button>
-					) : null}
+					) : (
+						<button
+							style={{ fontSize: "20px" }}
+							type="button"
+							id="btn-corazon"
+							className=" btn"
+							data-toggle="modal"
+							data-target="#modalFavorite">
+							<i className="far fa-heart" />
+						</button>
+					)}
 				</div>
 			</div>
 		</div>

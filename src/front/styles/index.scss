@@ -32,7 +32,7 @@ div{
     font-size: 3rem;
 }
 
-.form-register-container, .form-login-container{
+.form-register-container, .form-login-container, #backforget{
     background-color: black;
     border-radius: 10px 10px 10px 10px;
 }
@@ -101,36 +101,37 @@ div{
 .navbar, footer{
     background-color: black !important;
 }
-.tittle-res{
-    margin-left: 40%;
+.tittle{
+    // margin-left: 40%;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 350%;
-    margin-top: 1%;
+    // margin-top: 1%;
 }
-#img-res{
-    width:90%;
-    background-color: rgb(216, 212, 212);
+
+.img-container{
+    background-color: rgb(158, 154, 154);
     border: solid 1px;
     border-color: rgb(158, 154, 154);
-    margin-left: 10px;
-    margin-top: 50px;
+    min-height: 195px;
+
+}
+
+#img-res{
+    // max-height: 300px;
+    max-height: 195px;
+    // height: 100%;
+    // height: 100%;
+
+}
+.cars-rest{
+    background-color: rgb(207, 204, 202);
+    border-color: rgb(158, 154, 154);
 }
 #icon-te{
     color: rgb(112, 111, 109);
     margin-right: 3px;
 }
-.cars-rest{
-    background-color: rgb(207, 204, 202);
-    width:90%;
-    margin-right:10px ;
-    border: solid 1px;
-    border-color: rgb(158, 154, 154);
-    margin-bottom: 20px;
-    margin-left: 10px;
-}
-#text-card{
-    margin-left: 4px;
-}
+
 #btn-read{
     background: none;
     border-radius: 20px;
@@ -146,9 +147,6 @@ div{
 //     margin-top: 5%;
 // }
 #imgVR2{
-    width: 70%;
-    margin-left:10%;
-    margin-top: 5%;
     clip-path: circle();
 }
 #tiResta{
@@ -172,9 +170,6 @@ div{
 // }
 #starts2{
     font-family: Arial, Helvetica, sans-serif;
-    margin-left: 12%;
-    margin-top: 2%;
-    margin-bottom: 4%;
 }
 #starts3{
     font-family: Arial, Helvetica, sans-serif;
@@ -188,10 +183,7 @@ div{
     font-size: 30px;
     color: rgb(209, 117, 42);
 }
-#reseñauser{
-    margin-top: 3%;
-    margin-left: 3%;
-}
+
 #name-reseña{
     margin-left: 13%;
     margin-top: -10%;
@@ -275,10 +267,6 @@ div{
 #backforget{
     background-color: black;
     color: white;
-    margin-top: 3%;
-    width: 40%;
-    height: 80%;
-    padding-top: 2%;
 }
 #tittleforget{
     margin-top: 3%;
@@ -288,6 +276,11 @@ div{
     border: solid 2px;
     border-color: white;
     color: white;
+}
+
+.restaurant-tag{
+     font-weight: 500;
+
 }
 #btn-passwordMessage{
     background-color: white;

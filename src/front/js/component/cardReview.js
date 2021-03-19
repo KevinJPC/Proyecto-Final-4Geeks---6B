@@ -11,27 +11,41 @@ export const CardReview = props => {
 	const date = dateObj.getDate() + "/" + (dateObj.getMonth() + 1) + "/" + dateObj.getFullYear();
 	let ratingStars = handleGetUserRatingStars("restaurant", props.rating);
 	return (
-		<div className="col-3" id="reseñauser">
-			<div className="d-flex">
-				<i className="fas fa-user" id="user-reseña" />{" "}
-				<h4 id="name-reseña">
-					{store.user == null ? props.name : store.user.id == props.id ? "Yo" : props.name}
-				</h4>
-				<span>{date}</span>
+		<div className="col-12 col-lg-3 col-md-3 mb-3 mx-auto mx-lg-0 mx-md-0 p-2">
+			<div style={{ border: "2px solid black" }} className="p-1">
+				<div className="d-flex justify-content-between ">
+					<div className="col-auto d-flex align-items-center">
+						<i className="fas fa-user" />
+						<h5 className="pt-1 ml-2">
+							{store.user == null
+								? props.name
+								: store.user.id == props.id && store.user.type_user == "client"
+									? "Yo"
+									: props.name}
+						</h5>
+					</div>
+					<div className="mr-1">
+						<span>{date}</span>
+					</div>
+				</div>
+				<div className="d-flex align-items-center">
+					<div>
+						<p className="pt-3">Calificación:</p>
+					</div>
+					<div className="ml-1 p-0">
+						{ratingStars.map(function(element, index) {
+							return (
+								<span className="bg-transparent" style={{ border: "none" }} key={index}>
+									{element}
+								</span>
+							);
+						})}
+					</div>
+				</div>
+				<div style={{ height: "150px", overflow: "auto" }}>
+					<p>{props.comment}</p>
+				</div>
 			</div>
-			<div className="">
-				<p>
-					Calificación:
-					{ratingStars.map(function(element, index) {
-						return (
-							<button key={index} onClick={() => setRating(index + 1)}>
-								{element}
-							</button>
-						);
-					})}
-				</p>
-			</div>
-			<p>{props.comment}</p>
 		</div>
 	);
 };

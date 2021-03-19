@@ -66,11 +66,13 @@ export const Restaurant = () => {
 						</div>
 						<div className="container-fluid">
 							<div className="row d-flex flex-column flex-lg-row flex-md-row">
-								<div className="col-12 col-md-6 col-lg-6">
+								<div
+									className="col-12 col-md-6 col-lg-6 d-flex align-items-center"
+									style={{ maxHeight: "400px" }}>
 									<img
 										id="imgVR"
 										src={restaurant.image_url}
-										className="img-fluid"
+										className="img-fluid mx-auto d-block"
 										style={{ maxHeight: "400px" }}
 									/>
 								</div>

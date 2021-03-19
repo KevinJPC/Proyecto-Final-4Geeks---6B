@@ -45,17 +45,16 @@ export const ChangePassword = () => {
 	}
 
 	return (
-		<div className="">
-			<h1 className="large text-dark text-center" id="tittleforget">
-				Nueva contraseña
-			</h1>
-			<section className="container" id="backforget">
+		<div className="container-fluid">
+			<h1 className="large text-dark text-center py-3">Nueva contraseña</h1>
+			<section className="container-fluid col-12 col-lg-6 col-md-6 py-4" id="backforget">
 				<p className="lead text-center">
 					<i className="fas fa-user" /> Crea tu nueva contraseña
 				</p>
-				<div className="form text-center">
-					<div className="form-group">
+				<div className="form text-center mt-4">
+					<div className="col-sm-5 mx-auto">
 						<input
+							className="rounded px-1 form-group"
 							type="password"
 							placeholder="Contraseña"
 							name="password"
@@ -63,23 +62,21 @@ export const ChangePassword = () => {
 							onChange={e => setPassword(e.target.value)}
 						/>
 					</div>
-					<div className="form-group">
+					<div className="col-sm-5 mx-auto">
 						<input
+							className="rounded px-1 form-group"
 							type="password"
-							placeholder="Confirmación de contraseña"
+							placeholder="Confirma tu contraseña"
 							name="password2"
 							value={password2}
 							onChange={e => setPassword2(e.target.value)}
 						/>
 					</div>
 
-					<button className="btn" id="btn-forget" onClick={handleSendNewPassword}>
+					<button className="btn rounded-pill mt-3" id="btn-forget" onClick={handleSendNewPassword}>
 						Cambiar contraseña
 					</button>
 				</div>
-				<p className="my-1 text-center">
-					Ya tienes una cuenta? <Link to="/register">Registrarse</Link>
-				</p>
 			</section>
 			{redirect ? <Redirect to="/login" /> : null}
 		</div>

@@ -26,6 +26,7 @@ export const Register = () => {
 				return;
 			}
 		}
+		setRegistering(true);
 
 		fetch(process.env.BACKEND_URL + "/api/register/client", {
 			method: "POST",
@@ -36,6 +37,8 @@ export const Register = () => {
 		})
 			.then(response => response.json())
 			.then(data => {
+				setRegistering(false);
+
 				setRedirect(true);
 			})
 			.catch(error => {
@@ -103,9 +106,9 @@ export const Register = () => {
 	return (
 		<div className="d-flex justify-content-center flex-column p-2">
 			<div className="col-lg-4 col-md-6 col-12 mx-auto text-center">
-				<p className="title-register">Registro</p>
+				<h1 className="title">Registro</h1>
 			</div>
-			<div className="form-register-container text-center mt-1 d-flex justify-content-center align-items-center p-3 mb-2 text-white col-lg-5 col-md-6 col-12 mx-auto">
+			<div className="form-register-container text-center mt-4 d-flex justify-content-center align-items-center p-3 mb-2 text-white col-lg-5 col-md-6 col-12 mx-auto">
 				<div style={{ width: "400px" }}>
 					<div className="d-flex justify-content-end mb-3">
 						<div className="d-flex justify-content-between align-items-center p-0 m-0">
@@ -213,6 +216,10 @@ export const Register = () => {
 					) : null}
 
 					<div className="mb-4">{registering ? <Spinner /> : null}</div>
+
+					<p className="my-1 text-center mb-4">
+						Ya tienes una cuenta? <Link to="/login">Iniciar sesión</Link>
+					</p>
 
 					<button
 						className="rounded-pill bg-transparent px-3 btn-register"

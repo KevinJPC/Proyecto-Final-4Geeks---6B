@@ -48,9 +48,9 @@ export const Login = () => {
 	return (
 		<div className="d-flex justify-content-center flex-column p-2">
 			<div className="col-lg-5 col-md-6 col-12 mx-auto text-center">
-				<p className="title-login">Inicio de sesión</p>
+				<h1 className="title">Inicio de sesión</h1>
 			</div>
-			<div className="form-login-container text-center mt-1 d-flex justify-content-center align-items-center p-3 mb-2 text-white col-lg-5 col-md-6 col-12 mx-auto">
+			<div className="form-login-container text-center mt-4 d-flex justify-content-center align-items-center p-3 mb-2 text-white col-lg-5 col-md-6 col-12 mx-auto">
 				<div style={{ width: "400px" }}>
 					<div className="form-floating mb-4 mt-5 d-flex align-items-center justify-content-between">
 						<label htmlFor="floatingPassword">Email:</label>

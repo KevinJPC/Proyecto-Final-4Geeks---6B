@@ -27,6 +27,8 @@ const injectContext = PassedComponent => {
 					if (state.store.user.type_user == "client") {
 						state.actions.getFavorites();
 					}
+				} else {
+					state.actions.loadSession();
 				}
 
 				/**

@@ -2,12 +2,14 @@ import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { Spinner } from "../component/spinner";
 
 export const ForgetPassword = () => {
 	const [email, setEmail] = useState("");
 	const [pass, setPass] = useState("");
 	const [redirect, setRedirect] = useState(false);
 	const { store, actions } = useContext(Context);
+	const [isSending, setIsSending] = useState(false);
 
 	const handleSubmit = e => {
 		e.preventDefault();
@@ -17,7 +19,7 @@ export const ForgetPassword = () => {
 		console.log(email, pass);
 
 		const data = { email: email };
-
+		setIsSending(true);
 		fetch(process.env.BACKEND_URL + "/api/user/send/url", {
 			method: "POST",
 			headers: {
@@ -28,6 +30,7 @@ export const ForgetPassword = () => {
 			.then(response => response.json())
 			.then(data => {
 				console.log("Success:", data);
+				setIsSending(false);
 				setRedirect(true);
 			})
 			.catch(error => {
@@ -42,7 +45,7 @@ export const ForgetPassword = () => {
 			</div>
 			<div className="form-login-container text-center mt-1 py-5 d-flex justify-content-center align-items-center p-3 mb-2 text-white col-lg-5 col-md-6 col-12 mx-auto">
 				<div style={{ width: "400px" }}>
-					<div className="form-floating pb-5 pt-5 mb-5 d-flex align-items-center justify-content-between">
+					<div className="form-floating pt-3 mb-5 d-flex align-items-center justify-content-between">
 						<label htmlFor="floatingPassword">Email:</label>
 						<input
 							type="email"
@@ -51,6 +54,9 @@ export const ForgetPassword = () => {
 							onChange={e => setEmail(e.target.value)}
 						/>
 					</div>
+
+					<div className="mb-4 mt-3">{isSending ? <Spinner /> : null}</div>
+
 					<button className="rounded-pill bg-transparent px-3 btn-login" onClick={handleSubmit}>
 						Recuperar contraseña
 					</button>

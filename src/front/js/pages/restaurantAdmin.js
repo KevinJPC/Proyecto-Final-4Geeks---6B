@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MealCard } from "../component/mealCard";
 import { Spinner } from "../component/spinner";
+import { NotFound } from "../pages/notFound";
 export const RestaurantAdmin = () => {
 	const [username, setUsername] = useState("");
 	const [welcomeMessage, setWelcomeMessage] = useState("");
@@ -12,12 +13,15 @@ export const RestaurantAdmin = () => {
 	const [category, setCategory] = useState("");
 	const [address, setAddress] = useState("");
 	const [phone, setPhone] = useState("");
-
+	const [image, setImage] = useState("");
+	const [updating, setUpdating] = useState(false);
+	const [correct, setCorrect] = useState(false);
 	const params = useParams();
 	const { store, actions } = useContext(Context);
 	let [menu, setMenu] = useState([]);
 	useEffect(function() {
 		// ---------------------------------------------------
+		actions.loadSession();
 		let menuArray = [];
 		let categories = ["Seafood", "Chicken", "Dessert"];
 		for (let i = 0; i < categories.length; i++) {
@@ -46,7 +50,7 @@ export const RestaurantAdmin = () => {
 			welcome_message: welcomeMessage,
 			description: description
 		};
-
+		setUpdating(true);
 		fetch(process.env.BACKEND_URL + "/api/restaurant/change/information", {
 			method: "PUT",
 			headers: {
@@ -56,134 +60,196 @@ export const RestaurantAdmin = () => {
 			body: JSON.stringify(data)
 		})
 			.then(response => response.json())
-			.then(data => {
-				console.log(data);
-				actions.getUser(data.results);
+			.then(async data => {
+				// console.log(data);
+				let user_restaurant_id = await data.results.id;
+				let body = new FormData();
+				body.append("image", image[0]);
+				const options = {
+					body,
+					method: "POST"
+				};
+
+				fetch(process.env.BACKEND_URL + "/api/restaurants/" + user_restaurant_id + "/image", options)
+					.then(resp => resp.json())
+					.then(data => {
+						// console.log("Success!!!!", data);
+						console.log(data.results, "imagen cambiada");
+						setUpdating(false);
+						setCorrect(true);
+					})
+					.catch(error => console.error("error", error));
 			})
 			.catch(error => {
 				console.error("Error:", error);
 			});
 	};
 
-	// let ratingStar = [];
-	// if (restaurant != null) {
-	// 	let initial_rating = store.user.rating;
-	// 	for (let i = 0; i < 5; i++) {
-	// 		if (initial_rating >= 1) {
-	// 			ratingStar.push(<i className="fas fa-star" />);
-	// 			initial_rating = initial_rating - 1;
-	// 		} else {
-	// 			if (initial_rating < 1 && initial_rating > 0) {
-	// 				ratingStar.push(<i className="fas fa-star-half-alt" />);
-	// 				initial_rating = initial_rating - 1;
-	// 			} else {
-	// 				ratingStar.push(<i className="far fa-star" />);
-	// 			}
-	// 		}
-	// 	}
-	// }
-	return (
+	let ratingStar = [];
+	if (store.user != null) {
+		let initial_rating = store.user.rating;
+		for (let i = 0; i < 5; i++) {
+			if (initial_rating >= 1) {
+				ratingStar.push(<i className="fas fa-star" />);
+				initial_rating = initial_rating - 1;
+			} else {
+				if (initial_rating < 1 && initial_rating > 0) {
+					ratingStar.push(<i className="fas fa-star-half-alt" />);
+					initial_rating = initial_rating - 1;
+				} else {
+					ratingStar.push(<i className="far fa-star" />);
+				}
+			}
+		}
+	}
+
+	return store.pageNotFound ? (
+		<NotFound />
+	) : (
 		<div className="container-fluid">
 			<div className="row">
 				{store.user != null && menu.length != 0 ? (
 					<Fragment>
-						<div className="py-4 col-12 d-flex justify-content-center">
-							<h1>Nombre:</h1>
-							<input
-								placeholder="Nombre"
-								defaultValue={store.user.name}
-								type="text"
-								onChange={e => setUsername(e.target.value)}
-							/>
+						<div className="py-4 col-12">
+							<h2 className="text-center mb-4">Aquí puedes editar la información de tu restaurante</h2>
+							<div className="d-flex justify-content-center mb-2 align-items-center">
+								<h6>Nombre:</h6>
+								<div className="col-sm-3">
+									<input
+										className="ml-2 form-control"
+										placeholder="Nombre"
+										defaultValue={store.user.name}
+										type="text"
+										onChange={e => setUsername(e.target.value)}
+									/>
+								</div>
+							</div>
 						</div>
 						<div className="container-fluid px-4">
 							<div className="row d-flex flex-column flex-lg-row flex-md-row">
-								<div className="col-12 col-md-6 col-lg-6 bg-secondary container">
+								<div
+									className="col-12 col-md-6 col-lg-6 d-flex align-items-center"
+									style={{ maxHeight: "400px" }}>
 									<img
 										id="imgVR"
-										src={store.user.image_url}
+										src={image == "" ? store.user.image_url : URL.createObjectURL(image[0])}
 										className="img-fluid mx-auto d-block"
-										style={{ maxHeight: "420px" }}
+										style={{ maxHeight: "400px" }}
 									/>
 								</div>
 
 								<div className="col-12 col-md-6 col-lg-6">
 									<div id="textRes">
-										<div className="d-flex align-items-center">
-											<h4 className="text-center">Bienvenida:</h4>
-											<input
-												id="tiResta"
-												className="text-center ml-2"
-												placeholder="Bienvenida"
-												defaultValue={store.user.welcome_message}
-												type="text"
-												onChange={e => setWelcomeMessage(e.target.value)}
-											/>
-										</div>
-										<div className="d-flex align-items-center">
-											<textarea
-												className="ml-2"
-												placeholder="Descripción"
-												defaultValue={store.user.description}
-												type="text"
-												cols="40"
-												rows="5"
-												onChange={e => setDescription(e.target.value)}
-											/>
+										<div className="d-flex justify-content-between align-items-center mt-3 mt-lg-0 mt-md-0">
+											<h6 className="text-center">Bienvenida:</h6>
+											<div className="col-sm-10">
+												<input
+													id="tiResta"
+													className="text-center form-control"
+													placeholder="Bienvenida"
+													defaultValue={store.user.welcome_message}
+													type="text"
+													onChange={e => setWelcomeMessage(e.target.value)}
+												/>
+											</div>
 										</div>
 										<hr />
-										<div className="d-flex align-items-center">
+										<div className="d-flex mt-2 justify-content-between">
+											<h6 className="text-center">Descripción:</h6>
+											<div className="col-sm-10">
+												<textarea
+													placeholder="Descripción"
+													defaultValue={store.user.description}
+													type="text"
+													className="form-control"
+													id="exampleFormControlTextarea1"
+													rows="3"
+													onChange={e => setDescription(e.target.value)}
+												/>
+											</div>
+										</div>
+										<hr />
+										<div className="d-flex align-items-center justify-content-between">
 											<h6>Ubicación:</h6>
-											<input
-												className="ml-2"
-												placeholder="ubicación"
-												defaultValue={store.user.address}
-												type="text"
-												onChange={e => setAddress(e.target.value)}
-											/>
+											<div className="col-sm-10">
+												<input
+													className="form-control"
+													placeholder="ubicación"
+													defaultValue={store.user.address}
+													type="text"
+													onChange={e => setAddress(e.target.value)}
+												/>
+											</div>
 										</div>
 										<hr />
-										<div className="d-flex align-items-center">
-											<h6>Categoria:</h6>
-											<input
-												className="ml-2"
-												placeholder="Categoria"
-												defaultValue={store.user.category}
-												type="text"
-												onChange={e => setCategory(e.target.value)}
-											/>
+										<div className="d-flex align-items-center justify-content-between">
+											<h6>Categoría:</h6>
+											<div className="col-sm-10">
+												<input
+													className="form-control"
+													placeholder="Categoría"
+													defaultValue={store.user.category}
+													type="text"
+													onChange={e => setCategory(e.target.value)}
+												/>
+											</div>
 										</div>
 										<hr />
-										<div className="d-flex align-items-center">
+										<div className="d-flex align-items-center justify-content-between">
 											<h6>Teléfono:</h6>
-											<input
-												className="ml-2"
-												placeholder="Teléfono"
-												defaultValue={store.user.phone}
-												type="text"
-												onChange={e => setPhone(e.target.value)}
-											/>
+											<div className="col-sm-10">
+												<input
+													className="form-control"
+													placeholder="Teléfono"
+													defaultValue={store.user.phone}
+													type="text"
+													onChange={e => setPhone(e.target.value)}
+												/>
+											</div>
 										</div>
-										<hr className="d-block d-sm-none" />
-										<button
-											className="rounded-pill bg-transparent px-3 btn-send"
-											onClick={() => {
-												handleChangeData();
-											}}>
-											Actualizar
-										</button>
+										<hr />
+
+										<div className="d-flex align-items-center justify-content-between">
+											<h6>Imagen:</h6>
+											<div className="col-sm-10 d-flex p-0">
+												<input
+													type="file"
+													className="form-control bg-transparent"
+													placeholder="test"
+													style={{ border: "none" }}
+													onChange={e => {
+														setImage(e.target.files);
+													}}
+												/>
+											</div>
+										</div>
+										<hr />
+
+										<div className="mb-4 text-center">{updating ? <Spinner /> : null}</div>
+										<div className="mb-4 text-center text-success">
+											{correct ? <h6>La información se ha actualizado correctamente</h6> : null}
+										</div>
+										<div className="d-flex justify-content-center my-3">
+											<button
+												className="rounded-pill bg-transparent px-3 btn-send"
+												onClick={() => {
+													handleChangeData();
+												}}>
+												Actualizar
+											</button>
+										</div>
 									</div>
 								</div>
-								<div className="col-12 col-md-6 col-lg-6" id="starts1">
-									<div className="col-12 col-lg-8 d-flex flex-lg-row flex-column p-0 mt-lg-3 mt-md-3">
+								<div className="col-12 col-md-6 col-lg-6 mt-lg-n5 mt-md-n5" id="starts1">
+									<div className="col-12 col-lg-8 d-flex flex-lg-row flex-column p-0">
 										<div className="d-flex p-0 align-items-center">
 											<h6 className="pt-1 mr-1">Calificación: </h6>
-											{/* <span className="mr-2">
+											<span className="mr-2">
 												{ratingStar.map(function(element, index) {
 													return <span key={index}>{element}</span>;
 												})}
 											</span>
-											{store.user.rating} */}
+											{store.user.rating}
 										</div>
 										<hr className="d-block d-sm-none" />
 
