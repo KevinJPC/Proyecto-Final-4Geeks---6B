@@ -119,8 +119,8 @@ export const Restaurants = () => {
 						}}
 						ref={selectRef}>
 						<option value="name">Nombre</option>
-						<option value="category">Categoria</option>
-						<option value="address">Ubicacion</option>
+						<option value="category">Categoría</option>
+						<option value="address">Ubicación</option>
 					</select>
 				</div>
 			</div>

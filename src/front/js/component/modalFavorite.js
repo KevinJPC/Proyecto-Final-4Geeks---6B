@@ -42,7 +42,7 @@ export function ModalFavorite() {
 							</button>
 						</div>
 
-						<div className="col-auto d-flex justify-content-center mt-4 mb-4 mb-md-0 mb-lg-0">
+						<div className="col-auto d-flex justify-content-center mt-lg-4 mt-md-4 mt-2 mb-4 mb-md-0 mb-lg-0">
 							<button
 								data-dismiss="modal"
 								className="rounded-pill bg-transparent btn-restaurants px-5"
