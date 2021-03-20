@@ -8,24 +8,31 @@ export const ChangePassword = () => {
 	const [password, setPassword] = useState("");
 	const [password2, setPassword2] = useState("");
 	const [redirect, setRedirect] = useState(false);
+	const [incorrect, setIncorrect] = useState(false);
+	const [incorrectMessage, setIncorrectMessage] = useState("");
+	const [loading, setLoading] = useState(false);
 	const params = useParams();
 	let token = params.token.replaceAll("$", ".");
 	console.log(token);
 
 	function handleSendNewPassword() {
+		setIncorrect(false);
 		if (password == "") {
-			alert("Debe completar todos los campos");
+			setIncorrect(true);
+			setIncorrectMessage("Debe completar todos los campos");
 			return;
 		}
 		if (password != password2) {
-			alert("Ambas contraseñas deben ser iguales");
+			setIncorrect(true);
+			setIncorrectMessage("Ambas contraseñas deben coincidir");
 			return;
 		}
 		if (password.length < 4) {
-			alert("La contraseña debe contener más de 4 caracteres");
+			setIncorrect(true);
+			setIncorrectMessage("La contraseña debe contener más de 4 caracteres");
 			return;
 		}
-
+		setLoading(true);
 		const data = { password: password };
 		fetch(process.env.BACKEND_URL + "/api/user/change/password", {
 			method: "PUT",
@@ -39,6 +46,7 @@ export const ChangePassword = () => {
 			.then(data => {
 				console.log("Success:", data);
 				if (data.status == true) {
+					setLoading(false);
 					setRedirect(true);
 				}
 			});
@@ -72,6 +80,8 @@ export const ChangePassword = () => {
 							onChange={e => setPassword2(e.target.value)}
 						/>
 					</div>
+					{incorrect ? <h6 className="text-center text-danger mt-3">{incorrectMessage}</h6> : null}
+					<div className="mb-4 mt-3">{loading ? <Spinner /> : null}</div>
 
 					<button className="btn rounded-pill mt-3" id="btn-forget" onClick={handleSendNewPassword}>
 						Cambiar contraseña

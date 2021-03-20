@@ -19,6 +19,7 @@ export const Reviews = () => {
 	const [loading, setLoading] = useState(false);
 	let ratingStars = handleGetUserRatingStars(restaurant, rating);
 	const [isSending, setIsSending] = useState(false);
+	const [incorrect, setIncorrect] = useState(false);
 
 	let typeUser = store.user != null ? store.user.type_user : "client";
 	useEffect(function() {
@@ -44,6 +45,11 @@ export const Reviews = () => {
 	}, []);
 
 	function handleAddReview() {
+		setIncorrect(false);
+		if (rating == 0) {
+			setIncorrect(true);
+			return;
+		}
 		let data = {
 			user_restaurant_id: params.id,
 			comment: comment,
@@ -131,6 +137,11 @@ export const Reviews = () => {
 											<div className="mb-4 mt-3 text-center">
 												{isSending ? <Spinner /> : null}
 											</div>
+											{incorrect ? (
+												<h6 className="text-center text-danger">
+													Debe enviar una valoración mínima de 1 estrellas
+												</h6>
+											) : null}
 											{store.user != null ? (
 												<div className="d-flex justify-content-center">
 													<button

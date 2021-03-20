@@ -9,9 +9,11 @@ export const ForgetPassword = () => {
 	const [pass, setPass] = useState("");
 	const [redirect, setRedirect] = useState(false);
 	const { store, actions } = useContext(Context);
+	const [incorrect, setIncorrect] = useState(false);
 	const [isSending, setIsSending] = useState(false);
 
 	const handleSubmit = e => {
+		setIncorrect(false);
 		e.preventDefault();
 		if (email === "") {
 			alert("correo y contraseña son requeridos");
@@ -30,8 +32,13 @@ export const ForgetPassword = () => {
 			.then(response => response.json())
 			.then(data => {
 				console.log("Success:", data);
-				setIsSending(false);
-				setRedirect(true);
+				if (data.status) {
+					setIsSending(false);
+					setRedirect(true);
+				} else {
+					setIncorrect(true);
+					setIsSending(false);
+				}
 			})
 			.catch(error => {
 				console.error("Error:", error);
@@ -55,8 +62,10 @@ export const ForgetPassword = () => {
 						/>
 					</div>
 
+					{incorrect ? (
+						<h6 className="text-center mb-4 text-danger">El correo que ingresó no existe</h6>
+					) : null}
 					<div className="mb-4 mt-3">{isSending ? <Spinner /> : null}</div>
-
 					<button className="rounded-pill bg-transparent px-3 btn-login" onClick={handleSubmit}>
 						Recuperar contraseña
 					</button>

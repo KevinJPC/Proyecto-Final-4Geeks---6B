@@ -5,7 +5,7 @@ db = SQLAlchemy()
 class User_client(db.Model):
     __tablename__ = 'User_client'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), unique=False, nullable=False)
+    name = db.Column(db.String(50), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
@@ -39,15 +39,15 @@ class User_client(db.Model):
 class User_restaurant(db.Model):
     __tablename__ = 'User_restaurant' 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), unique=False, nullable=False)
+    name = db.Column(db.String(50), unique=False, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), unique=False, nullable=False)
     image_url = db.Column(db.String(250), unique=False, nullable=True)
-    address = db.Column(db.String(250), unique=False, nullable=False)
-    phone = db.Column(db.String(30), unique=False, nullable=False)
-    category = db.Column(db.String(150), unique=False, nullable=False)
-    welcome_message = db.Column(db.String(150), unique=False, nullable=False)
-    description = db.Column(db.String(250), unique=False, nullable=False)
+    address = db.Column(db.String(100), unique=False, nullable=False)
+    phone = db.Column(db.String(50), unique=False, nullable=False)
+    category = db.Column(db.String(50), unique=False, nullable=False)
+    welcome_message = db.Column(db.String(50), unique=False, nullable=False)
+    description = db.Column(db.String(400), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
    
@@ -95,7 +95,7 @@ class Review(db.Model):
     user_client = db.relationship(User_client)
     user_restaurant_id = db.Column(db.Integer, db.ForeignKey('User_restaurant.id'), nullable=False)
     user_restaurant = db.relationship(User_restaurant)
-    comment = db.Column(db.String(255), unique=False, nullable=True)
+    comment = db.Column(db.String, unique=False, nullable=True)
     rating = db.Column(db.Integer, unique=False, nullable=False)
     date = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
 

@@ -116,6 +116,7 @@ export const RestaurantAdmin = () => {
 								<h6>Nombre:</h6>
 								<div className="col-sm-3">
 									<input
+										maxLength="50"
 										className="ml-2 form-control"
 										placeholder="Nombre"
 										defaultValue={store.user.name}
@@ -144,6 +145,7 @@ export const RestaurantAdmin = () => {
 											<h6 className="text-center">Bienvenida:</h6>
 											<div className="col-sm-10">
 												<input
+													maxLength="50"
 													id="tiResta"
 													className="text-center form-control"
 													placeholder="Bienvenida"
@@ -158,6 +160,7 @@ export const RestaurantAdmin = () => {
 											<h6 className="text-center">Descripción:</h6>
 											<div className="col-sm-10">
 												<textarea
+													maxLength="400"
 													placeholder="Descripción"
 													defaultValue={store.user.description}
 													type="text"
@@ -173,6 +176,7 @@ export const RestaurantAdmin = () => {
 											<h6>Ubicación:</h6>
 											<div className="col-sm-10">
 												<input
+													maxLength="100"
 													className="form-control"
 													placeholder="ubicación"
 													defaultValue={store.user.address}
@@ -186,6 +190,7 @@ export const RestaurantAdmin = () => {
 											<h6>Categoría:</h6>
 											<div className="col-sm-10">
 												<input
+													maxLength="50"
 													className="form-control"
 													placeholder="Categoría"
 													defaultValue={store.user.category}
@@ -199,6 +204,7 @@ export const RestaurantAdmin = () => {
 											<h6>Teléfono:</h6>
 											<div className="col-sm-10">
 												<input
+													maxLength="50"
 													className="form-control"
 													placeholder="Teléfono"
 													defaultValue={store.user.phone}
