@@ -42,14 +42,26 @@ export const RestaurantAdmin = () => {
 	}, []);
 
 	const handleChangeData = () => {
-		const data = {
-			name: username,
-			address: address,
-			phone: phone,
-			category: category,
-			welcome_message: welcomeMessage,
-			description: description
-		};
+		const data = {};
+
+		if (username != "") {
+			data["name"] = username;
+		}
+		if (address != "") {
+			data["address"] = address;
+		}
+		if (phone != "") {
+			data["phone"] = phone;
+		}
+		if (category != "") {
+			data["category"] = category;
+		}
+		if (welcomeMessage != "") {
+			data["welcome_message"] = welcomeMessage;
+		}
+		if (description != "") {
+			data["description"] = description;
+		}
 		setUpdating(true);
 		fetch(process.env.BACKEND_URL + "/api/restaurant/change/information", {
 			method: "PUT",
@@ -62,23 +74,26 @@ export const RestaurantAdmin = () => {
 			.then(response => response.json())
 			.then(async data => {
 				// console.log(data);
-				let user_restaurant_id = await data.results.id;
-				let body = new FormData();
-				body.append("image", image[0]);
-				const options = {
-					body,
-					method: "POST"
-				};
+				if (image != "") {
+					let user_restaurant_id = await data.results.id;
+					let body = new FormData();
+					body.append("image", image[0]);
+					const options = {
+						body,
+						method: "POST"
+					};
 
-				fetch(process.env.BACKEND_URL + "/api/restaurants/" + user_restaurant_id + "/image", options)
-					.then(resp => resp.json())
-					.then(data => {
-						// console.log("Success!!!!", data);
-						console.log(data.results, "imagen cambiada");
-						setUpdating(false);
-						setCorrect(true);
-					})
-					.catch(error => console.error("error", error));
+					fetch(process.env.BACKEND_URL + "/api/restaurants/" + user_restaurant_id + "/image", options)
+						.then(resp => resp.json())
+						.then(data => {
+							setUpdating(false);
+							setCorrect(true);
+						})
+						.catch(error => console.error("error", error));
+				} else {
+					setUpdating(false);
+					setCorrect(true);
+				}
 			})
 			.catch(error => {
 				console.error("Error:", error);
