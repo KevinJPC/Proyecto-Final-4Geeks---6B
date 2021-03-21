@@ -16,6 +16,7 @@ export const RestaurantAdmin = () => {
 	const [image, setImage] = useState("");
 	const [updating, setUpdating] = useState(false);
 	const [correct, setCorrect] = useState(false);
+	const [incorrect, setIncorrect] = useState(false);
 	const params = useParams();
 	const { store, actions } = useContext(Context);
 	let [menu, setMenu] = useState([]);
@@ -42,6 +43,7 @@ export const RestaurantAdmin = () => {
 	}, []);
 
 	const handleChangeData = () => {
+		setIncorrect(false);
 		const data = {};
 
 		if (username != "") {
@@ -61,6 +63,10 @@ export const RestaurantAdmin = () => {
 		}
 		if (description != "") {
 			data["description"] = description;
+		}
+		if (Object.keys(data).length === 0 && image == "") {
+			setIncorrect(true);
+			return;
 		}
 		setUpdating(true);
 		fetch(process.env.BACKEND_URL + "/api/restaurant/change/information", {
@@ -247,8 +253,15 @@ export const RestaurantAdmin = () => {
 										<hr />
 
 										<div className="mb-4 text-center">{updating ? <Spinner /> : null}</div>
-										<div className="mb-4 text-center text-success">
-											{correct ? <h6>La información se ha actualizado correctamente</h6> : null}
+										<div className="mb-4 text-center ">
+											{correct ? (
+												<h6 className="text-success">
+													La información se ha actualizado correctamente
+												</h6>
+											) : null}
+											{incorrect ? (
+												<h6 className="text-danger">Debe editar al menos un campo</h6>
+											) : null}
 										</div>
 										<div className="d-flex justify-content-center my-3">
 											<button
