@@ -14,8 +14,6 @@ import { ChangePassword } from "./pages/changePassword";
 import { Restaurants } from "./pages/restaurants";
 import { Register } from "./pages/register";
 import { Home } from "./pages/home";
-import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";

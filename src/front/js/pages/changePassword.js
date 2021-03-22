@@ -13,7 +13,6 @@ export const ChangePassword = () => {
 	const [loading, setLoading] = useState(false);
 	const params = useParams();
 	let token = params.token.replaceAll("$", ".");
-	console.log(token);
 
 	function handleSendNewPassword() {
 		setIncorrect(false);
@@ -27,9 +26,9 @@ export const ChangePassword = () => {
 			setIncorrectMessage("Ambas contraseñas deben coincidir");
 			return;
 		}
-		if (password.length < 4) {
+		if (password.length < 6 || password2.length < 6) {
 			setIncorrect(true);
-			setIncorrectMessage("La contraseña debe contener más de 4 caracteres");
+			setIncorrectMessage("La contraseña debe tener un minimo de 6 caracteres");
 			return;
 		}
 		setLoading(true);
@@ -63,6 +62,8 @@ export const ChangePassword = () => {
 					<div className="col-sm-5 mx-auto">
 						<input
 							className="rounded px-1 form-group"
+							minLength="6"
+							maxLength="12"
 							type="password"
 							placeholder="Contraseña"
 							name="password"
@@ -73,6 +74,8 @@ export const ChangePassword = () => {
 					<div className="col-sm-5 mx-auto">
 						<input
 							className="rounded px-1 form-group"
+							minLength="6"
+							maxLength="12"
 							type="password"
 							placeholder="Confirma tu contraseña"
 							name="password2"

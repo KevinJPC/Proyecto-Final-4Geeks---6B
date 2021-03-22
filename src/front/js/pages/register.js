@@ -20,6 +20,8 @@ export const Register = () => {
 	const [messageIncorrect, setMessageIncorrect] = useState("");
 
 	const handleRegisterClient = () => {
+		setIncorrect(false);
+
 		const data = { email: email, password: pass, name: username };
 
 		for (const property in data) {
@@ -29,6 +31,11 @@ export const Register = () => {
 				setMessageIncorrect("Todos los campos son requeridos");
 				return;
 			}
+		}
+		if (pass.length < 6) {
+			setIncorrect(true);
+			setMessageIncorrect("La contraseña debe tener como mínimo 6 caracteres");
+			return;
 		}
 		setRegistering(true);
 		fetch(process.env.BACKEND_URL + "/api/register/client", {
@@ -58,6 +65,7 @@ export const Register = () => {
 
 	const handleRegisterRestaurant = () => {
 		setIncorrect(false);
+
 		const data = {
 			email: email,
 			password: pass,
@@ -82,7 +90,11 @@ export const Register = () => {
 			setMessageIncorrect("Todos los campos son requeridos");
 			return;
 		}
-
+		if (pass.length < 6) {
+			setIncorrect(true);
+			setMessageIncorrect("La contraseña debe tener como mínimo 6 caracteres");
+			return;
+		}
 		setRegistering(true);
 
 		fetch(process.env.BACKEND_URL + "/api/register/restaurant", {
@@ -174,6 +186,8 @@ export const Register = () => {
 					<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
 						<label htmlFor="floatingpassword">Contraseña:</label>
 						<input
+							minLength="6"
+							maxLength="12"
 							type="password"
 							className="form-control w-75"
 							placeholder="......."

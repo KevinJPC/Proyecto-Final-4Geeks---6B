@@ -11,10 +11,19 @@ export const Login = () => {
 	const [redirect, setRedirect] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const { store, actions } = useContext(Context);
-
+	const [incorrect, setIncorrect] = useState(false);
+	const [incorrectMessage, setIncorrectMessage] = useState("");
 	const handleLogin = () => {
+		setIncorrect(false);
 		if (email === "" || pass === "") {
-			alert("correo y contraseña son requeridos");
+			setIncorrect(true);
+			setIncorrectMessage("Todos los campos son requeridos");
+			return;
+		}
+
+		if (pass.length < 6) {
+			setIncorrect(true);
+			setIncorrectMessage("La contraseña debe tener un mínimo de 6 caracteres");
 			return;
 		}
 
@@ -64,6 +73,8 @@ export const Login = () => {
 					<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
 						<label htmlFor="floatingPassword">contraseña:</label>
 						<input
+							minLength="6"
+							maxLength="12"
 							type="password"
 							className="form-control w-75"
 							placeholder="Password"
@@ -73,9 +84,16 @@ export const Login = () => {
 
 					{incorrectCredentials ? (
 						<div>
-							<p>Email o contraseña incorrectos</p>
+							<p className="text-danger">Email o contraseña incorrectos</p>
 						</div>
 					) : null}
+
+					{incorrect ? (
+						<div>
+							<p className="text-danger">{incorrectMessage}</p>
+						</div>
+					) : null}
+
 					{loading ? <Spinner /> : null}
 
 					<div className="d-flex flex-column col-12">
