@@ -20,12 +20,22 @@ export const Home = () => (
 					La plataforma para impulsar tu restaurante. Administre su menú y obtenga una interacción más directa
 					con sus clientes.
 				</p>
+				<div className="d-flex justify-content-center mt-4 mb-4 mb-md-0 mb-lg-0">
+					<Link to="/Register">
+						<button
+							className="rounded-pill btn-restaurants px-5 pb-1 text-white"
+							style={{ background: "black" }}>
+							Unirme
+						</button>
+					</Link>
+				</div>
 			</div>
 		</div>
-		<Link to="/restaurants">
-			<div className="d-flex justify-content-center mt-4 mb-4 mb-md-0 mb-lg-0">
+
+		<div className="d-flex justify-content-center mt-4 mb-4 mb-md-0 mb-lg-0">
+			<Link to="/restaurants" style={{ color: "black" }}>
 				<button className="rounded-pill bg-transparent btn-restaurants px-5">Restaurantes</button>
-			</div>
-		</Link>
+			</Link>
+		</div>
 	</div>
 );

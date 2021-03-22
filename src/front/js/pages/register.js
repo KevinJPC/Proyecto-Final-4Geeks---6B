@@ -17,15 +17,25 @@ export const Register = () => {
 	const [redirect, setRedirect] = useState(false);
 	const [typeUser, setTypeUser] = useState("client");
 	const [incorrect, setIncorrect] = useState(false);
+	const [messageIncorrect, setMessageIncorrect] = useState("");
 
 	const handleRegisterClient = () => {
+		setIncorrect(false);
+
 		const data = { email: email, password: pass, name: username };
 
 		for (const property in data) {
+			setIncorrect(false);
 			if (data[property] === "") {
-				alert("Todos los campos son requeridos");
+				setIncorrect(true);
+				setMessageIncorrect("Todos los campos son requeridos");
 				return;
 			}
+		}
+		if (pass.length < 6) {
+			setIncorrect(true);
+			setMessageIncorrect("La contraseña debe tener como mínimo 6 caracteres");
+			return;
 		}
 		setRegistering(true);
 		fetch(process.env.BACKEND_URL + "/api/register/client", {
@@ -38,13 +48,13 @@ export const Register = () => {
 			.then(response => {
 				if (response.ok == false) {
 					setIncorrect(true);
+					setMessageIncorrect("Ya existe una cuenta asociada a este correo");
 				}
 				return response.json();
 			})
 			.then(data => {
 				setRegistering(false);
 				if (data.status) {
-					setIncorrect(false);
 					setRedirect(true);
 				}
 			})
@@ -54,6 +64,8 @@ export const Register = () => {
 	};
 
 	const handleRegisterRestaurant = () => {
+		setIncorrect(false);
+
 		const data = {
 			email: email,
 			password: pass,
@@ -67,16 +79,22 @@ export const Register = () => {
 
 		for (const property in data) {
 			if (data[property] === "") {
-				alert("Todos los campos son requeridos");
+				setIncorrect(true);
+				setMessageIncorrect("Todos los campos son requeridos");
 				return;
 			}
 		}
 
 		if (image === "") {
-			alert("Todos los campos son requeridos");
+			setIncorrect(true);
+			setMessageIncorrect("Todos los campos son requeridos");
 			return;
 		}
-
+		if (pass.length < 6) {
+			setIncorrect(true);
+			setMessageIncorrect("La contraseña debe tener como mínimo 6 caracteres");
+			return;
+		}
 		setRegistering(true);
 
 		fetch(process.env.BACKEND_URL + "/api/register/restaurant", {
@@ -89,13 +107,13 @@ export const Register = () => {
 			.then(response => {
 				if (response.ok == false) {
 					setIncorrect(true);
+					setMessageIncorrect("Ya existe una cuenta asociada a este correo");
 				}
 				return response.json();
 			})
 			.then(async data => {
 				setRegistering(false);
 				if (data.status) {
-					setIncorrect(false);
 					setRedirect(true);
 
 					let user_restaurant_id = await data.results.id;
@@ -148,6 +166,7 @@ export const Register = () => {
 					<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
 						<label htmlFor="floatingpassword">Nombre:</label>
 						<input
+							maxLength="50"
 							type="User"
 							className="form-control w-75"
 							placeholder="Nombre"
@@ -157,6 +176,7 @@ export const Register = () => {
 					<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
 						<label htmlFor="floatingpassword">Correo:</label>
 						<input
+							maxLength="120"
 							type="email"
 							className="form-control w-75"
 							placeholder="nombre@ejemplo.com"
@@ -166,6 +186,8 @@ export const Register = () => {
 					<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
 						<label htmlFor="floatingpassword">Contraseña:</label>
 						<input
+							minLength="6"
+							maxLength="12"
 							type="password"
 							className="form-control w-75"
 							placeholder="......."
@@ -177,6 +199,7 @@ export const Register = () => {
 							<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
 								<label htmlFor="floatingpassword">Bienvenida:</label>
 								<input
+									maxLength="50"
 									type="text"
 									className="form-control w-75"
 									placeholder="ej: Bienvenidos comensales"
@@ -186,6 +209,7 @@ export const Register = () => {
 							<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
 								<label htmlFor="floatingpassword">Descripción:</label>
 								<input
+									maxLength="400"
 									type="text"
 									className="form-control w-75"
 									placeholder="ej: El mejor restaurante de comida china para disfrutar con tus amigos y familia."
@@ -196,6 +220,7 @@ export const Register = () => {
 							<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
 								<label htmlFor="floatingpassword">Categoría:</label>
 								<input
+									maxLength="50"
 									type="text"
 									className="form-control w-75"
 									placeholder="ej: Comida china"
@@ -216,6 +241,7 @@ export const Register = () => {
 							<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
 								<label htmlFor="floatingpassword">Dirección:</label>
 								<input
+									maxLength="100"
 									type="text"
 									className="form-control w-75"
 									placeholder="Dirección"
@@ -225,6 +251,7 @@ export const Register = () => {
 							<div className="form-floating mb-4 d-flex align-items-center justify-content-between">
 								<label htmlFor="floatingpassword">Teléfono:</label>
 								<input
+									maxLength="50"
 									type="tel"
 									className="form-control w-75"
 									placeholder="Teléfono"
@@ -239,9 +266,7 @@ export const Register = () => {
 					<p className="my-1 text-center mb-4">
 						Ya tienes una cuenta? <Link to="/login">Iniciar sesión</Link>
 					</p>
-					{incorrect ? (
-						<p className="text-danger mt-n3">Ya existe una cuenta asociada a este correo</p>
-					) : null}
+					{incorrect ? <p className="text-danger mt-n3">{messageIncorrect}</p> : null}
 					<button
 						className="rounded-pill bg-transparent px-3 btn-register"
 						onClick={() => {

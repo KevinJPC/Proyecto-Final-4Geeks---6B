@@ -26,7 +26,7 @@ export function ModalFavorite() {
 						</button>
 					</div>
 					<div className="modal-body text-center">
-						<p>Agrega restaurantes a tus favoritos para agilizar tu busqueda la proxima vez</p>
+						<p>Agrega restaurantes a tus favoritos para agilizar tu búsqueda la próxima vez</p>
 						<i className="fas fa-heart fa-2x mt-2" style={{ color: "red" }} />
 					</div>
 					<div className="col-sm-12 d-flex flex-column pb-4">

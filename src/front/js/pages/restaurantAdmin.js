@@ -16,6 +16,7 @@ export const RestaurantAdmin = () => {
 	const [image, setImage] = useState("");
 	const [updating, setUpdating] = useState(false);
 	const [correct, setCorrect] = useState(false);
+	const [incorrect, setIncorrect] = useState(false);
 	const params = useParams();
 	const { store, actions } = useContext(Context);
 	let [menu, setMenu] = useState([]);
@@ -42,14 +43,31 @@ export const RestaurantAdmin = () => {
 	}, []);
 
 	const handleChangeData = () => {
-		const data = {
-			name: username,
-			address: address,
-			phone: phone,
-			category: category,
-			welcome_message: welcomeMessage,
-			description: description
-		};
+		setIncorrect(false);
+		const data = {};
+
+		if (username != "") {
+			data["name"] = username;
+		}
+		if (address != "") {
+			data["address"] = address;
+		}
+		if (phone != "") {
+			data["phone"] = phone;
+		}
+		if (category != "") {
+			data["category"] = category;
+		}
+		if (welcomeMessage != "") {
+			data["welcome_message"] = welcomeMessage;
+		}
+		if (description != "") {
+			data["description"] = description;
+		}
+		if (Object.keys(data).length === 0 && image == "") {
+			setIncorrect(true);
+			return;
+		}
 		setUpdating(true);
 		fetch(process.env.BACKEND_URL + "/api/restaurant/change/information", {
 			method: "PUT",
@@ -62,23 +80,26 @@ export const RestaurantAdmin = () => {
 			.then(response => response.json())
 			.then(async data => {
 				// console.log(data);
-				let user_restaurant_id = await data.results.id;
-				let body = new FormData();
-				body.append("image", image[0]);
-				const options = {
-					body,
-					method: "POST"
-				};
+				if (image != "") {
+					let user_restaurant_id = await data.results.id;
+					let body = new FormData();
+					body.append("image", image[0]);
+					const options = {
+						body,
+						method: "POST"
+					};
 
-				fetch(process.env.BACKEND_URL + "/api/restaurants/" + user_restaurant_id + "/image", options)
-					.then(resp => resp.json())
-					.then(data => {
-						// console.log("Success!!!!", data);
-						console.log(data.results, "imagen cambiada");
-						setUpdating(false);
-						setCorrect(true);
-					})
-					.catch(error => console.error("error", error));
+					fetch(process.env.BACKEND_URL + "/api/restaurants/" + user_restaurant_id + "/image", options)
+						.then(resp => resp.json())
+						.then(data => {
+							setUpdating(false);
+							setCorrect(true);
+						})
+						.catch(error => console.error("error", error));
+				} else {
+					setUpdating(false);
+					setCorrect(true);
+				}
 			})
 			.catch(error => {
 				console.error("Error:", error);
@@ -116,6 +137,7 @@ export const RestaurantAdmin = () => {
 								<h6>Nombre:</h6>
 								<div className="col-sm-3">
 									<input
+										maxLength="50"
 										className="ml-2 form-control"
 										placeholder="Nombre"
 										defaultValue={store.user.name}
@@ -144,6 +166,7 @@ export const RestaurantAdmin = () => {
 											<h6 className="text-center">Bienvenida:</h6>
 											<div className="col-sm-10">
 												<input
+													maxLength="50"
 													id="tiResta"
 													className="text-center form-control"
 													placeholder="Bienvenida"
@@ -158,6 +181,7 @@ export const RestaurantAdmin = () => {
 											<h6 className="text-center">Descripción:</h6>
 											<div className="col-sm-10">
 												<textarea
+													maxLength="400"
 													placeholder="Descripción"
 													defaultValue={store.user.description}
 													type="text"
@@ -173,6 +197,7 @@ export const RestaurantAdmin = () => {
 											<h6>Ubicación:</h6>
 											<div className="col-sm-10">
 												<input
+													maxLength="100"
 													className="form-control"
 													placeholder="ubicación"
 													defaultValue={store.user.address}
@@ -186,6 +211,7 @@ export const RestaurantAdmin = () => {
 											<h6>Categoría:</h6>
 											<div className="col-sm-10">
 												<input
+													maxLength="50"
 													className="form-control"
 													placeholder="Categoría"
 													defaultValue={store.user.category}
@@ -199,6 +225,7 @@ export const RestaurantAdmin = () => {
 											<h6>Teléfono:</h6>
 											<div className="col-sm-10">
 												<input
+													maxLength="50"
 													className="form-control"
 													placeholder="Teléfono"
 													defaultValue={store.user.phone}
@@ -226,8 +253,15 @@ export const RestaurantAdmin = () => {
 										<hr />
 
 										<div className="mb-4 text-center">{updating ? <Spinner /> : null}</div>
-										<div className="mb-4 text-center text-success">
-											{correct ? <h6>La información se ha actualizado correctamente</h6> : null}
+										<div className="mb-4 text-center ">
+											{correct ? (
+												<h6 className="text-success">
+													La información se ha actualizado correctamente
+												</h6>
+											) : null}
+											{incorrect ? (
+												<h6 className="text-danger">Debe editar al menos un campo</h6>
+											) : null}
 										</div>
 										<div className="d-flex justify-content-center my-3">
 											<button

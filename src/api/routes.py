@@ -457,14 +457,21 @@ def change_information():
         category = request.json.get("category", None)
         welcome_message = request.json.get("welcome_message", None)
         description = request.json.get("description", None)
-
+        print(request.get_json(), "request")
         user_restaurant = User_restaurant.query.get(user["id"])
-        user_restaurant.name = name
-        user_restaurant.address = address
-        user_restaurant.phone = phone
-        user_restaurant.category = category
-        user_restaurant.welcome_message = welcome_message
-        user_restaurant.description = description
+        if(not name is None):
+            user_restaurant.name = name
+        if(not address is None):
+            user_restaurant.address = address
+        if(not phone is None):
+            user_restaurant.phone = phone
+        if(not category is None):
+            user_restaurant.category = category
+        if(not welcome_message is None):
+            user_restaurant.welcome_message = welcome_message
+        if(not description is None):
+            user_restaurant.description = description
+        
         db.session.commit()
 
     return jsonify({"message": "Information changed succese","results": user_restaurant.serialize(), "status": True}), 200
