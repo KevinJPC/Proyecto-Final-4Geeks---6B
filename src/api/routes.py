@@ -332,7 +332,7 @@ def get_restaurants_by_name():
 
     name = request.get_json()["name"]
     search = "%{}%".format(name)
-    query = User_restaurant.query.filter(User_restaurant.name.like(search)).all()
+    query = User_restaurant.query.filter(User_restaurant.name.ilike(search)).all()
     users_restaurant = []
     for element in query:
         user_restaurant = element.serialize2()
